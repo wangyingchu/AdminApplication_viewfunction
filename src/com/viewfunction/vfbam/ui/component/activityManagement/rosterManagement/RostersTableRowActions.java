@@ -1,0 +1,130 @@
+package com.viewfunction.vfbam.ui.component.activityManagement.rosterManagement;
+
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
+import com.vaadin.server.Sizeable;
+import com.vaadin.shared.Position;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.*;
+import com.viewfunction.vfbam.ui.component.activityManagement.ActivityManagementConst;
+import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentModifyEvent;
+import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
+import com.viewfunction.vfbam.ui.util.UserClientInfo;
+
+public class RostersTableRowActions extends HorizontalLayout {
+    private UserClientInfo currentUserClientInfo;
+    private String rosterName;
+    private RostersActionTable containerRostersActionTable;
+    public RostersTableRowActions(UserClientInfo currentUserClientInfo,String rosterName){
+        this.currentUserClientInfo=currentUserClientInfo;
+        this.rosterName=rosterName;
+        Button showContainsDataFieldsButton = new Button();
+        showContainsDataFieldsButton.setIcon(FontAwesome.SHARE_ALT_SQUARE);
+        showContainsDataFieldsButton.setDescription("Contains Activity Definitions");
+        showContainsDataFieldsButton.addStyleName("small");
+        showContainsDataFieldsButton.addStyleName("borderless");
+        addComponent(showContainsDataFieldsButton);
+        final RosterContainsActivityDefinitionsInfo rosterContainsActivityDefinitionsInfo=new RosterContainsActivityDefinitionsInfo(this.currentUserClientInfo,this.rosterName);
+        showContainsDataFieldsButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(final Button.ClickEvent event) {
+                final Window window = new Window();
+                window.setWidth(1000.0f, Sizeable.Unit.PIXELS);
+                window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.center();
+                window.setContent(rosterContainsActivityDefinitionsInfo);
+                UI.getCurrent().addWindow(window);
+            }
+        });
+
+        Button showContainsActivityStepsButton = new Button();
+        showContainsActivityStepsButton.setIcon(FontAwesome.TH_LIST);
+        showContainsActivityStepsButton.setDescription("Displayed Data Fields Filter");
+        showContainsActivityStepsButton.addStyleName("small");
+        showContainsActivityStepsButton.addStyleName("borderless");
+        addComponent(showContainsActivityStepsButton);
+        final RosterExposedDataFieldsInfo rosterExposedDataFieldsInfo=new RosterExposedDataFieldsInfo(this.currentUserClientInfo,this.rosterName);
+        showContainsActivityStepsButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(final Button.ClickEvent event) {
+                final Window window = new Window();
+                window.setWidth(1000.0f, Unit.PIXELS);
+                window.setHeight(490.0f, Unit.PIXELS);
+                window.center();
+                window.setContent(rosterExposedDataFieldsInfo);
+                UI.getCurrent().addWindow(window);
+            }
+        });
+
+        Button startActivityButton = new Button();
+        startActivityButton.setIcon(FontAwesome.INDENT);
+        startActivityButton.setDescription("Fetch Business Activities");
+        startActivityButton.addStyleName("small");
+        startActivityButton.addStyleName("borderless");
+        addComponent(startActivityButton);
+        final RosterContainedActivityInstancesInfo rosterContainedActivityInstancesInfo=new RosterContainedActivityInstancesInfo(this.currentUserClientInfo,this.rosterName);
+        startActivityButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(final Button.ClickEvent event) {
+                final Window window = new Window();
+                window.setWidth(1000.0f, Unit.PIXELS);
+                window.setHeight(490.0f, Unit.PIXELS);
+                window.center();
+                window.setContent(rosterContainedActivityInstancesInfo);
+                UI.getCurrent().addWindow(window);
+            }
+        });
+
+        Label spaceDivLabel=new Label(" ");
+        spaceDivLabel.setWidth("10px");
+        addComponent(spaceDivLabel);
+
+        Button removeCurrentRosterButton = new Button();
+        removeCurrentRosterButton.setIcon(FontAwesome.TRASH_O);
+        removeCurrentRosterButton.setDescription("Remove This Roster");
+        removeCurrentRosterButton.addStyleName("small");
+        removeCurrentRosterButton.addStyleName("borderless");
+        addComponent(removeCurrentRosterButton);
+        final String rosterNameToRemove=this.rosterName;
+        removeCurrentRosterButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(final Button.ClickEvent event) {
+
+                Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
+                        " Please confirm to remove roster  <b>"+rosterNameToRemove +"</b>.", ContentMode.HTML);
+                final ConfirmDialog removeRosterConfirmDialog = new ConfirmDialog();
+                removeRosterConfirmDialog.setConfirmMessage(confirmMessage);
+                Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
+                    @Override
+                    public void buttonClick(final Button.ClickEvent event) {
+                        //close confirm dialog
+                        removeRosterConfirmDialog.close();
+                        //remove roster in roster table
+                        if(getContainerRostersActionTable()!=null){
+                            getContainerRostersActionTable().removeRoster(rosterNameToRemove);
+                        }
+                    }
+                };
+                removeRosterConfirmDialog.setConfirmButtonClickListener(confirmButtonClickListener);
+                UI.getCurrent().addWindow(removeRosterConfirmDialog);
+            }
+        });
+    }
+/*
+    private void boardcastRemovedRosterEvent(String rostedName){
+        String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
+        String componentType= ActivityManagementConst.COMPONENT_TYPE_ROSTER;
+        ActivitySpaceComponentModifyEvent activitySpaceComponentModifyEvent=
+                new ActivitySpaceComponentModifyEvent(activitySpaceName,componentType,rostedName,
+                        ActivitySpaceComponentModifyEvent.MODIFYTYPE_REMOVE);
+        this.currentUserClientInfo.getEventBlackBoard().fire(activitySpaceComponentModifyEvent);
+    }
+*/
+    public RostersActionTable getContainerRostersActionTable() {
+        return containerRostersActionTable;
+    }
+
+    public void setContainerRostersActionTable(RostersActionTable containerRostersActionTable) {
+        this.containerRostersActionTable = containerRostersActionTable;
+    }
+}
