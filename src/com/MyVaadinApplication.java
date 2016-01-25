@@ -11,6 +11,6 @@ public class MyVaadinApplication extends UI {
     public void init(VaadinRequest request) {
         VerticalLayout layout = new VerticalLayout();
         setContent(layout);
-        layout.addComponent(new Label("Hello, world2!"));
+        layout.addComponent(new Label("Viewfunction Business Activity Management system"));
     }
 }
