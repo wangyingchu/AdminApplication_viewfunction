@@ -1,13 +1,19 @@
 <component name="libraryTable">
   <library name="Vaadin Client">
     <CLASSES>
-      <root url="jar://C:/Application/commonLib/vaddin/vaadin-all-7.5.0/vaadin-client-7.5.0.jar!/" />
-      <root url="jar://C:/Application/commonLib/vaddin/vaadin-all-7.5.0/vaadin-client-compiler-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-client-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-client-compiler-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-server-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-shared-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-widgets-7.5.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://C:/Application/commonLib/vaddin/vaadin-all-7.5.0/vaadin-client-7.5.0.jar!/" />
-      <root url="jar://C:/Application/commonLib/vaddin/vaadin-all-7.5.0/vaadin-client-compiler-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-client-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-client-compiler-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-server-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-shared-7.5.0.jar!/" />
+      <root url="jar://$USER_HOME$/Local_Application/Dev_labs/vaadin/vaadin-all-7.5.0/vaadin-widgets-7.5.0.jar!/" />
     </SOURCES>
   </library>
 </component>
