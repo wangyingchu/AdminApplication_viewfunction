@@ -23,6 +23,13 @@ public class ActivitySpaceConfigurationView extends VerticalLayout {
         ActivitySpaceBusinessCategoryEditor activitySpaceBusinessCategoryEditor=new ActivitySpaceBusinessCategoryEditor(this.currentUserClientInfo,this.activitySpaceName);
         TabSheet.Tab businessCategoriesInfoLayoutTab =tabs.addTab(activitySpaceBusinessCategoryEditor, "Activity Business Categories");
         businessCategoriesInfoLayoutTab.setIcon(FontAwesome.CHECK_CIRCLE_O);
-        addComponent(tabs);
+
+        ActivitySpaceExtendFeatureCategoryEditor activitySpaceExtendFeatureCategoryEditor=new ActivitySpaceExtendFeatureCategoryEditor(this.currentUserClientInfo,this.activitySpaceName);
+        TabSheet.Tab extendFeatureCategoriesInfoLayoutTab =tabs.addTab(activitySpaceExtendFeatureCategoryEditor, "Extend Feature Categories");
+        extendFeatureCategoriesInfoLayoutTab.setIcon(FontAwesome.LAPTOP);
+
+        ActivitySpaceBusinessCategoryEditor knowledgeBaseIntegrationEditor=new ActivitySpaceBusinessCategoryEditor(this.currentUserClientInfo,this.activitySpaceName);
+        TabSheet.Tab knowledgeBaseEntegationInfoLayoutTab =tabs.addTab(knowledgeBaseIntegrationEditor, "KnowledgeBase Integration");
+        knowledgeBaseEntegationInfoLayoutTab.setIcon(FontAwesome.BOOK);
     }
 }

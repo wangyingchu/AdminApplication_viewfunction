@@ -37,6 +37,7 @@ public class ActivitySpaceOperationUtil {
     public static final String ACTIVITYSPACE_METAINFOTYPE_ROSTER="ROSTER";
     public static final String ACTIVITYSPACE_METAINFOTYPE_ACTIVITYTYPE="ACTIVITYTYPE";
     public static final String ACTIVITYSPACE_METAINFOTYPE_BUSINESSCATEGORY="BUSINESSCATEGORY";
+    public static final String ACTIVITYSPACE_METAINFOTYPE_EXTENDFEATURECATEGORY="EXTENDFEATURECATEGORY";
 
     public static String[] listActivitySpaces(){
         try {
@@ -99,6 +100,19 @@ public class ActivitySpaceOperationUtil {
         return false;
     }
 
+    public static boolean setActivitySpaceExtendFeatureCategories(String activitySpaceName,String[] categories){
+        if(categories==null){
+            return false;
+        }
+        try {
+            ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
+            return targetActivitySpace.setActivitySpaceExtendFeatureCategories(categories);
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static ActivitySpaceMetaInfoDAO getActivitySpaceMetaInfo(String activitySpaceName,String[] metaInfoType){
         ActivitySpaceMetaInfoDAO activitySpaceMetaInfoDAO=new ActivitySpaceMetaInfoDAO();
         try {
@@ -128,6 +142,10 @@ public class ActivitySpaceOperationUtil {
                     if(ACTIVITYSPACE_METAINFOTYPE_BUSINESSCATEGORY.equals(currentType)){
                         String[] spaceBusinessCategories=targetActivitySpace.getActivityTypeCategories();
                         activitySpaceMetaInfoDAO.setBusinessCategories(spaceBusinessCategories);
+                    }
+                    if(ACTIVITYSPACE_METAINFOTYPE_EXTENDFEATURECATEGORY.equals(currentType)){
+                        String[] spaceExtendFeatureCategories=targetActivitySpace.getActivitySpaceExtendFeatureCategories();
+                        activitySpaceMetaInfoDAO.setExtendFeatureCategories(spaceExtendFeatureCategories);
                     }
                 }
             }else{

@@ -12,6 +12,8 @@ public class ActivitySpaceMetaInfoDAO {
     private BusinessActivityDefinition[] businessActivityDefinitions;
     private RoleQueue[] roleQueues;
     private Roster[] rosters;
+    private String[] businessCategories;
+    private String[] extendFeatureCategories;
 
     public String[] getBusinessCategories() {
         return businessCategories;
@@ -20,8 +22,6 @@ public class ActivitySpaceMetaInfoDAO {
     public void setBusinessCategories(String[] businessCategories) {
         this.businessCategories = businessCategories;
     }
-
-    private String[] businessCategories;
 
     public Participant[] getParticipants() {
         return participants;
@@ -61,5 +61,13 @@ public class ActivitySpaceMetaInfoDAO {
 
     public void setRosters(Roster[] rosters) {
         this.rosters = rosters;
+    }
+
+    public String[] getExtendFeatureCategories() {
+        return extendFeatureCategories;
+    }
+
+    public void setExtendFeatureCategories(String[] extendFeatureCategories) {
+        this.extendFeatureCategories = extendFeatureCategories;
     }
 }
