@@ -89,45 +89,46 @@ public class ActivityStepsEditor extends VerticalLayout {
         String[] exposedStepsArray=targetActivityType.getExposedSteps();
         Map<String,DataFieldDefinition[]> exposedStepDataFieldDefinitionMap=targetActivityType.getActivityStepsExposedDataField();
         Map<String,String> stepRoleMap=targetActivityType.getActivityStepRoleMap();
-
         if(exposedStepsArray!=null){
             for(String currentStep:exposedStepsArray){
-                ActivityStepVO currentActivityStepVO=new ActivityStepVO();
-                currentActivityStepVO.setActivityStepName(currentStep);
-                currentActivityStepVO.setActivityStepDisplayName(definedStepInfoMap.get(currentStep).getStepName());
-                List<ActivityDataFieldVO> voExposedActivityDataFields=new ArrayList<ActivityDataFieldVO>();
-                currentActivityStepVO.setExposedActivityDataFields(voExposedActivityDataFields);
-                if(stepRoleMap.get(currentStep)!=null){
-                    currentActivityStepVO.setRelatedRole(stepRoleMap.get(currentStep));
-                }
-                if(targetActivityType.getStepUserIdentityAttributeName(currentStep)!=null){
-                    currentActivityStepVO.setUserIdentityAttribute(targetActivityType.getStepUserIdentityAttributeName(currentStep));
-                }
-                if(targetActivityType.getStepProcessVariableList(currentStep)!=null){
-                    currentActivityStepVO.setStepProcessVariables(targetActivityType.getStepProcessVariableList(currentStep));
-                }
-                if(targetActivityType.getStepDecisionPointAttributeName(currentStep)!=null){
-                    currentActivityStepVO.setDecisionPointAttribute(targetActivityType.getStepDecisionPointAttributeName(currentStep));
-                }
-                if(targetActivityType.getStepDecisionPointChoiseList(currentStep)!=null){
-                    currentActivityStepVO.setDecisionPointChooseOption(targetActivityType.getStepDecisionPointChoiseList(currentStep));
-                }
-                DataFieldDefinition[] stepDataFieldDefinitionsArray=exposedStepDataFieldDefinitionMap.get(currentStep);
-                if(stepDataFieldDefinitionsArray!=null){
-                    for(DataFieldDefinition currentDataFieldDefinition:stepDataFieldDefinitionsArray){
-                        ActivityDataFieldVO activityDataFieldVO0=new ActivityDataFieldVO();
-                        activityDataFieldVO0.setDataFieldName(currentDataFieldDefinition.getFieldName());
-                        activityDataFieldVO0.setDataFieldDisplayName(currentDataFieldDefinition.getDisplayName());
-                        activityDataFieldVO0.setArrayField(currentDataFieldDefinition.isArrayField());
-                        activityDataFieldVO0.setWritableField(currentDataFieldDefinition.isWriteableField());
-                        activityDataFieldVO0.setReadableField(currentDataFieldDefinition.isReadableField());
-                        activityDataFieldVO0.setMandatoryField(currentDataFieldDefinition.isMandatoryField());
-                        String dataType=ActivitySpaceOperationUtil.getDataFieldDefinitionTypeString(currentDataFieldDefinition.getFieldType());
-                        activityDataFieldVO0.setDataType(dataType);
-                        voExposedActivityDataFields.add(activityDataFieldVO0);
+                if(definedStepInfoMap.get(currentStep)!=null){
+                    ActivityStepVO currentActivityStepVO=new ActivityStepVO();
+                    currentActivityStepVO.setActivityStepName(currentStep);
+                    currentActivityStepVO.setActivityStepDisplayName(definedStepInfoMap.get(currentStep).getStepName());
+                    List<ActivityDataFieldVO> voExposedActivityDataFields=new ArrayList<ActivityDataFieldVO>();
+                    currentActivityStepVO.setExposedActivityDataFields(voExposedActivityDataFields);
+                    if(stepRoleMap.get(currentStep)!=null){
+                        currentActivityStepVO.setRelatedRole(stepRoleMap.get(currentStep));
                     }
+                    if(targetActivityType.getStepUserIdentityAttributeName(currentStep)!=null){
+                        currentActivityStepVO.setUserIdentityAttribute(targetActivityType.getStepUserIdentityAttributeName(currentStep));
+                    }
+                    if(targetActivityType.getStepProcessVariableList(currentStep)!=null){
+                        currentActivityStepVO.setStepProcessVariables(targetActivityType.getStepProcessVariableList(currentStep));
+                    }
+                    if(targetActivityType.getStepDecisionPointAttributeName(currentStep)!=null){
+                        currentActivityStepVO.setDecisionPointAttribute(targetActivityType.getStepDecisionPointAttributeName(currentStep));
+                    }
+                    if(targetActivityType.getStepDecisionPointChoiseList(currentStep)!=null){
+                        currentActivityStepVO.setDecisionPointChooseOption(targetActivityType.getStepDecisionPointChoiseList(currentStep));
+                    }
+                    DataFieldDefinition[] stepDataFieldDefinitionsArray=exposedStepDataFieldDefinitionMap.get(currentStep);
+                    if(stepDataFieldDefinitionsArray!=null){
+                        for(DataFieldDefinition currentDataFieldDefinition:stepDataFieldDefinitionsArray){
+                            ActivityDataFieldVO activityDataFieldVO0=new ActivityDataFieldVO();
+                            activityDataFieldVO0.setDataFieldName(currentDataFieldDefinition.getFieldName());
+                            activityDataFieldVO0.setDataFieldDisplayName(currentDataFieldDefinition.getDisplayName());
+                            activityDataFieldVO0.setArrayField(currentDataFieldDefinition.isArrayField());
+                            activityDataFieldVO0.setWritableField(currentDataFieldDefinition.isWriteableField());
+                            activityDataFieldVO0.setReadableField(currentDataFieldDefinition.isReadableField());
+                            activityDataFieldVO0.setMandatoryField(currentDataFieldDefinition.isMandatoryField());
+                            String dataType=ActivitySpaceOperationUtil.getDataFieldDefinitionTypeString(currentDataFieldDefinition.getFieldType());
+                            activityDataFieldVO0.setDataType(dataType);
+                            voExposedActivityDataFields.add(activityDataFieldVO0);
+                        }
+                    }
+                    currentExposedActivityStepList.add(currentActivityStepVO);
                 }
-                currentExposedActivityStepList.add(currentActivityStepVO);
             }
         }
     }
