@@ -850,7 +850,7 @@ public class ActivitySpaceOperationUtil {
                     return true;
                 }
             }
-            return true;
+            return false;
         }
     }
 
