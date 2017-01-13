@@ -35,7 +35,9 @@ public class ParticipantsListManagementView extends VerticalLayout implements Vi
         addNewParticipantActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         participantsListSectionActionsBar.addActionComponent(addNewParticipantActionButton);
 
-        ParticipantsActionTable participantsActionTable=new ParticipantsActionTable(this.currentUserClientInfo,null,true,true);
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-300)+"px";
+        ParticipantsActionTable participantsActionTable=new ParticipantsActionTable(this.currentUserClientInfo,tableHeightString,true,true);
         participantsActionTable.setParticipantsQueryId(null);
         participantsActionTable.setParticipantsType(ParticipantsActionTable.PARTICIPANTS_TYPE_PARTICIPANT);
         viewContentContainer.addComponent(participantsActionTable);

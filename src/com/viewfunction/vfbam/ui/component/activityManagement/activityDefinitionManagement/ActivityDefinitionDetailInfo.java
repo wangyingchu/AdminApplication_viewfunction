@@ -3,10 +3,9 @@ package com.viewfunction.vfbam.ui.component.activityManagement.activityDefinitio
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.viewfunction.activityEngine.activityBureau.BusinessActivityDefinition;
 import com.viewfunction.activityEngine.activityView.Roster;
-import com.viewfunction.activityEngine.activityView.common.ActivityStepDefinition;
 import com.viewfunction.activityEngine.activityView.common.DataFieldDefinition;
 import com.viewfunction.activityEngine.security.Participant;
 import com.viewfunction.activityEngine.security.Role;
@@ -57,13 +56,16 @@ public class ActivityDefinitionDetailInfo extends VerticalLayout {
         activityDefinitionEditor=new ActivityDefinitionEditor(this.currentUserClientInfo);
         activityDefinitionInfoLayout.addComponent(activityDefinitionEditor);
 
+        int browserWindowHeight= UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-330)+"px";
+
         VerticalLayout activityDefinitionDataFieldLayout=new VerticalLayout();
         activityDefinitionDataFieldTab =tabs.addTab(activityDefinitionDataFieldLayout, "Activity Definition Data Fields");
         activityDefinitionDataFieldTab.setIcon(FontAwesome.TH_LIST);
         MainSectionTitle activityDefinitionDataFieldsSectionTitle=new MainSectionTitle("Activity Definition Data Fields");
         activityDefinitionDataFieldLayout.addComponent(activityDefinitionDataFieldsSectionTitle);
         activityDataFieldsEditor=new ActivityDataFieldsEditor(this.currentUserClientInfo,
-                ActivityManagementConst.COMPONENT_TYPE_ACTIVITYDEFINITION,currentActivitySpaceComponentInfo.getComponentId());
+                ActivityManagementConst.COMPONENT_TYPE_ACTIVITYDEFINITION,currentActivitySpaceComponentInfo.getComponentId(),tableHeightString);
         activityDefinitionDataFieldLayout.addComponent(activityDataFieldsEditor);
 
         VerticalLayout activityDefinitionStepLayout=new VerticalLayout();

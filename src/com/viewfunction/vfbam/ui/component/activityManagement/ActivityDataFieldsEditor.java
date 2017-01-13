@@ -16,7 +16,7 @@ public class ActivityDataFieldsEditor extends VerticalLayout {
 
     private String componentType;
     private String componentId;
-    public ActivityDataFieldsEditor(UserClientInfo currentUserClientInfo,String componentType,String componentId){
+    public ActivityDataFieldsEditor(UserClientInfo currentUserClientInfo,String componentType,String componentId,String tableHeight){
         this.currentUserClientInfo=currentUserClientInfo;
         this.componentType=componentType;
         this.componentId=componentId;
@@ -62,15 +62,15 @@ public class ActivityDataFieldsEditor extends VerticalLayout {
 
         dataFieldsSectionActionsBar.addActionComponent(addNewDataFieldActionButton);
         if(this.componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ACTIVITYDEFINITION)){
-            setActivityDataFieldsActionTable(new ActivityDataFieldsActionTable(this.currentUserClientInfo,null,true,false));
+            setActivityDataFieldsActionTable(new ActivityDataFieldsActionTable(this.currentUserClientInfo,tableHeight,true,false));
             getActivityDataFieldsActionTable().setDataFieldQueryType(ActivityDataFieldsActionTable.DATAFIELDS_TYPE_ACTIVITYTYPE);
         }
         if(this.componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ROSTER)){
-            setActivityDataFieldsActionTable(new ActivityDataFieldsActionTable(this.currentUserClientInfo,null,true,true));
+            setActivityDataFieldsActionTable(new ActivityDataFieldsActionTable(this.currentUserClientInfo,tableHeight,true,true));
             getActivityDataFieldsActionTable().setDataFieldQueryType(ActivityDataFieldsActionTable.DATAFIELDS_TYPE_ROSTER);
         }
         if(this.componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ROLEQUEUE)){
-            setActivityDataFieldsActionTable(new ActivityDataFieldsActionTable(this.currentUserClientInfo,null,true,true));
+            setActivityDataFieldsActionTable(new ActivityDataFieldsActionTable(this.currentUserClientInfo,tableHeight,true,true));
             getActivityDataFieldsActionTable().setDataFieldQueryType(ActivityDataFieldsActionTable.DATAFIELDS_TYPE_ROLEQUEUE);
         }
         if(getActivityDataFieldsActionTable() !=null){

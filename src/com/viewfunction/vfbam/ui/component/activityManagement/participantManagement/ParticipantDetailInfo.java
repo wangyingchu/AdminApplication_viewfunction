@@ -39,6 +39,9 @@ public class ParticipantDetailInfo extends VerticalLayout {
         participantEditor.setParticipant(currentParticipant);
         participantInfoLayout.addComponent(participantEditor);
 
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-330)+"px";
+
         VerticalLayout belongsToRolesLayout=new VerticalLayout();
         TabSheet.Tab belongsToRolesTab = tabs.addTab(belongsToRolesLayout, "Belongs To Roles");
         belongsToRolesTab.setIcon(FontAwesome.USERS);
@@ -52,7 +55,7 @@ public class ParticipantDetailInfo extends VerticalLayout {
         modifyBelongedRolesActionButton.setIcon(FontAwesome.COG);
         belongsToRolesSectionActionsBar.addActionComponent(modifyBelongedRolesActionButton);
 
-        RolesActionTable rolesActionTable=new RolesActionTable(this.currentUserClientInfo,null,true);
+        RolesActionTable rolesActionTable=new RolesActionTable(this.currentUserClientInfo,tableHeightString,true);
         rolesActionTable.setRolesQueryId(currentActivitySpaceComponentInfo.getComponentId());
         rolesActionTable.setRolesType(RolesActionTable.ROLES_TYPE_PARTICIPANT);
         belongsToRolesLayout.addComponent(rolesActionTable);
@@ -87,7 +90,7 @@ public class ParticipantDetailInfo extends VerticalLayout {
         fetchParticipantTasksActionButton.setIcon(FontAwesome.DOWNLOAD);
         workingTasksSectionActionsBar.addActionComponent(fetchParticipantTasksActionButton);
 
-        final ActivityStepsTable activityStepsTable =new ActivityStepsTable(this.currentUserClientInfo,null);
+        final ActivityStepsTable activityStepsTable =new ActivityStepsTable(this.currentUserClientInfo,tableHeightString);
         activityStepsTable.setActivityStepQueryId(currentActivitySpaceComponentInfo.getComponentId());
         activityStepsTable.setActivityStepType(ActivityStepsTable.ACTIVITYSTEPS_TYPE_PARTICIPANT);
         participantTasksLayout.addComponent(activityStepsTable);

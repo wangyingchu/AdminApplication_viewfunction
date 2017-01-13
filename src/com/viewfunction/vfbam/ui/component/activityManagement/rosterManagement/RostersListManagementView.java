@@ -34,7 +34,10 @@ public class RostersListManagementView extends VerticalLayout implements View {
         addNewRosterActionButton.setCaption("Add New Roster");
         addNewRosterActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         rostersListSectionActionsBar.addActionComponent(addNewRosterActionButton);
-        RostersActionTable rostersActionTable =new RostersActionTable(this.currentUserClientInfo,null);
+
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-300)+"px";
+        RostersActionTable rostersActionTable =new RostersActionTable(this.currentUserClientInfo,tableHeightString);
         viewContentContainer.addComponent(rostersActionTable);
 
         final AddNewRosterPanel addNewRosterPanel=new AddNewRosterPanel(this.currentUserClientInfo);

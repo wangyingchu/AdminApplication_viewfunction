@@ -39,6 +39,9 @@ public class RoleDetailInfo extends VerticalLayout {
         roleEditor.setRole(currentRole);
         roleInfoLayout.addComponent(roleEditor);
 
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-330)+"px";
+
         VerticalLayout relatedRoleQueuesLayout=new VerticalLayout();
         TabSheet.Tab relatedRoleQueuesLayoutTab =tabs.addTab(relatedRoleQueuesLayout, "Related Role Queues");
         relatedRoleQueuesLayoutTab.setIcon(FontAwesome.ALIGN_JUSTIFY);
@@ -67,7 +70,7 @@ public class RoleDetailInfo extends VerticalLayout {
         });
         relatedRoleQueuesSectionActionsBar.addActionComponent(modifyRelatedRoleQueuesActionButton);
 
-        RoleQueuesActionTable roleQueuesActionTable=new RoleQueuesActionTable(this.currentUserClientInfo, null,true,false);
+        RoleQueuesActionTable roleQueuesActionTable=new RoleQueuesActionTable(this.currentUserClientInfo, tableHeightString,true,false);
         roleQueuesActionTable.setRoleQueuesType(RoleQueuesActionTable.ROLEQUEUES_TYPE_ROLE);
         roleQueuesActionTable.setRoleQueuesQueryId(this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId());
         relatedRoleQueuesLayout.addComponent(roleQueuesActionTable);
@@ -100,7 +103,7 @@ public class RoleDetailInfo extends VerticalLayout {
             }
         });
         containsParticipantsSectionActionsBar.addActionComponent(modifyContainsParticipantsActionButton);
-        ParticipantsActionTable participantsActionTable=new ParticipantsActionTable(this.currentUserClientInfo,null,true,false);
+        ParticipantsActionTable participantsActionTable=new ParticipantsActionTable(this.currentUserClientInfo,tableHeightString,true,false);
         participantsActionTable.setParticipantsQueryId(this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId());
         participantsActionTable.setParticipantsType(ParticipantsActionTable.PARTICIPANTS_TYPE_ROLE);
         containsParticipantsLayout.addComponent(participantsActionTable);

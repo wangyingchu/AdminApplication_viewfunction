@@ -36,7 +36,9 @@ public class RoleQueuesListManagementView extends VerticalLayout implements View
         addNewRoleQueueActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         roleQueuesListSectionActionsBar.addActionComponent(addNewRoleQueueActionButton);
 
-        RoleQueuesActionTable roleQueuesActionTable=new RoleQueuesActionTable(this.currentUserClientInfo, null,true,true);
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-300)+"px";
+        RoleQueuesActionTable roleQueuesActionTable=new RoleQueuesActionTable(this.currentUserClientInfo, tableHeightString,true,true);
         roleQueuesActionTable.setRoleQueuesType(RoleQueuesActionTable.ROLEQUEUES_TYPE_ROLEQUEUE);
         roleQueuesActionTable.setRoleQueuesQueryId(null);
         viewContentContainer.addComponent(roleQueuesActionTable);

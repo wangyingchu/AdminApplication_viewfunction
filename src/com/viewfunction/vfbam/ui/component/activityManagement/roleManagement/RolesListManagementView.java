@@ -35,7 +35,9 @@ public class RolesListManagementView extends VerticalLayout implements View {
         addNewRoleActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         rolesListSectionActionsBar.addActionComponent(addNewRoleActionButton);
 
-        RolesActionTable rolesActionTable=new RolesActionTable(this.currentUserClientInfo,null,true);
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-300)+"px";
+        RolesActionTable rolesActionTable=new RolesActionTable(this.currentUserClientInfo,tableHeightString,true);
         rolesActionTable.setRolesQueryId(null);
         rolesActionTable.setRolesType(RolesActionTable.ROLES_TYPE_ROLE);
         viewContentContainer.addComponent(rolesActionTable);

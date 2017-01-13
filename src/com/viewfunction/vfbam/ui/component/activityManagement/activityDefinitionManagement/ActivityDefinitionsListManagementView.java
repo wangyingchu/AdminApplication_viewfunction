@@ -50,7 +50,10 @@ public class ActivityDefinitionsListManagementView extends VerticalLayout implem
                 UI.getCurrent().addWindow(window);
             }
         });
-        ActivityDefinitionsActionTable activityDefinitionsActionTable=new ActivityDefinitionsActionTable(this.currentUserClientInfo,null,true);
+
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-300)+"px";
+        ActivityDefinitionsActionTable activityDefinitionsActionTable=new ActivityDefinitionsActionTable(this.currentUserClientInfo,tableHeightString,true);
         activityDefinitionsActionTable.setActivityDefinitionsQueryId(null);
         activityDefinitionsActionTable.setActivityDefinitionsType(ActivityDefinitionsActionTable.ACTIVITYDEFINITIONS_TYPE_ACTIVITYDEFINITION);
         viewContentContainer.addComponent(activityDefinitionsActionTable);

@@ -40,6 +40,9 @@ public class RoleQueueDetailInfo extends VerticalLayout {
         roleQueueEditor.setRoleQueue(currentRoleQueue);
         roleQueueInfoLayout.addComponent(roleQueueEditor);
 
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-330)+"px";
+
         VerticalLayout relatedRolesLayout=new VerticalLayout();
         TabSheet.Tab relatedRolesTab =tabs.addTab(relatedRolesLayout, "Related Roles");
         relatedRolesTab.setIcon(FontAwesome.USERS);
@@ -66,7 +69,7 @@ public class RoleQueueDetailInfo extends VerticalLayout {
         });
         relatedRolesSectionActionsBar.addActionComponent(modifyRelatedRolesActionButton);
 
-        RolesActionTable rolesActionTable=new RolesActionTable(this.currentUserClientInfo,null,true);
+        RolesActionTable rolesActionTable=new RolesActionTable(this.currentUserClientInfo,tableHeightString,true);
         rolesActionTable.setRolesQueryId(currentActivitySpaceComponentInfo.getComponentId());
         rolesActionTable.setRolesType(RolesActionTable.ROLES_TYPE_ROLEQUEUE);
         relatedRolesLayout.addComponent(rolesActionTable);
@@ -78,7 +81,7 @@ public class RoleQueueDetailInfo extends VerticalLayout {
         MainSectionTitle exposedDataFieldsSectionTitle=new MainSectionTitle("Displayed Data Fields Filter");
         exposedDataFieldsLayout.addComponent(exposedDataFieldsSectionTitle);
         ActivityDataFieldsEditor activityDataFieldsEditor=new ActivityDataFieldsEditor(this.currentUserClientInfo,
-                ActivityManagementConst.COMPONENT_TYPE_ROLEQUEUE,currentActivitySpaceComponentInfo.getComponentId());
+                ActivityManagementConst.COMPONENT_TYPE_ROLEQUEUE,currentActivitySpaceComponentInfo.getComponentId(),tableHeightString);
         exposedDataFieldsLayout.addComponent(activityDataFieldsEditor);
 
         VerticalLayout activityStepsLayout=new VerticalLayout();
@@ -93,7 +96,7 @@ public class RoleQueueDetailInfo extends VerticalLayout {
         fetchActivityStepsActionButton.setCaption("Fetch Working Activity Steps");
         fetchActivityStepsActionButton.setIcon(FontAwesome.DOWNLOAD);
         workingActivityStepsSectionActionsBar.addActionComponent(fetchActivityStepsActionButton);
-        final ActivityStepsTable activityStepsTable =new ActivityStepsTable(this.currentUserClientInfo,null);
+        final ActivityStepsTable activityStepsTable =new ActivityStepsTable(this.currentUserClientInfo,tableHeightString);
         activityStepsTable.setActivityStepType(ActivityStepsTable.ACTIVITYSTEPS_TYPE_ROLEQUEUE);
         activityStepsTable.setActivityStepQueryId(roleQueueName);
         activityStepsLayout.addComponent(activityStepsTable);

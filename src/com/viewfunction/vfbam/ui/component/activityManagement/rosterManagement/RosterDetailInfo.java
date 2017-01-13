@@ -40,13 +40,16 @@ public class RosterDetailInfo  extends VerticalLayout {
         rosterEditor.setRoster(currentRoster);
         rosterInfoLayout.addComponent(rosterEditor);
 
+        int browserWindowHeight=UI.getCurrent().getPage().getBrowserWindowHeight();
+        String tableHeightString=""+(browserWindowHeight-330)+"px";
+
         VerticalLayout containedActivityTypeLayout=new VerticalLayout();
         TabSheet.Tab containedActivityTypeTab =tabs.addTab(containedActivityTypeLayout, "Contained Activity Definitions");
         containedActivityTypeTab.setIcon(FontAwesome.SHARE_ALT_SQUARE);
         MainSectionTitle containedActivityDefinitionSectionTitle=new MainSectionTitle("Contained Activity Definitions");
         containedActivityTypeLayout.addComponent(containedActivityDefinitionSectionTitle);
 
-        ActivityDefinitionsActionTable activityDefinitionsActionTable=new ActivityDefinitionsActionTable(this.currentUserClientInfo,null,true);
+        ActivityDefinitionsActionTable activityDefinitionsActionTable=new ActivityDefinitionsActionTable(this.currentUserClientInfo,tableHeightString,true);
         activityDefinitionsActionTable.setActivityDefinitionsQueryId(currentActivitySpaceComponentInfo.getComponentId());
         activityDefinitionsActionTable.setActivityDefinitionsType(ActivityDefinitionsActionTable.ACTIVITYDEFINITIONS_TYPE_ROSTER);
         SectionActionsBar containsActivityDefinitionsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.SHARE_ALT_SQUARE.getHtml() + " "+" Activity Definitions List", ContentMode.HTML));
@@ -78,7 +81,7 @@ public class RosterDetailInfo  extends VerticalLayout {
         MainSectionTitle exposedDataFieldsSectionTitle=new MainSectionTitle("Displayed Data Fields Filter");
         exposedDataFieldsLayout.addComponent(exposedDataFieldsSectionTitle);
         ActivityDataFieldsEditor activityDataFieldsEditor=new ActivityDataFieldsEditor(this.currentUserClientInfo,
-                ActivityManagementConst.COMPONENT_TYPE_ROSTER,currentActivitySpaceComponentInfo.getComponentId());
+                ActivityManagementConst.COMPONENT_TYPE_ROSTER,currentActivitySpaceComponentInfo.getComponentId(),tableHeightString);
         exposedDataFieldsLayout.addComponent(activityDataFieldsEditor);
 
         VerticalLayout businessActivitiesLayout=new VerticalLayout();
@@ -93,7 +96,7 @@ public class RosterDetailInfo  extends VerticalLayout {
         fetchActivitiesActionButton.setIcon(FontAwesome.DOWNLOAD);
         activitiesContainedInRosterSectionActionsBar.addActionComponent(fetchActivitiesActionButton);
 
-        final ActivityInstancesActionTable activityInstancesActionTable =new ActivityInstancesActionTable(this.currentUserClientInfo,null,true);
+        final ActivityInstancesActionTable activityInstancesActionTable =new ActivityInstancesActionTable(this.currentUserClientInfo,tableHeightString,true);
         activityInstancesActionTable.setActivityInstancesQueryId(currentActivitySpaceComponentInfo.getComponentId());
         activityInstancesActionTable.setActivityInstancesQueryType(ActivityInstancesActionTable.ACTIVITYINSTANCES_TYPE_ROSTER);
         activityInstancesActionTable.setRelatedRoster(currentRoster);
