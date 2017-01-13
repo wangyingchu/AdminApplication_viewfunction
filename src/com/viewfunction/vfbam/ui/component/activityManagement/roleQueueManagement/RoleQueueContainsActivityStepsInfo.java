@@ -1,6 +1,5 @@
 package com.viewfunction.vfbam.ui.component.activityManagement.roleQueueManagement;
 
-
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
@@ -14,6 +13,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 public class RoleQueueContainsActivityStepsInfo extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private String roleQueueName;
+    private SectionActionsBar workingTasksActionsBar;
     public RoleQueueContainsActivityStepsInfo(UserClientInfo currentUserClientInfo,String roleQueueName){
         this.currentUserClientInfo=currentUserClientInfo;
         this.roleQueueName=roleQueueName;
@@ -22,23 +22,26 @@ public class RoleQueueContainsActivityStepsInfo extends VerticalLayout {
 
         SecondarySectionTitle roleQueueContainsActivityStepsSectionTitle=new SecondarySectionTitle("Role Queue Contains Activity Steps");
         addComponent(roleQueueContainsActivityStepsSectionTitle);
+
+        workingTasksActionsBar=new SectionActionsBar(
+                new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
+        addComponent(workingTasksActionsBar);
+
+        ActivityStepsTable activityStepsTable =new ActivityStepsTable(this.currentUserClientInfo,"300px");
+        addComponent(activityStepsTable);
     }
 
     @Override
     public void attach() {
         super.attach();
+
         String activitySpaceName="";
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         if(this.currentUserClientInfo.getActivitySpaceManagementMeteInfo()!=null){
             activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         }
-
-        SectionActionsBar workingTasksActionsBar=new SectionActionsBar(
-                new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML));
-        addComponent(workingTasksActionsBar);
-
-        ActivityStepsTable activityStepsTable =new ActivityStepsTable(this.currentUserClientInfo,"300px");
-        addComponent(activityStepsTable);
+        Label sectionActionBarLabel= new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+        workingTasksActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
     }
 }

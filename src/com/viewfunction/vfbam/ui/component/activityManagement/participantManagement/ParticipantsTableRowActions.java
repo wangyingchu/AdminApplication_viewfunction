@@ -25,10 +25,18 @@ public class ParticipantsTableRowActions  extends HorizontalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(700.0f, Sizeable.Unit.PIXELS);
+                window.setWidth(800.0f, Sizeable.Unit.PIXELS);
                 window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(participantBelongedRolesInfo);
+                showBelongedRolesButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        showBelongedRolesButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });
@@ -46,8 +54,16 @@ public class ParticipantsTableRowActions  extends HorizontalLayout {
                 final Window window = new Window();
                 window.setWidth(1200.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(participantWorkingTasksInfo);
+                showWorkingTasksButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        showWorkingTasksButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });

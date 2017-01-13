@@ -1,13 +1,9 @@
 package com.viewfunction.vfbam.ui.component.activityManagement.roleQueueManagement;
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable;
-import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
-import com.viewfunction.vfbam.ui.component.activityManagement.ActivityManagementConst;
-import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentModifyEvent;
 import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
@@ -31,10 +27,18 @@ public class RoleQueuesTableRowActions extends HorizontalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(700.0f, Sizeable.Unit.PIXELS);
+                window.setWidth(800.0f, Sizeable.Unit.PIXELS);
                 window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(roleQueueRelatedRolesInfo);
+                showContainsDataFieldsButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        showContainsDataFieldsButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });
@@ -52,27 +56,43 @@ public class RoleQueuesTableRowActions extends HorizontalLayout {
                 final Window window = new Window();
                 window.setWidth(1000.0f, Sizeable.Unit.PIXELS);
                 window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(roleQueueExposedDataFieldsInfo);
+                showContainsActivityStepsButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        showContainsActivityStepsButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });
 
-        Button startActivityButton = new Button();
-        startActivityButton.setIcon(FontAwesome.SLIDERS);
-        startActivityButton.setDescription("Contains Activity Steps");
-        startActivityButton.addStyleName("small");
-        startActivityButton.addStyleName("borderless");
-        addComponent(startActivityButton);
+        Button roleQueueContainsActivityStepsInfoButton = new Button();
+        roleQueueContainsActivityStepsInfoButton.setIcon(FontAwesome.SLIDERS);
+        roleQueueContainsActivityStepsInfoButton.setDescription("Contains Activity Steps");
+        roleQueueContainsActivityStepsInfoButton.addStyleName("small");
+        roleQueueContainsActivityStepsInfoButton.addStyleName("borderless");
+        addComponent(roleQueueContainsActivityStepsInfoButton);
         final RoleQueueContainsActivityStepsInfo roleQueueContainsActivityStepsInfo=new RoleQueueContainsActivityStepsInfo(this.currentUserClientInfo,this.roleQueueName);
-        startActivityButton.addClickListener(new Button.ClickListener() {
+        roleQueueContainsActivityStepsInfoButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
                 window.setWidth(1200.0f, Sizeable.Unit.PIXELS);
                 window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(roleQueueContainsActivityStepsInfo);
+                roleQueueContainsActivityStepsInfoButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        roleQueueContainsActivityStepsInfoButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });

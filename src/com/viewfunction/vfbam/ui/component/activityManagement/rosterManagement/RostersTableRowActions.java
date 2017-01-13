@@ -1,13 +1,9 @@
 package com.viewfunction.vfbam.ui.component.activityManagement.rosterManagement;
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable;
-import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
-import com.viewfunction.vfbam.ui.component.activityManagement.ActivityManagementConst;
-import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentModifyEvent;
 import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
@@ -31,8 +27,16 @@ public class RostersTableRowActions extends HorizontalLayout {
                 final Window window = new Window();
                 window.setWidth(1000.0f, Sizeable.Unit.PIXELS);
                 window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(rosterContainsActivityDefinitionsInfo);
+                showContainsDataFieldsButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        showContainsDataFieldsButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });
@@ -50,8 +54,16 @@ public class RostersTableRowActions extends HorizontalLayout {
                 final Window window = new Window();
                 window.setWidth(1000.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(rosterExposedDataFieldsInfo);
+                showContainsActivityStepsButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        showContainsActivityStepsButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });
@@ -69,8 +81,16 @@ public class RostersTableRowActions extends HorizontalLayout {
                 final Window window = new Window();
                 window.setWidth(1000.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(rosterContainedActivityInstancesInfo);
+                startActivityButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        startActivityButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });
@@ -110,16 +130,7 @@ public class RostersTableRowActions extends HorizontalLayout {
             }
         });
     }
-/*
-    private void boardcastRemovedRosterEvent(String rostedName){
-        String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
-        String componentType= ActivityManagementConst.COMPONENT_TYPE_ROSTER;
-        ActivitySpaceComponentModifyEvent activitySpaceComponentModifyEvent=
-                new ActivitySpaceComponentModifyEvent(activitySpaceName,componentType,rostedName,
-                        ActivitySpaceComponentModifyEvent.MODIFYTYPE_REMOVE);
-        this.currentUserClientInfo.getEventBlackBoard().fire(activitySpaceComponentModifyEvent);
-    }
-*/
+
     public RostersActionTable getContainerRostersActionTable() {
         return containerRostersActionTable;
     }

@@ -28,8 +28,16 @@ public class RolesTableRowActions extends HorizontalLayout {
                 final Window window = new Window();
                 window.setWidth(700.0f, Sizeable.Unit.PIXELS);
                 window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(roleContainsParticipantsInfo);
+                showContainerdParticipantsButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        showContainerdParticipantsButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });
@@ -45,10 +53,18 @@ public class RolesTableRowActions extends HorizontalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(900.0f, Unit.PIXELS);
+                window.setWidth(1000.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(roleRelatedRoleQueuesInfo);
+                showRelatedRoleQueuesButton.setEnabled(false);
+                window.addCloseListener(new Window.CloseListener() {
+                    @Override
+                    public void windowClose(Window.CloseEvent e) {
+                        showRelatedRoleQueuesButton.setEnabled(true);
+                    }
+                });
                 UI.getCurrent().addWindow(window);
             }
         });
