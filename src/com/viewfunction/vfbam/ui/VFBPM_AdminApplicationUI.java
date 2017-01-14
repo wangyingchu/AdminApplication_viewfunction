@@ -8,13 +8,14 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.*;
 import com.vaadin.tests.themes.valo.ValoThemeSessionInitListener;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
+import com.vaadin.ui.VerticalLayout;
 import com.viewfunction.vfbam.ui.component.ApplicationBanner;
 import com.viewfunction.vfbam.ui.component.ApplicationContent;
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentModifyEvent;
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentSelectedEvent;
 import com.viewfunction.vfbam.ui.component.activityManagement.NewActivitySpaceCreatedEvent;
+import com.viewfunction.vfbam.ui.component.login.ApplicationLoginForm;
 import com.viewfunction.vfbam.ui.util.ApplicationI18nPerportyHandler;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
@@ -27,6 +28,8 @@ import java.util.Properties;
 @Title("ViewFunction Business Activity Management Platform Administration")
 @PreserveOnRefresh
 public class VFBPM_AdminApplicationUI  extends UI {
+
+    private String loginUserId;
 
     @VaadinServletConfiguration(productionMode = false, ui = VFBPM_AdminApplicationUI.class)
     public static class Servlet extends VaadinServlet {
@@ -67,15 +70,26 @@ public class VFBPM_AdminApplicationUI  extends UI {
         Responsive.makeResponsive(this);
         getPage().setTitle(currentUserClientInfo.getUserI18NProperties().getProperty("Global_Application_Desc"));
 
+        renderLoginUI(currentUserClientInfo);
+    }
+
+    public void renderLoginUI(UserClientInfo userClientInfo){
+        ApplicationLoginForm loginForm=new ApplicationLoginForm(userClientInfo);
+        loginForm.setContainerApplicationUI(this);
+        setContent(loginForm);
+    }
+
+    public void renderOperationUI(UserClientInfo userClientInfo){
         VerticalLayout rootLayout = new VerticalLayout();
         // sure it's 100% sized, and remove unwanted margins
         rootLayout.setSizeFull();
         rootLayout.setMargin(false);
 
-        ApplicationBanner applicationBanner=new ApplicationBanner(currentUserClientInfo);
+        ApplicationBanner applicationBanner=new ApplicationBanner(userClientInfo);
+        applicationBanner.setContainerApplicationUI(this);
         rootLayout.addComponent(applicationBanner);
 
-        ApplicationContent applicationContent=new ApplicationContent(currentUserClientInfo);
+        ApplicationContent applicationContent=new ApplicationContent(userClientInfo);
         rootLayout.addComponent(applicationContent);
         rootLayout.setExpandRatio(applicationContent, 1.0F);
         setContent(rootLayout);
@@ -87,5 +101,13 @@ public class VFBPM_AdminApplicationUI  extends UI {
         // IE8 also has randomness in its font rendering...
         return getPage().getWebBrowser().getBrowserApplication().contains("PhantomJS")|| (getPage().getWebBrowser()
                 .isIE() && getPage().getWebBrowser().getBrowserMajorVersion() <= 9);
+    }
+
+    public String getLoginUserId() {
+        return loginUserId;
+    }
+
+    public void setLoginUserId(String loginUserId) {
+        this.loginUserId = loginUserId;
     }
 }
