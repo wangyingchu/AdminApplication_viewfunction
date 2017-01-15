@@ -12,6 +12,8 @@ import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ParticipantEditor extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     public static final String EDITMODE_UPDATE="EDITMODE_UPDATE";
@@ -36,7 +38,7 @@ public class ParticipantEditor extends VerticalLayout {
 
     public ParticipantEditor(UserClientInfo currentUserClientInfo,String editorType){
         this.currentUserClientInfo=currentUserClientInfo;
-
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.currentEditMode = editorType;
         form = new FormLayout();
         form.setMargin(false);
@@ -44,16 +46,19 @@ public class ParticipantEditor extends VerticalLayout {
         form.addStyleName("light");
         addComponent(form);
 
-        participantName = new TextField("Participant Name");
+        participantName = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_NamePropertyText"));
         participantName.setRequired(true);
         form.addComponent(participantName);
 
-        participantDisplayName = new TextField("Participant Display Name");
+        participantDisplayName = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_DisplayPropertyText"));
         participantDisplayName.setWidth("50%");
         participantDisplayName.setRequired(true);
         form.addComponent(participantDisplayName);
 
-        participantType = new OptionGroup("Participant Type");
+        participantType = new OptionGroup(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_TypePropertyText"));
         participantType.addItem("User");
         participantType.addItem("Group");
         participantType.select("User");

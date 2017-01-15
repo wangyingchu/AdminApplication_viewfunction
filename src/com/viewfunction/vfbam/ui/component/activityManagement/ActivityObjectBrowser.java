@@ -48,7 +48,8 @@ public class ActivityObjectBrowser extends VerticalLayout  implements ActivitySp
                 getProperty("Business_Component_ActivityManagement_CreateActivitySpaceMenuItemText"), click);
         createActivitySpaceMenuItem.setIcon(FontAwesome.PLUS_SQUARE);
 
-        activitySpaceMetaInfoManageMenuItem = operationsPrompt.addItem("Activity Spaces Configuration...", click);
+        activitySpaceMetaInfoManageMenuItem = operationsPrompt.addItem(userI18NProperties.
+                getProperty("Business_Component_ActivityManagement_ActivitySpaceConfigurationMenuItemText"), click);
         activitySpaceMetaInfoManageMenuItem.setIcon(FontAwesome.COGS);
 
         return menubar;

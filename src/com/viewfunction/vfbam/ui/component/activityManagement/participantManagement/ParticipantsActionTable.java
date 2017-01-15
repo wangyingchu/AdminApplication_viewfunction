@@ -17,6 +17,8 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import com.viewfunction.activityEngine.security.Participant;
 
+import java.util.Properties;
+
 public class ParticipantsActionTable extends Table {
     private UserClientInfo currentUserClientInfo;
     private String columnName_ParticipanName="columnName_ParticipanName";
@@ -38,6 +40,7 @@ public class ParticipantsActionTable extends Table {
         this.currentUserClientInfo=currentUserClientInfo;
         this.isActionMode=isActionMode;
         this.allowRemoveOperation=allowRemoveOperation;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setWidth("100%");
         if(tableHeight!=null){
             setHeight(tableHeight);
@@ -67,9 +70,21 @@ public class ParticipantsActionTable extends Table {
         }
         setContainerDataSource(this.containerDataSource);
         if(this.isActionMode) {
-            setColumnHeaders(new String[]{ "Participant Name", "Display Name", "Type", "Actions"});
+            setColumnHeaders(new String[]{ userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_NamePropertyText"),
+                    userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_DisplayPropertyText"),
+                    userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_TypePropertyText"),
+                    userI18NProperties.
+                    getProperty("ActivityManagement_Table_ListActionPropertyText")});
         }else{
-            setColumnHeaders(new String[]{ "Participant Name", "Display Name", "Type"});
+            setColumnHeaders(new String[]{ userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_NamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ParticipantsManagement_DisplayPropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ParticipantsManagement_TypePropertyText")});
         }
         setColumnAlignment(columnName_ParticipanName, Align.LEFT);
         setColumnAlignment(columnName_ParticipanDisplayName, Align.LEFT);

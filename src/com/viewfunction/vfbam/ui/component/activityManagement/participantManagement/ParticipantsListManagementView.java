@@ -25,13 +25,16 @@ public class ParticipantsListManagementView extends VerticalLayout implements Vi
         viewContentContainer.addStyleName("ui_appSubViewContainer");
         this.addComponent(viewContentContainer);
         // View Title
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Participants Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_InfoText"));
         viewContentContainer.addComponent(mainSectionTitle);
         // Participants List Section
-        SectionActionsBar participantsListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.USER.getHtml() + " "+"Participants List", ContentMode.HTML));
+        SectionActionsBar participantsListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.USER.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ListText"), ContentMode.HTML));
         viewContentContainer.addComponent(participantsListSectionActionsBar);
         SectionActionButton addNewParticipantActionButton = new SectionActionButton();
-        addNewParticipantActionButton.setCaption("Add New Participant");
+        addNewParticipantActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_AddNewButtonText"));
         addNewParticipantActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         participantsListSectionActionsBar.addActionComponent(addNewParticipantActionButton);
 
@@ -50,6 +53,7 @@ public class ParticipantsListManagementView extends VerticalLayout implements Vi
                 final Window window = new Window();
                 window.setWidth(700.0f, Unit.PIXELS);
                 window.setHeight(350.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(addNewParticipantPanel);

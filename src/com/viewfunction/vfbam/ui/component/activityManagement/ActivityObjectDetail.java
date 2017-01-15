@@ -20,6 +20,8 @@ import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentSelectedEvent.ActivitySpaceComponentSelectedListener;
 
+import java.util.Properties;
+
 public class ActivityObjectDetail extends VerticalLayout implements ActivitySpaceComponentSelectedListener{
     private UserClientInfo currentUserClientInfo;
     private ElementStatusBar elementStatusBar;
@@ -93,57 +95,69 @@ public class ActivityObjectDetail extends VerticalLayout implements ActivitySpac
         this.elementStatusBar.setActivitySpaceName(activitySpaceName);
         this.elementStatusBar.clearStatusElements();
 
+        Properties userI18NProperties = this.currentUserClientInfo.getUserI18NProperties();
+
         if(componentType.equals(ActivityManagementConst.COMPONENT_TYPE_PARTICIPANT)){
             if(componentId==null){
                 contentNavigator.navigateTo(NAV_PARTICIPANTLIST);
-                this.elementStatusBar.addStatusElement(generateStatusElementLabel("Participants",false));
+                this.elementStatusBar.addStatusElement(generateStatusElementLabel(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_Participant"),false));
                 Notification.show("PARTICIPANTS INFO" + "-" + "Participants List", activitySpaceName, Notification.Type.TRAY_NOTIFICATION);
             }else{
-                this.elementStatusBar.addStatusElement(generateStatusNavigateButton("Participants", activitySpaceName,componentType));
+                this.elementStatusBar.addStatusElement(generateStatusNavigateButton(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_Participant"), activitySpaceName,componentType));
                 this.elementStatusBar.addStatusElement(generateStatusElementLabel(componentId,true));
                 contentNavigator.navigateTo(NAV_PARTICIPANT);
                 Notification.show("PARTICIPANT INFO"+"-"+componentId,activitySpaceName,Notification.Type.TRAY_NOTIFICATION);
             }
         }else if(componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ROLE)){
             if(componentId==null){
-                this.elementStatusBar.addStatusElement(generateStatusElementLabel("Roles",false));
+                this.elementStatusBar.addStatusElement(generateStatusElementLabel(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_Roles"),false));
                 contentNavigator.navigateTo(NAV_ROLELIST);
                 Notification.show("ROLES INFO"+"-"+"Roles List",activitySpaceName,Notification.Type.TRAY_NOTIFICATION);
             }else{
-                this.elementStatusBar.addStatusElement(generateStatusNavigateButton("Roles", activitySpaceName,componentType));
+                this.elementStatusBar.addStatusElement(generateStatusNavigateButton(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_Roles"), activitySpaceName,componentType));
                 this.elementStatusBar.addStatusElement(generateStatusElementLabel(componentId,true));
                 contentNavigator.navigateTo(NAV_ROLE);
                 Notification.show("ROLE INFO"+"-"+componentId,activitySpaceName,Notification.Type.TRAY_NOTIFICATION);
             }
         }else if(componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ACTIVITYDEFINITION)){
             if(componentId==null){
-                this.elementStatusBar.addStatusElement(generateStatusElementLabel("Activity Definitions",false));
+                this.elementStatusBar.addStatusElement(generateStatusElementLabel(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_ActivityDefinitions"),false));
                 contentNavigator.navigateTo(NAV_ACTIVITYDEFINITIONLIST);
                 Notification.show("ACTIVITY DEFINITIONS INFO"+"-"+"Activity Definitions List",activitySpaceName,Notification.Type.TRAY_NOTIFICATION);
             }else{
-                this.elementStatusBar.addStatusElement(generateStatusNavigateButton("Activity Definitions", activitySpaceName,componentType));
+                this.elementStatusBar.addStatusElement(generateStatusNavigateButton(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_ActivityDefinitions"), activitySpaceName,componentType));
                 this.elementStatusBar.addStatusElement(generateStatusElementLabel(componentId,true));
                 contentNavigator.navigateTo(NAV_ACTIVITYDEFINITION);
                 Notification.show("ACTIVITY DEFINITION INFO"+"-"+componentId,activitySpaceName,Notification.Type.TRAY_NOTIFICATION);
             }
         }else if(componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ROSTER)){
             if(componentId==null){
-                this.elementStatusBar.addStatusElement(generateStatusElementLabel("Rosters",false));
+                this.elementStatusBar.addStatusElement(generateStatusElementLabel(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_Rosters"),false));
                 contentNavigator.navigateTo(NAV_ROSTERLIST);
                 Notification.show("ROSTERS INFO"+"-"+"Rosters List",activitySpaceName,Notification.Type.TRAY_NOTIFICATION);
             }else{
-                this.elementStatusBar.addStatusElement(generateStatusNavigateButton("Rosters", activitySpaceName,componentType));
+                this.elementStatusBar.addStatusElement(generateStatusNavigateButton(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_Rosters"), activitySpaceName,componentType));
                 this.elementStatusBar.addStatusElement(generateStatusElementLabel(componentId,true));
                 contentNavigator.navigateTo(NAV_ROSTER);
                 Notification.show("ROSTER INFO"+"-"+componentId,activitySpaceName,Notification.Type.TRAY_NOTIFICATION);
             }
         }else if(componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ROLEQUEUE)){
             if(componentId==null){
-                this.elementStatusBar.addStatusElement(generateStatusElementLabel("Role Queues",false));
+                this.elementStatusBar.addStatusElement(generateStatusElementLabel(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_RoleQueues"),false));
                 contentNavigator.navigateTo(NAV_ROLEQUEUELIST);
                 Notification.show("ROLE QUEUES INFO"+"-"+"Role Queues List",activitySpaceName,Notification.Type.TRAY_NOTIFICATION);
             }else{
-                this.elementStatusBar.addStatusElement(generateStatusNavigateButton("Role Queues", activitySpaceName,componentType));
+                this.elementStatusBar.addStatusElement(generateStatusNavigateButton(userI18NProperties.
+                        getProperty("Business_Component_ActivityManagement_ComponentType_RoleQueues"), activitySpaceName,componentType));
                 this.elementStatusBar.addStatusElement(generateStatusElementLabel(componentId,true));
                 contentNavigator.navigateTo(NAV_ROLEQUEUE);
                 Notification.show("ROLE QUEUE INFO"+"-"+componentId,activitySpaceName,Notification.Type.TRAY_NOTIFICATION);

@@ -67,8 +67,9 @@ public class ParticipantDetailInfo extends VerticalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(700.0f, Unit.PIXELS);
+                window.setWidth(1000.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(participantBelongedRolesSelector);

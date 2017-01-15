@@ -24,9 +24,9 @@ public class GeneralInfoView extends VerticalLayout implements View {
         viewContentContainer.addStyleName("ui_appSubViewContainer");
         this.addComponent(viewContentContainer);
         // View Title
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Welcome !");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.getProperty("ActivityManagement_GeneralInfo_WelcomeTitle"));
         viewContentContainer.addComponent(mainSectionTitle);
-        Label welcomeMessage = new Label( FontAwesome.SMILE_O.getHtml()+" Welcome to use ViewFunction Business Activity Management Platform Administration Tools.", ContentMode.HTML);
+        Label welcomeMessage = new Label( FontAwesome.SMILE_O.getHtml()+" "+userI18NProperties.getProperty("ActivityManagement_GeneralInfo_WelcomeText"), ContentMode.HTML);
         welcomeMessage.setStyleName("ui_appLightDarkMessage");
         viewContentContainer.addComponent(welcomeMessage);
     }
