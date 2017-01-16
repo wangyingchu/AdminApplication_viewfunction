@@ -73,7 +73,8 @@ public class ParticipantEditor extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        updateButton = new Button("Update", new Button.ClickListener() {
+        updateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 boolean readOnly = form.isReadOnly();
@@ -82,7 +83,8 @@ public class ParticipantEditor extends VerticalLayout {
                     participantDisplayName.setReadOnly(false);
                     participantType.setReadOnly(false);
                     form.removeStyleName("light");
-                    event.getButton().setCaption("Save");
+                    event.getButton().setCaption(userI18NProperties.
+                            getProperty("ActivityManagement_Common_SaveButtonLabel"));
                     event.getButton().setIcon(FontAwesome.SAVE);
                     event.getButton().addStyleName("primary");
                     footer.addComponent(cancelButton);
@@ -94,7 +96,8 @@ public class ParticipantEditor extends VerticalLayout {
         });
         updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
 
-        cancelButton = new Button("Cancel", new Button.ClickListener() {
+        cancelButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_CancelButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 participantDisplayName.setValue(currentParticipantDisplayName);
@@ -103,7 +106,8 @@ public class ParticipantEditor extends VerticalLayout {
                 participantDisplayName.setReadOnly(true);
                 participantType.setReadOnly(true);
                 form.addStyleName("light");
-                updateButton.setCaption("Update");
+                updateButton.setCaption(userI18NProperties.
+                        getProperty("ActivityManagement_Common_UpdateButtonLabel"));
                 updateButton.removeStyleName("primary");
                 updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
                 footer.removeComponent(cancelButton);
@@ -111,7 +115,8 @@ public class ParticipantEditor extends VerticalLayout {
         });
         cancelButton.setIcon(FontAwesome.TIMES);
 
-        addButton=new Button("Add Participant", new Button.ClickListener() {
+        addButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_AddParticipantButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 /* Do add new participant logic */
@@ -161,13 +166,16 @@ public class ParticipantEditor extends VerticalLayout {
     }
 
     private boolean addNewParticipant(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String participantNameStr=participantName.getValue();
         final String participantDisplayNameStr=participantDisplayName.getValue();
         final String participantTypeStr=participantType.getValue().toString();
 
         if(participantNameStr.equals("")||participantDisplayNameStr.equals("")){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please input all required fields", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_PleaseInputAllFieldText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -175,16 +183,19 @@ public class ParticipantEditor extends VerticalLayout {
         }else{
             boolean alreadyExist=this.containerAddNewParticipantPanel.getRelatedParticipantsTable().checkParticipantExistence(participantNameStr);
             if(alreadyExist){
-                Notification errorNotification = new Notification("Data Validation Error",
-                        "Participant already exist", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_ParticipantsManagement_ParticipantExistErrorText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);
                 return false;
             }
             //do add new logic
-            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                    " Please confirm to add new participant  <b>"+participantNameStr +"</b>.", ContentMode.HTML);
+            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_ConfirmAddParticipantText")+
+                    " <b>"+participantNameStr +"</b>.", ContentMode.HTML);
             final ConfirmDialog addParticipantConfirmDialog = new ConfirmDialog();
             addParticipantConfirmDialog.setConfirmMessage(confirmMessage);
             final ParticipantEditor self=this;
@@ -208,21 +219,26 @@ public class ParticipantEditor extends VerticalLayout {
     }
 
     private boolean updateCurrentParticipant(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String participantNameStr=participantName.getValue();
         final String participantDisplayNameStr=participantDisplayName.getValue();
         final String participantTypeStr=participantType.getValue().toString();
 
         if(participantDisplayNameStr.equals("")){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please input all required fields", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_PleaseInputAllFieldText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
             return false;
         }else{
             //do update logic
-            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                    " Please confirm to update participant  <b>"+participantNameStr +"</b>'s Information.", ContentMode.HTML);
+            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_ConfirmUpdateParticipantPart1Text")+
+                    " <b>"+participantNameStr +"</b>"+userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_ConfirmUpdateParticipantPart2Text"), ContentMode.HTML);
             final ConfirmDialog updateParticipantConfirmDialog = new ConfirmDialog();
             updateParticipantConfirmDialog.setConfirmMessage(confirmMessage);
             final ParticipantEditor self=this;
@@ -234,8 +250,10 @@ public class ParticipantEditor extends VerticalLayout {
                     self.participant.setDisplayName(participantDisplayNameStr);
                     boolean updateParticipantResult=ActivitySpaceOperationUtil.updateParticipant(self.participant,participantTypeStr);
                     if(updateParticipantResult){
-                        Notification resultNotification = new Notification("Update Data Operation Success",
-                                "Update participant information success", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification resultNotification = new Notification(userI18NProperties.
+                                getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                                userI18NProperties.
+                                        getProperty("ActivityManagement_ParticipantsManagement_UpdateParticipantInfoSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                         resultNotification.setPosition(Position.MIDDLE_CENTER);
                         resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                         resultNotification.show(Page.getCurrent());
@@ -245,13 +263,16 @@ public class ParticipantEditor extends VerticalLayout {
                         participantDisplayName.setReadOnly(true);
                         participantType.setReadOnly(true);
                         form.addStyleName("light");
-                        updateButton.setCaption("Update");
+                        updateButton.setCaption(userI18NProperties.
+                                getProperty("ActivityManagement_Common_UpdateButtonLabel"));
                         updateButton.removeStyleName("primary");
                         updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
                         footer.removeComponent(cancelButton);
                     }else{
-                        Notification errorNotification = new Notification("Update Participant Information Error",
-                                "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                        Notification errorNotification = new Notification(userI18NProperties.
+                                getProperty("ActivityManagement_ParticipantsManagement_UpdateParticipantInfoErrorText"),
+                                userI18NProperties.
+                                        getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                         errorNotification.setPosition(Position.MIDDLE_CENTER);
                         errorNotification.show(Page.getCurrent());
                         errorNotification.setIcon(FontAwesome.WARNING);

@@ -33,7 +33,6 @@ public class ParticipantManagementView extends VerticalLayout implements View {
             String newActivitySpaceName=currentActivitySpaceComponentInfo.getActivitySpaceName();
             String newParticipantName=currentActivitySpaceComponentInfo.getComponentId();
             if(!newActivitySpaceName.equals(activitySpaceName)||!newParticipantName.equals(participantName)){
-                System.out.println("Re Render UI!");
                 activitySpaceName=newActivitySpaceName;
                 participantName=newParticipantName;
                 ParticipantDetailInfo participantDetailInfo=new ParticipantDetailInfo(this.currentUserClientInfo);

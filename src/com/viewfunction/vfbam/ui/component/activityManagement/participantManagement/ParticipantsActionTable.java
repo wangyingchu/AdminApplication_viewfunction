@@ -159,11 +159,14 @@ public class ParticipantsActionTable extends Table {
     }
 
     public void addParticipant(final String participantName,String participantDisplayName,String participantType){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         boolean addParticipantResult=ActivitySpaceOperationUtil.addNewParticipant(activitySpaceName,participantName,participantDisplayName,participantType);
         if(addParticipantResult){
-            Notification resultNotification = new Notification("Add Data Operation Success",
-                    "Add new participant success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_AddDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ParticipantsManagement_AddParticipantSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
@@ -187,8 +190,10 @@ public class ParticipantsActionTable extends Table {
             // board added participant success message
             broadcastAddedParticipantEvent(participantName);
         }else{
-            Notification errorNotification = new Notification("Add Participant Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_AddParticipantErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
