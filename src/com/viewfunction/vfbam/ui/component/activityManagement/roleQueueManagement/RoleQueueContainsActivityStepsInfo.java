@@ -10,6 +10,8 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RoleQueueContainsActivityStepsInfo extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private String roleQueueName;
@@ -19,12 +21,14 @@ public class RoleQueueContainsActivityStepsInfo extends VerticalLayout {
         this.roleQueueName=roleQueueName;
         setSpacing(true);
         setMargin(true);
-
-        SecondarySectionTitle roleQueueContainsActivityStepsSectionTitle=new SecondarySectionTitle("Role Queue Contains Activity Steps");
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        SecondarySectionTitle roleQueueContainsActivityStepsSectionTitle=new SecondarySectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueActivityStepsText"));
         addComponent(roleQueueContainsActivityStepsSectionTitle);
 
         workingTasksActionsBar=new SectionActionsBar(
-                new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueText")+" : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
         addComponent(workingTasksActionsBar);
 
         ActivityStepsTable activityStepsTable =new ActivityStepsTable(this.currentUserClientInfo,"300px");
@@ -34,14 +38,13 @@ public class RoleQueueContainsActivityStepsInfo extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
-
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName="";
-        ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
-                this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         if(this.currentUserClientInfo.getActivitySpaceManagementMeteInfo()!=null){
             activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         }
-        Label sectionActionBarLabel= new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+        Label sectionActionBarLabel= new Label(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueText")+" : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
         workingTasksActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
     }
 }

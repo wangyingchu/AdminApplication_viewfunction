@@ -8,7 +8,6 @@ import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivityDataFieldsEditor;
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivityManagementConst;
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivityStepsTable;
-import com.viewfunction.vfbam.ui.component.activityManagement.roleManagement.RoleContainsParticipantsSelector;
 import com.viewfunction.vfbam.ui.component.activityManagement.roleManagement.RolesActionTable;
 import com.viewfunction.vfbam.ui.component.common.MainSectionTitle;
 import com.viewfunction.vfbam.ui.component.common.SectionActionButton;
@@ -16,10 +15,13 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RoleQueueDetailInfo extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     public RoleQueueDetailInfo(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         setSpacing(false);
@@ -32,9 +34,11 @@ public class RoleQueueDetailInfo extends VerticalLayout {
         TabSheet tabs=new TabSheet();
         addComponent(tabs);
         VerticalLayout roleQueueInfoLayout=new VerticalLayout();
-        TabSheet.Tab roleQueueInfoTab =tabs.addTab(roleQueueInfoLayout, "Role Queue Info");
+        TabSheet.Tab roleQueueInfoTab =tabs.addTab(roleQueueInfoLayout, userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RoleInfoText"));
         roleQueueInfoTab.setIcon(FontAwesome.INFO);
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Role Queue Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RoleInfoText"));
         roleQueueInfoLayout.addComponent(mainSectionTitle);
         RoleQueueEditor roleQueueEditor=new RoleQueueEditor(this.currentUserClientInfo,RoleQueueEditor.EDITMODE_UPDATE);
         roleQueueEditor.setRoleQueue(currentRoleQueue);
@@ -44,14 +48,18 @@ public class RoleQueueDetailInfo extends VerticalLayout {
         String tableHeightString=""+(browserWindowHeight-330)+"px";
 
         VerticalLayout relatedRolesLayout=new VerticalLayout();
-        TabSheet.Tab relatedRolesTab =tabs.addTab(relatedRolesLayout, "Related Roles");
+        TabSheet.Tab relatedRolesTab =tabs.addTab(relatedRolesLayout, userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RelatedRolesText"));
         relatedRolesTab.setIcon(FontAwesome.USERS);
-        MainSectionTitle relatedRolesSectionTitle=new MainSectionTitle("Related Roles");
+        MainSectionTitle relatedRolesSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RelatedRolesText"));
         relatedRolesLayout.addComponent(relatedRolesSectionTitle);
-        SectionActionsBar relatedRolesSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.USERS.getHtml() + " "+"Roles Related To Role Queue", ContentMode.HTML));
+        SectionActionsBar relatedRolesSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.USERS.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RelatedRolesActionButtonsLabel"), ContentMode.HTML));
         relatedRolesLayout.addComponent(relatedRolesSectionActionsBar);
         SectionActionButton modifyRelatedRolesActionButton = new SectionActionButton();
-        modifyRelatedRolesActionButton.setCaption("Modify Related Roles");
+        modifyRelatedRolesActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_ModifyRelatedRolesButtonLabel"));
         modifyRelatedRolesActionButton.setIcon(FontAwesome.COG);
         final RoleQueueRelatedRolesSelector roleQueueRelatedRolesSelector=new RoleQueueRelatedRolesSelector(this.currentUserClientInfo);
         roleQueueRelatedRolesSelector.setRoleQueue(currentRoleQueue);
@@ -76,24 +84,30 @@ public class RoleQueueDetailInfo extends VerticalLayout {
         roleQueueRelatedRolesSelector.setRelatedRolesActionTable(rolesActionTable);
 
         VerticalLayout exposedDataFieldsLayout=new VerticalLayout();
-        TabSheet.Tab exposedDataFieldsTab =tabs.addTab(exposedDataFieldsLayout, "Displayed Data Fields Filter");
+        TabSheet.Tab exposedDataFieldsTab =tabs.addTab(exposedDataFieldsLayout, userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_DataFilterText"));
         exposedDataFieldsTab.setIcon(FontAwesome.TH_LIST);
-        MainSectionTitle exposedDataFieldsSectionTitle=new MainSectionTitle("Displayed Data Fields Filter");
+        MainSectionTitle exposedDataFieldsSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_DataFilterText"));
         exposedDataFieldsLayout.addComponent(exposedDataFieldsSectionTitle);
         ActivityDataFieldsEditor activityDataFieldsEditor=new ActivityDataFieldsEditor(this.currentUserClientInfo,
                 ActivityManagementConst.COMPONENT_TYPE_ROLEQUEUE,currentActivitySpaceComponentInfo.getComponentId(),tableHeightString);
         exposedDataFieldsLayout.addComponent(activityDataFieldsEditor);
 
         VerticalLayout activityStepsLayout=new VerticalLayout();
-        TabSheet.Tab activityStepsTab =tabs.addTab(activityStepsLayout, "Contains Activity Steps");
+        TabSheet.Tab activityStepsTab =tabs.addTab(activityStepsLayout, userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_ContainsActivityStepsText"));
         activityStepsTab.setIcon(FontAwesome.SLIDERS);
-        MainSectionTitle activityStepsSectionTitle=new MainSectionTitle("Contains Activity Steps");
+        MainSectionTitle activityStepsSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_ContainsActivityStepsText"));
         activityStepsLayout.addComponent(activityStepsSectionTitle);
 
-        SectionActionsBar workingActivityStepsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.SLIDERS.getHtml() + " "+"Working Activity Steps of Role", ContentMode.HTML));
+        SectionActionsBar workingActivityStepsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.SLIDERS.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RoleWorkingActivityStepText"), ContentMode.HTML));
         activityStepsLayout.addComponent(workingActivityStepsSectionActionsBar);
         SectionActionButton fetchActivityStepsActionButton = new SectionActionButton();
-        fetchActivityStepsActionButton.setCaption("Fetch Working Activity Steps");
+        fetchActivityStepsActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_FetchStepsButtonLabel"));
         fetchActivityStepsActionButton.setIcon(FontAwesome.DOWNLOAD);
         workingActivityStepsSectionActionsBar.addActionComponent(fetchActivityStepsActionButton);
         final ActivityStepsTable activityStepsTable =new ActivityStepsTable(this.currentUserClientInfo,tableHeightString);
