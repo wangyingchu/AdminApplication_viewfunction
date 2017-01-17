@@ -17,6 +17,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 public class ParticipantBelongedRolesSelector extends VerticalLayout {
@@ -29,19 +30,24 @@ public class ParticipantBelongedRolesSelector extends VerticalLayout {
     private RolesActionTable relatedRolesActionTable;
     public ParticipantBelongedRolesSelector(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
-        SecondarySectionTitle belongsToRolesSectionTitle=new SecondarySectionTitle("Roles Participant Belongs To");
+        SecondarySectionTitle belongsToRolesSectionTitle=new SecondarySectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantRolesActionButtonsLabel"));
         addComponent(belongsToRolesSectionTitle);
         rolesInfoMap=new HashMap<String,Role>();
 
         belongsToRolesSectionActionsBar=new SectionActionsBar(
-                new Label("Participant : <b>"+""+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_ParticipantsManagement_ParticipantText")+" : <b>"+""+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
         addComponent(belongsToRolesSectionActionsBar);
 
         participantRolesSelect = new TwinColSelect();
-        participantRolesSelect.setLeftColumnCaption(" Available Roles");
-        participantRolesSelect.setRightColumnCaption(" Belonged To Roles");
+        participantRolesSelect.setLeftColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_AvailableRolesText"));
+        participantRolesSelect.setRightColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_BelongsRolesText"));
         participantRolesSelect.setNewItemsAllowed(false);
         participantRolesSelect.setWidth("100%");
         participantRolesSelect.setHeight("270px");
@@ -53,7 +59,8 @@ public class ParticipantBelongedRolesSelector extends VerticalLayout {
         actionButtonsContainer.setWidth("100%");
         addComponent(actionButtonsContainer);
 
-        Button confirmUpdateButton = new Button("Update");
+        Button confirmUpdateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"));
         confirmUpdateButton.setIcon(FontAwesome.SAVE);
         confirmUpdateButton.addStyleName("small");
         confirmUpdateButton.addStyleName("primary");
@@ -66,8 +73,9 @@ public class ParticipantBelongedRolesSelector extends VerticalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 String participantName=self.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
-                Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                        " Please confirm to update the belonged to roles information of participant <b>"+participantName +"</b>.", ContentMode.HTML);
+                Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                        getProperty("ActivityManagement_ParticipantsManagement_ConfirmUpdateRolesText")+
+                        " <b>"+participantName +"</b>.", ContentMode.HTML);
                 final ConfirmDialog modifyParticipantRolesConfirmDialog = new ConfirmDialog();
                 modifyParticipantRolesConfirmDialog.setConfirmMessage(confirmMessage);
                 Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
@@ -88,7 +96,8 @@ public class ParticipantBelongedRolesSelector extends VerticalLayout {
             }
         });
 
-        Button cancelUpdateButton = new Button("Cancel Update");
+        Button cancelUpdateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_CancelButtonLabel"));
         cancelUpdateButton.setIcon(FontAwesome.TIMES);
         cancelUpdateButton.addStyleName("small");
         actionButtonsContainer.addComponent(cancelUpdateButton);
@@ -105,6 +114,7 @@ public class ParticipantBelongedRolesSelector extends VerticalLayout {
     }
 
     public void doUpdateParticipantBelongedRolesInfo(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         Set participantRolesSet=(Set)participantRolesSelect.getValue();
         String[] strRoleArray = new String[participantRolesSet.size()];
         String[] roleCombinationStrArray=(String[]) participantRolesSet.toArray(strRoleArray);
@@ -118,14 +128,18 @@ public class ParticipantBelongedRolesSelector extends VerticalLayout {
             if(relatedRolesActionTable!=null){
                relatedRolesActionTable.loadRolesData();
             }
-            Notification resultNotification = new Notification("Update Data Operation Success",
-                    "Update participant information success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ParticipantsManagement_UpdateParticipantInfoSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
         }else{
-            Notification errorNotification = new Notification("Update Participant Information Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_UpdateParticipantInfoErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -139,12 +153,14 @@ public class ParticipantBelongedRolesSelector extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         participantRolesSelect.clear();
         participantRolesSelect.removeAllItems();
         if(this.currentUserClientInfo.getActivitySpaceManagementMeteInfo()!=null){
             String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
             String participantName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
-            Label sectionActionBarLabel=new Label("Participant : <b>"+participantName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            Label sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_ParticipantsManagement_ParticipantText")+" : <b>"+participantName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             belongsToRolesSectionActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();

@@ -13,10 +13,13 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ParticipantDetailInfo extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     public ParticipantDetailInfo(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         setSpacing(false);
@@ -29,10 +32,12 @@ public class ParticipantDetailInfo extends VerticalLayout {
         TabSheet tabs=new TabSheet();
         addComponent(tabs);
         VerticalLayout participantInfoLayout=new VerticalLayout();
-        TabSheet.Tab participantInfoTab =tabs.addTab(participantInfoLayout, "Participant Info");
+        TabSheet.Tab participantInfoTab =tabs.addTab(participantInfoLayout, userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantInfoText"));
         participantInfoTab.setIcon(FontAwesome.INFO);
 
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Participant Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantInfoText"));
         participantInfoLayout.addComponent(mainSectionTitle);
         //Participant info editor
         ParticipantEditor participantEditor =new ParticipantEditor(this.currentUserClientInfo,ParticipantEditor.EDITMODE_UPDATE);
@@ -43,15 +48,19 @@ public class ParticipantDetailInfo extends VerticalLayout {
         String tableHeightString=""+(browserWindowHeight-330)+"px";
 
         VerticalLayout belongsToRolesLayout=new VerticalLayout();
-        TabSheet.Tab belongsToRolesTab = tabs.addTab(belongsToRolesLayout, "Belongs To Roles");
+        TabSheet.Tab belongsToRolesTab = tabs.addTab(belongsToRolesLayout, userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantRolesText"));
         belongsToRolesTab.setIcon(FontAwesome.USERS);
         // Participant's Roles Info Section
-        MainSectionTitle belongsToRolesSectionTitle=new MainSectionTitle("Belongs To Roles");
+        MainSectionTitle belongsToRolesSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantRolesText"));
         belongsToRolesLayout.addComponent(belongsToRolesSectionTitle);
-        SectionActionsBar belongsToRolesSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.USERS.getHtml() + " "+"Roles Participant Belongs To", ContentMode.HTML));
+        SectionActionsBar belongsToRolesSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.USERS.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantRolesActionButtonsLabel"), ContentMode.HTML));
         belongsToRolesLayout.addComponent(belongsToRolesSectionActionsBar);
         SectionActionButton modifyBelongedRolesActionButton = new SectionActionButton();
-        modifyBelongedRolesActionButton.setCaption("Modify Belonged Roles");
+        modifyBelongedRolesActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ModifyParticipantRoleButtonLabel"));
         modifyBelongedRolesActionButton.setIcon(FontAwesome.COG);
         belongsToRolesSectionActionsBar.addActionComponent(modifyBelongedRolesActionButton);
 
@@ -79,15 +88,19 @@ public class ParticipantDetailInfo extends VerticalLayout {
         });
 
         VerticalLayout participantTasksLayout=new VerticalLayout();
-        TabSheet.Tab participantTasksTab = tabs.addTab(participantTasksLayout, "Participant Tasks");
+        TabSheet.Tab participantTasksTab = tabs.addTab(participantTasksLayout, userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantTasksText"));
         participantTasksTab.setIcon(FontAwesome.TASKS);
         // Participant's Working Tasks Section
-        MainSectionTitle workingTasksSectionTitle=new MainSectionTitle("Participant Tasks");
+        MainSectionTitle workingTasksSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantTasksText"));
         participantTasksLayout.addComponent(workingTasksSectionTitle);
-        SectionActionsBar  workingTasksSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.TASKS.getHtml() + " "+"Participant's Working Tasks", ContentMode.HTML));
+        SectionActionsBar  workingTasksSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.TASKS.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantTasksActionButtonsLabel"), ContentMode.HTML));
         participantTasksLayout.addComponent(workingTasksSectionActionsBar);
         SectionActionButton fetchParticipantTasksActionButton = new SectionActionButton();
-        fetchParticipantTasksActionButton.setCaption("Fetch Participant's Tasks Info");
+        fetchParticipantTasksActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_FetchParticipantTasksButtonLabel"));
         fetchParticipantTasksActionButton.setIcon(FontAwesome.DOWNLOAD);
         workingTasksSectionActionsBar.addActionComponent(fetchParticipantTasksActionButton);
 

@@ -5,6 +5,8 @@ import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ParticipantsTableRowActions  extends HorizontalLayout {
     private UserClientInfo currentUserClientInfo;
     private String participantName;
@@ -13,10 +15,11 @@ public class ParticipantsTableRowActions  extends HorizontalLayout {
         this.currentUserClientInfo=currentUserClientInfo;
         this.participantName=participantName;
         this.allowRemoveOperation=allowRemoveOperation;
-
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         Button showBelongedRolesButton = new Button();
         showBelongedRolesButton.setIcon(FontAwesome.USERS);
-        showBelongedRolesButton.setDescription("Belongs To Roles");
+        showBelongedRolesButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantRolesText"));
         showBelongedRolesButton.addStyleName("small");
         showBelongedRolesButton.addStyleName("borderless");
         addComponent(showBelongedRolesButton);
@@ -43,7 +46,8 @@ public class ParticipantsTableRowActions  extends HorizontalLayout {
 
         Button showWorkingTasksButton = new Button();
         showWorkingTasksButton.setIcon(FontAwesome.TASKS);
-        showWorkingTasksButton.setDescription("Participant Tasks");
+        showWorkingTasksButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_ParticipantTasksText"));
         showWorkingTasksButton.addStyleName("small");
         showWorkingTasksButton.addStyleName("borderless");
         addComponent(showWorkingTasksButton);
@@ -74,7 +78,8 @@ public class ParticipantsTableRowActions  extends HorizontalLayout {
 
         Button disableParticipantButton = new Button();
         disableParticipantButton.setIcon(FontAwesome.BAN);
-        disableParticipantButton.setDescription("Disable Participant");
+        disableParticipantButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ParticipantsManagement_DisableParticipantText"));
         disableParticipantButton.addStyleName("small");
         disableParticipantButton.addStyleName("borderless");
         addComponent(disableParticipantButton);
