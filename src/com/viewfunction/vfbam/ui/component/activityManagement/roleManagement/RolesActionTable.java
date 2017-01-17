@@ -16,6 +16,8 @@ import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceCompo
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentSelectedEvent;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RolesActionTable extends Table {
     private UserClientInfo currentUserClientInfo;
     private String columnName_RoleName ="columnName_RoleName";
@@ -35,6 +37,7 @@ public class RolesActionTable extends Table {
 
     public RolesActionTable(UserClientInfo currentUserClientInfo,String tableHeight,boolean isActionMode){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.isActionMode=isActionMode;
         setWidth("100%");
         if(tableHeight!=null){
@@ -66,9 +69,21 @@ public class RolesActionTable extends Table {
         }
         setContainerDataSource(this.containerDataSource);
         if(this.isActionMode){
-            setColumnHeaders(new String[]{"Role Name", "Display Name", "Description", "Actions"});
+            setColumnHeaders(new String[]{userI18NProperties.
+                    getProperty("ActivityManagement_RolesManagement_NamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RolesManagement_DisplayNamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RolesManagement_DescriptionPropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_Table_ListActionPropertyText")});
         }else{
-            setColumnHeaders(new String[]{"Role Name", "Display Name", "Description"});
+            setColumnHeaders(new String[]{userI18NProperties.
+                    getProperty("ActivityManagement_RolesManagement_NamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RolesManagement_DisplayNamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RolesManagement_DescriptionPropertyText")});
         }
 
         setColumnAlignment(columnName_RoleName, Align.LEFT);
@@ -143,6 +158,7 @@ public class RolesActionTable extends Table {
     }
 
     public void addRole(final String roleName,String roleDisplayName,String roleDescription){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         boolean addRoleResult=ActivitySpaceOperationUtil.addNewRole(activitySpaceName,roleName,roleDisplayName,roleDescription);
         if(addRoleResult){
@@ -168,8 +184,10 @@ public class RolesActionTable extends Table {
             // board added role success message
             broadcastAddedRoleEvent(id);
         }else{
-            Notification errorNotification = new Notification("Add Role Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_RolesManagement_AddRoleErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);

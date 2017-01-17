@@ -17,6 +17,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 public class RoleRelatedRoleQueuesSelector extends VerticalLayout {
@@ -29,18 +30,23 @@ public class RoleRelatedRoleQueuesSelector extends VerticalLayout {
     private RoleQueuesActionTable relatedRoleQueuesActionTable;
     public RoleRelatedRoleQueuesSelector(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
-        SecondarySectionTitle relatedToRoleQueuesSectionTitle=new SecondarySectionTitle("Role Queues Role Related To");
+        SecondarySectionTitle relatedToRoleQueuesSectionTitle=new SecondarySectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleRoleQueuesActionButtonsLabel"));
         addComponent(relatedToRoleQueuesSectionTitle);
         roleQueuesInfoMap=new HashMap<String,RoleQueue>();
         relatedToRoleQueuesSectionActionsBar=new SectionActionsBar(
-                new Label("Role : <b>"+""+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_RolesManagement_RoleText")+" : <b>"+""+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
         addComponent(relatedToRoleQueuesSectionActionsBar);
 
         roleRoleQueuesSelect = new TwinColSelect();
-        roleRoleQueuesSelect.setLeftColumnCaption(" Available Role Queues");
-        roleRoleQueuesSelect.setRightColumnCaption(" Related Role Queues");
+        roleRoleQueuesSelect.setLeftColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_AvailableRoleQueuesText"));
+        roleRoleQueuesSelect.setRightColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RelatedRoleQueuesText"));
         roleRoleQueuesSelect.setNewItemsAllowed(false);
         roleRoleQueuesSelect.setWidth("100%");
         roleRoleQueuesSelect.setHeight("270px");
@@ -52,7 +58,8 @@ public class RoleRelatedRoleQueuesSelector extends VerticalLayout {
         actionButtonsContainer.setWidth("100%");
         addComponent(actionButtonsContainer);
 
-        Button confirmUpdateButton = new Button("Update");
+        Button confirmUpdateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"));
         confirmUpdateButton.setIcon(FontAwesome.SAVE);
         confirmUpdateButton.addStyleName("small");
         confirmUpdateButton.addStyleName("primary");
@@ -61,8 +68,9 @@ public class RoleRelatedRoleQueuesSelector extends VerticalLayout {
         actionButtonsContainer.setExpandRatio(confirmUpdateButton, 1L);
 
         String roleName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
-        final Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                " Please confirm to update the related to role queues information of role <b>"+roleName +"</b>.", ContentMode.HTML);
+        final Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_ConfirmUpdateRoleQueueText")+
+                " <b>"+roleName +"</b>.", ContentMode.HTML);
         final RoleRelatedRoleQueuesSelector self=this;
         confirmUpdateButton.addClickListener(new Button.ClickListener() {
             @Override
@@ -87,7 +95,8 @@ public class RoleRelatedRoleQueuesSelector extends VerticalLayout {
             }
         });
 
-        Button cancelUpdateButton = new Button("Cancel Update");
+        Button cancelUpdateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_CancelButtonLabel"));
         cancelUpdateButton.setIcon(FontAwesome.TIMES);
         cancelUpdateButton.addStyleName("small");
         actionButtonsContainer.addComponent(cancelUpdateButton);
@@ -104,6 +113,7 @@ public class RoleRelatedRoleQueuesSelector extends VerticalLayout {
     }
 
     public void doUpdateRoleRelatedRoleQueuesInfo(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         Set roleRoleQueuesSet=(Set)roleRoleQueuesSelect.getValue();
         String[] strRoleQueueArray = new String[roleRoleQueuesSet.size()];
         String[] roleQueueCombinationStrArray=(String[]) roleRoleQueuesSet.toArray(strRoleQueueArray);
@@ -117,14 +127,18 @@ public class RoleRelatedRoleQueuesSelector extends VerticalLayout {
             if(this.relatedRoleQueuesActionTable!=null){
                 this.relatedRoleQueuesActionTable.loadRoleQueuesData();
             }
-            Notification resultNotification = new Notification("Update Data Operation Success",
-                    "Update roleQueue information success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RolesManagement_UpdateRoleInfoSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
         }else{
-            Notification errorNotification = new Notification("Update RoleQueue Information Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_RolesManagement_UpdateRoleInfoErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -138,12 +152,14 @@ public class RoleRelatedRoleQueuesSelector extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         roleRoleQueuesSelect.clear();
         roleRoleQueuesSelect.removeAllItems();
         if(this.currentUserClientInfo.getActivitySpaceManagementMeteInfo()!=null){
             String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
             String participantName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
-            Label sectionActionBarLabel=new Label("Role : <b>"+participantName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            Label sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_RolesManagement_RoleText")+" : <b>"+participantName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             relatedToRoleQueuesSectionActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();

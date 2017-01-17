@@ -33,7 +33,6 @@ public class RoleManagementView extends VerticalLayout implements View {
             String newActivitySpaceName=currentActivitySpaceComponentInfo.getActivitySpaceName();
             String newRoleName=currentActivitySpaceComponentInfo.getComponentId();
             if(!newActivitySpaceName.equals(activitySpaceName)||!newRoleName.equals(roleName)){
-                System.out.println("Re Render UI!");
                 activitySpaceName=newActivitySpaceName;
                 roleName=newRoleName;
                 RoleDetailInfo roleDetailInfo=new RoleDetailInfo(this.currentUserClientInfo);

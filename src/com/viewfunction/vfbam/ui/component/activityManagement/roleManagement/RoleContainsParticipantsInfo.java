@@ -10,6 +10,7 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
 
 public class RoleContainsParticipantsInfo  extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -18,14 +19,17 @@ public class RoleContainsParticipantsInfo  extends VerticalLayout {
 
     public RoleContainsParticipantsInfo(UserClientInfo currentUserClientInfo,String roleName){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.roleName=roleName;
         setSpacing(true);
         setMargin(true);
-        SecondarySectionTitle participantsBelongsToRoleSectionTitle=new SecondarySectionTitle("Participants Belonged to Role");
+        SecondarySectionTitle participantsBelongsToRoleSectionTitle=new SecondarySectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleParticipantsActionButtonsLabel"));
         addComponent(participantsBelongsToRoleSectionTitle);
 
         containsParticipantsSectionActionsBar=new SectionActionsBar(
-                new Label("Role : <b>"+this.roleName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_RolesManagement_RoleText")+" : <b>"+this.roleName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
         addComponent(containsParticipantsSectionActionsBar);
 
         ParticipantsActionTable participantsActionTable=new ParticipantsActionTable(this.currentUserClientInfo,"300px",false,false);
@@ -37,11 +41,13 @@ public class RoleContainsParticipantsInfo  extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         if(currentActivitySpaceComponentInfo!=null){
             String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
-            Label sectionActionBarLabel=new Label("Role : <b>"+this.roleName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            Label sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_RolesManagement_RoleText")+" : <b>"+this.roleName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             containsParticipantsSectionActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
     }

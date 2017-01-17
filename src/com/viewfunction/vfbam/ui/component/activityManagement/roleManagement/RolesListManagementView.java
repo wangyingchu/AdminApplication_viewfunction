@@ -25,13 +25,16 @@ public class RolesListManagementView extends VerticalLayout implements View {
         viewContentContainer.addStyleName("ui_appSubViewContainer");
         this.addComponent(viewContentContainer);
         // View Title
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Roles Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_InfoText"));
         viewContentContainer.addComponent(mainSectionTitle);
         // Roles List Section
-        SectionActionsBar rolesListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.USERS.getHtml() + " "+"Roles List", ContentMode.HTML));
+        SectionActionsBar rolesListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.USERS.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_ListText"), ContentMode.HTML));
         viewContentContainer.addComponent(rolesListSectionActionsBar);
         SectionActionButton addNewRoleActionButton = new SectionActionButton();
-        addNewRoleActionButton.setCaption("Add New Role");
+        addNewRoleActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_AddNewButtonText"));
         addNewRoleActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         rolesListSectionActionsBar.addActionComponent(addNewRoleActionButton);
 

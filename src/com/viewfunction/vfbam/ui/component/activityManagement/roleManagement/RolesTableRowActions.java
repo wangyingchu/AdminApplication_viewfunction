@@ -8,16 +8,19 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RolesTableRowActions extends HorizontalLayout {
     private UserClientInfo currentUserClientInfo;
     private String roleName;
     public RolesTableRowActions(UserClientInfo currentUserClientInfo,String roleName){
         this.roleName=roleName;
         this.currentUserClientInfo=currentUserClientInfo;
-
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         Button showContainerdParticipantsButton = new Button();
         showContainerdParticipantsButton.setIcon(FontAwesome.USER);
-        showContainerdParticipantsButton.setDescription("Contains Participants");
+        showContainerdParticipantsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_ContainsParticipantsText"));
         showContainerdParticipantsButton.addStyleName("small");
         showContainerdParticipantsButton.addStyleName("borderless");
         addComponent(showContainerdParticipantsButton);
@@ -44,7 +47,8 @@ public class RolesTableRowActions extends HorizontalLayout {
 
         Button showRelatedRoleQueuesButton = new Button();
         showRelatedRoleQueuesButton.setIcon(FontAwesome.ALIGN_JUSTIFY);
-        showRelatedRoleQueuesButton.setDescription("Related Role Queues");
+        showRelatedRoleQueuesButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RelatedRoleQueuesText"));
         showRelatedRoleQueuesButton.addStyleName("small");
         showRelatedRoleQueuesButton.addStyleName("borderless");
         addComponent(showRelatedRoleQueuesButton);

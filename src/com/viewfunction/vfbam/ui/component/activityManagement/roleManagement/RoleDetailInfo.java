@@ -13,10 +13,13 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RoleDetailInfo extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     public RoleDetailInfo(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         setSpacing(false);
@@ -29,10 +32,12 @@ public class RoleDetailInfo extends VerticalLayout {
         TabSheet tabs=new TabSheet();
         addComponent(tabs);
         VerticalLayout roleInfoLayout=new VerticalLayout();
-        TabSheet.Tab roleInfoTab =tabs.addTab(roleInfoLayout, "Role Info");
+        TabSheet.Tab roleInfoTab =tabs.addTab(roleInfoLayout, userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleInfoText"));
         roleInfoTab.setIcon(FontAwesome.INFO);
 
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Role Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle( userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleInfoText"));
         roleInfoLayout.addComponent(mainSectionTitle);
         //Role info editor
         RoleEditor roleEditor =new RoleEditor(this.currentUserClientInfo,RoleEditor.EDITMODE_UPDATE);
@@ -43,15 +48,19 @@ public class RoleDetailInfo extends VerticalLayout {
         String tableHeightString=""+(browserWindowHeight-330)+"px";
 
         VerticalLayout relatedRoleQueuesLayout=new VerticalLayout();
-        TabSheet.Tab relatedRoleQueuesLayoutTab =tabs.addTab(relatedRoleQueuesLayout, "Related Role Queues");
+        TabSheet.Tab relatedRoleQueuesLayoutTab =tabs.addTab(relatedRoleQueuesLayout, userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleRoleQueuesText"));
         relatedRoleQueuesLayoutTab.setIcon(FontAwesome.ALIGN_JUSTIFY);
         // Related Role Queues Info Section
-        MainSectionTitle relatedRoleQueuesSectionTitle=new MainSectionTitle("Related Role Queues");
+        MainSectionTitle relatedRoleQueuesSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleRoleQueuesText"));
         relatedRoleQueuesLayout.addComponent(relatedRoleQueuesSectionTitle);
-        SectionActionsBar relatedRoleQueuesSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.ALIGN_JUSTIFY.getHtml() + " "+"Role Queues Role Related To", ContentMode.HTML));
+        SectionActionsBar relatedRoleQueuesSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.ALIGN_JUSTIFY.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleRoleQueuesActionButtonsLabel"), ContentMode.HTML));
         relatedRoleQueuesLayout.addComponent(relatedRoleQueuesSectionActionsBar);
         SectionActionButton modifyRelatedRoleQueuesActionButton = new SectionActionButton();
-        modifyRelatedRoleQueuesActionButton.setCaption("Modify Related Role Queues");
+        modifyRelatedRoleQueuesActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_ModifyRelatedRoleQueuesButtonLabel"));
         modifyRelatedRoleQueuesActionButton.setIcon(FontAwesome.COG);
         final RoleRelatedRoleQueuesSelector roleRelatedRoleQueuesSelector=new RoleRelatedRoleQueuesSelector(this.currentUserClientInfo);
         roleRelatedRoleQueuesSelector.setRole(currentRole);
@@ -59,7 +68,7 @@ public class RoleDetailInfo extends VerticalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(700.0f, Unit.PIXELS);
+                window.setWidth(1000.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
                 window.center();
                 window.setModal(true);
@@ -77,15 +86,19 @@ public class RoleDetailInfo extends VerticalLayout {
         roleRelatedRoleQueuesSelector.setRelatedRoleQueuesActionTable(roleQueuesActionTable);
 
         VerticalLayout containsParticipantsLayout=new VerticalLayout();
-        TabSheet.Tab containsParticipantsLayoutTab =tabs.addTab(containsParticipantsLayout, "Contains Participants");
+        TabSheet.Tab containsParticipantsLayoutTab =tabs.addTab(containsParticipantsLayout, userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleParticipantsText"));
         containsParticipantsLayoutTab.setIcon(FontAwesome.USER);
         // Contains Participants Info Section
-        MainSectionTitle containsParticipantsSectionTitle=new MainSectionTitle("Contains Participants");
+        MainSectionTitle containsParticipantsSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_RoleParticipantsText"));
         containsParticipantsLayout.addComponent(containsParticipantsSectionTitle);
-        SectionActionsBar  containsParticipantsSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.USER.getHtml() + " "+"Participants Belonged to Role", ContentMode.HTML));
+        SectionActionsBar  containsParticipantsSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.USER.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_ParticipantsInRoleText"), ContentMode.HTML));
         containsParticipantsLayout.addComponent(containsParticipantsSectionActionsBar);
         SectionActionButton modifyContainsParticipantsActionButton = new SectionActionButton();
-        modifyContainsParticipantsActionButton.setCaption("Modify Contains Participants");
+        modifyContainsParticipantsActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RolesManagement_ModifyContainsParticipantsButtonLabel"));
         modifyContainsParticipantsActionButton.setIcon(FontAwesome.COG);
         final RoleContainsParticipantsSelector roleContainsParticipantsSelector=new RoleContainsParticipantsSelector(this.currentUserClientInfo);
         roleContainsParticipantsSelector.setRole(currentRole);
@@ -93,7 +106,7 @@ public class RoleDetailInfo extends VerticalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(700.0f, Unit.PIXELS);
+                window.setWidth(900.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
                 window.center();
                 window.setModal(true);
