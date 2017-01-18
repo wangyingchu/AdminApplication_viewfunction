@@ -7,16 +7,20 @@ import com.vaadin.ui.*;
 import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RostersTableRowActions extends HorizontalLayout {
     private UserClientInfo currentUserClientInfo;
     private String rosterName;
     private RostersActionTable containerRostersActionTable;
     public RostersTableRowActions(UserClientInfo currentUserClientInfo,String rosterName){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.rosterName=rosterName;
         Button showContainsDataFieldsButton = new Button();
         showContainsDataFieldsButton.setIcon(FontAwesome.SHARE_ALT_SQUARE);
-        showContainsDataFieldsButton.setDescription("Contains Activity Definitions");
+        showContainsDataFieldsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_RosterActivityTypeText"));
         showContainsDataFieldsButton.addStyleName("small");
         showContainsDataFieldsButton.addStyleName("borderless");
         addComponent(showContainsDataFieldsButton);
@@ -43,7 +47,8 @@ public class RostersTableRowActions extends HorizontalLayout {
 
         Button showContainsActivityStepsButton = new Button();
         showContainsActivityStepsButton.setIcon(FontAwesome.TH_LIST);
-        showContainsActivityStepsButton.setDescription("Displayed Data Fields Filter");
+        showContainsActivityStepsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_DataFilterText"));
         showContainsActivityStepsButton.addStyleName("small");
         showContainsActivityStepsButton.addStyleName("borderless");
         addComponent(showContainsActivityStepsButton);
@@ -70,7 +75,8 @@ public class RostersTableRowActions extends HorizontalLayout {
 
         Button startActivityButton = new Button();
         startActivityButton.setIcon(FontAwesome.INDENT);
-        startActivityButton.setDescription("Fetch Business Activities");
+        startActivityButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_FetchActivityInstanceButtonLabel"));
         startActivityButton.addStyleName("small");
         startActivityButton.addStyleName("borderless");
         addComponent(startActivityButton);
@@ -101,7 +107,8 @@ public class RostersTableRowActions extends HorizontalLayout {
 
         Button removeCurrentRosterButton = new Button();
         removeCurrentRosterButton.setIcon(FontAwesome.TRASH_O);
-        removeCurrentRosterButton.setDescription("Remove This Roster");
+        removeCurrentRosterButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_RemoveRosterText"));
         removeCurrentRosterButton.addStyleName("small");
         removeCurrentRosterButton.addStyleName("borderless");
         addComponent(removeCurrentRosterButton);
@@ -110,8 +117,9 @@ public class RostersTableRowActions extends HorizontalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
 
-                Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                        " Please confirm to remove roster  <b>"+rosterNameToRemove +"</b>.", ContentMode.HTML);
+                Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                        getProperty("ActivityManagement_RosterManagement_ConfirmRemoveRosterText")+
+                        " <b>"+rosterNameToRemove +"</b>.", ContentMode.HTML);
                 final ConfirmDialog removeRosterConfirmDialog = new ConfirmDialog();
                 removeRosterConfirmDialog.setConfirmMessage(confirmMessage);
                 Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {

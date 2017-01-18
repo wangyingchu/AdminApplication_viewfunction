@@ -25,13 +25,16 @@ public class RostersListManagementView extends VerticalLayout implements View {
         viewContentContainer.addStyleName("ui_appSubViewContainer");
         this.addComponent(viewContentContainer);
         // View Title
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Rosters Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_InfoText"));
         viewContentContainer.addComponent(mainSectionTitle);
         // Rosters List Section
-        SectionActionsBar rostersListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.INBOX.getHtml() + " "+"Rosters List", ContentMode.HTML));
+        SectionActionsBar rostersListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.INBOX.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_ListText"), ContentMode.HTML));
         viewContentContainer.addComponent(rostersListSectionActionsBar);
         SectionActionButton addNewRosterActionButton = new SectionActionButton();
-        addNewRosterActionButton.setCaption("Add New Roster");
+        addNewRosterActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_AddNewButtonText"));
         addNewRosterActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         rostersListSectionActionsBar.addActionComponent(addNewRosterActionButton);
 

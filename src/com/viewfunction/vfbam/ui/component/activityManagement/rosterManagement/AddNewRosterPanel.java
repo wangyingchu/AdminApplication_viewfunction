@@ -8,6 +8,8 @@ import com.viewfunction.vfbam.ui.component.common.MainSectionTitle;
 import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 
 public class AddNewRosterPanel extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -17,13 +19,16 @@ public class AddNewRosterPanel extends VerticalLayout {
     private RostersActionTable relatedRostersActionTable;
     public AddNewRosterPanel(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
         // Add New Role Section
-        MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle("Add New Roster");
+        MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_AddNewButtonText"));
         addComponent(addNewParticipantSectionTitle);
         addNewRoleActionsBar=new SectionActionsBar(
-                new Label("Activity Space : <b>"+""+"</b>" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_Common_ActivitySpaceText")+" <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(addNewRoleActionsBar);
         rosterEditor=new RosterEditor(this.currentUserClientInfo, RosterEditor.EDITMODE_NEW);
         rosterEditor.setContainerAddNewRosterPanel(this);
@@ -48,13 +53,19 @@ public class AddNewRosterPanel extends VerticalLayout {
     public void attach() {
         super.attach();
         if(this.currentUserClientInfo.getActivitySpaceManagementMeteInfo()!=null){
+            Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
             String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
-            Label activitySpaceNameLabel=new Label("Activity Space : <b>"+activitySpaceName+"</b>" , ContentMode.HTML);
+            Label activitySpaceNameLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_Common_ActivitySpaceText")+" <b>"+activitySpaceName+"</b>" , ContentMode.HTML);
             addNewRoleActionsBar.resetSectionActionsBarContent(activitySpaceNameLabel);
         }
     }
 
     public void setRelatedRostersTable(RostersActionTable relatedRostersActionTable) {
         this.relatedRostersActionTable = relatedRostersActionTable;
+    }
+
+    public RostersActionTable getRostersActionTable(){
+        return this.relatedRostersActionTable;
     }
 }

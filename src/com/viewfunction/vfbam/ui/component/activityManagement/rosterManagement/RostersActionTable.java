@@ -16,6 +16,8 @@ import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceCompo
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentSelectedEvent;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RostersActionTable extends Table {
     private UserClientInfo currentUserClientInfo;
     private String columnName_RosterName ="columnName_RosterName";
@@ -27,6 +29,7 @@ public class RostersActionTable extends Table {
 
     public RostersActionTable(UserClientInfo currentUserClientInfo, String tableHeight){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setWidth("100%");
         if(tableHeight!=null){
             setHeight(tableHeight);
@@ -51,7 +54,14 @@ public class RostersActionTable extends Table {
 
         setRowHeaderMode(Table.RowHeaderMode.INDEX);
         setColumnHeaders(new String[]{
-                "Roster Name", "Display Name", "Description", "Actions"
+                userI18NProperties.
+                        getProperty("ActivityManagement_RosterManagement_NamePropertyText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_RosterManagement_DisplayNamePropertyText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_RosterManagement_DescriptionPropertyText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Table_ListActionPropertyText")
 
         });
         setColumnAlignment(columnName_RosterName, Table.Align.LEFT);
@@ -112,6 +122,7 @@ public class RostersActionTable extends Table {
     }
 
     public void addRoster(final String rosterName,String rosterDisplayName,String rosterDescription){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         boolean addRosterResult=ActivitySpaceOperationUtil.addNewRoster(activitySpaceName,rosterName,rosterDisplayName,rosterDescription);
         if(addRosterResult){
@@ -138,8 +149,10 @@ public class RostersActionTable extends Table {
             // board added roster success message
             broadcastAddedRosterEvent(id);
         }else{
-            Notification errorNotification = new Notification("Add Roster Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_RosterManagement_AddRosterErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -147,12 +160,15 @@ public class RostersActionTable extends Table {
     }
 
     public void removeRoster(String rosterName){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         boolean removeRosterResult=ActivitySpaceOperationUtil.removeRoster(activitySpaceName,rosterName);
         if(removeRosterResult){
 
-            Notification resultNotification = new Notification("Delete Data Operation Success",
-                    "Delete roster success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DeleteDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RosterManagement_DeleteRosterSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
@@ -164,8 +180,10 @@ public class RostersActionTable extends Table {
                 this.containerDataSource.removeItem(rosterName);
             }
         }else{
-            Notification errorNotification = new Notification("Remove Roster Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_RosterManagement_DeleteRosterErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -188,5 +206,14 @@ public class RostersActionTable extends Table {
                 new ActivitySpaceComponentModifyEvent(activitySpaceName,componentType,rostedName,
                         ActivitySpaceComponentModifyEvent.MODIFYTYPE_REMOVE);
         this.currentUserClientInfo.getEventBlackBoard().fire(activitySpaceComponentModifyEvent);
+    }
+
+    public boolean checkRosterExistence(String rosterName){
+        Item targetItem =containerDataSource.getItem(rosterName);
+        if(targetItem!=null){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

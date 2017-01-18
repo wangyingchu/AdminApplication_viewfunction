@@ -33,7 +33,6 @@ public class RosterManagementView extends VerticalLayout implements View {
             String newActivitySpaceName=currentActivitySpaceComponentInfo.getActivitySpaceName();
             String newRosterName=currentActivitySpaceComponentInfo.getComponentId();
             if(!newActivitySpaceName.equals(activitySpaceName)||!newRosterName.equals(rosterName)){
-                System.out.println("Re Render UI!");
                 activitySpaceName=newActivitySpaceName;
                 rosterName=newRosterName;
                 RosterDetailInfo rosterDetailInfo=new RosterDetailInfo(this.currentUserClientInfo);

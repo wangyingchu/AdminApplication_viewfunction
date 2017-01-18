@@ -15,10 +15,13 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RosterDetailInfo  extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     public RosterDetailInfo(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         setSpacing(false);
@@ -32,9 +35,11 @@ public class RosterDetailInfo  extends VerticalLayout {
         addComponent(tabs);
 
         VerticalLayout rosterInfoLayout=new VerticalLayout();
-        TabSheet.Tab roleInfoTab =tabs.addTab(rosterInfoLayout, "Roster Info");
+        TabSheet.Tab roleInfoTab =tabs.addTab(rosterInfoLayout, userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_RosterInfoText"));
         roleInfoTab.setIcon(FontAwesome.INFO);
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Roster Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_RosterInfoText"));
         rosterInfoLayout.addComponent(mainSectionTitle);
         RosterEditor rosterEditor=new RosterEditor(this.currentUserClientInfo,RosterEditor.EDITMODE_UPDATE);
         rosterEditor.setRoster(currentRoster);
@@ -44,18 +49,22 @@ public class RosterDetailInfo  extends VerticalLayout {
         String tableHeightString=""+(browserWindowHeight-330)+"px";
 
         VerticalLayout containedActivityTypeLayout=new VerticalLayout();
-        TabSheet.Tab containedActivityTypeTab =tabs.addTab(containedActivityTypeLayout, "Contained Activity Definitions");
+        TabSheet.Tab containedActivityTypeTab =tabs.addTab(containedActivityTypeLayout, userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_RosterActivityTypeText"));
         containedActivityTypeTab.setIcon(FontAwesome.SHARE_ALT_SQUARE);
-        MainSectionTitle containedActivityDefinitionSectionTitle=new MainSectionTitle("Contained Activity Definitions");
+        MainSectionTitle containedActivityDefinitionSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_RosterActivityTypeText"));
         containedActivityTypeLayout.addComponent(containedActivityDefinitionSectionTitle);
 
         ActivityDefinitionsActionTable activityDefinitionsActionTable=new ActivityDefinitionsActionTable(this.currentUserClientInfo,tableHeightString,true);
         activityDefinitionsActionTable.setActivityDefinitionsQueryId(currentActivitySpaceComponentInfo.getComponentId());
         activityDefinitionsActionTable.setActivityDefinitionsType(ActivityDefinitionsActionTable.ACTIVITYDEFINITIONS_TYPE_ROSTER);
-        SectionActionsBar containsActivityDefinitionsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.SHARE_ALT_SQUARE.getHtml() + " "+" Activity Definitions List", ContentMode.HTML));
+        SectionActionsBar containsActivityDefinitionsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.SHARE_ALT_SQUARE.getHtml() + " "+" "+userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_RosterActivityTypeActionButtonsLabel"), ContentMode.HTML));
         containedActivityTypeLayout.addComponent(containsActivityDefinitionsSectionActionsBar);
         SectionActionButton modifyContainedActivityDefinitionActionButton = new SectionActionButton();
-        modifyContainedActivityDefinitionActionButton.setCaption("Modify Related Activity Definitions");
+        modifyContainedActivityDefinitionActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_ModifyRelatedActivityTypeButtonLabel"));
         modifyContainedActivityDefinitionActionButton.setIcon(FontAwesome.COG);
         final RosterRelatedActivityDefinitionsSelector rosterRelatedActivityDefinitionsSelector=new RosterRelatedActivityDefinitionsSelector(this.currentUserClientInfo);
         rosterRelatedActivityDefinitionsSelector.setRoster(currentRoster);
@@ -76,23 +85,29 @@ public class RosterDetailInfo  extends VerticalLayout {
         containedActivityTypeLayout.addComponent(activityDefinitionsActionTable);
 
         VerticalLayout exposedDataFieldsLayout=new VerticalLayout();
-        TabSheet.Tab exposedDataFieldsTab =tabs.addTab(exposedDataFieldsLayout, "Displayed Data Fields Filter");
+        TabSheet.Tab exposedDataFieldsTab =tabs.addTab(exposedDataFieldsLayout, userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_DataFilterText"));
         exposedDataFieldsTab.setIcon(FontAwesome.TH_LIST);
-        MainSectionTitle exposedDataFieldsSectionTitle=new MainSectionTitle("Displayed Data Fields Filter");
+        MainSectionTitle exposedDataFieldsSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_DataFilterText"));
         exposedDataFieldsLayout.addComponent(exposedDataFieldsSectionTitle);
         ActivityDataFieldsEditor activityDataFieldsEditor=new ActivityDataFieldsEditor(this.currentUserClientInfo,
                 ActivityManagementConst.COMPONENT_TYPE_ROSTER,currentActivitySpaceComponentInfo.getComponentId(),tableHeightString);
         exposedDataFieldsLayout.addComponent(activityDataFieldsEditor);
 
         VerticalLayout businessActivitiesLayout=new VerticalLayout();
-        TabSheet.Tab businessActivitiesTab =tabs.addTab(businessActivitiesLayout, "Running Business Activities");
+        TabSheet.Tab businessActivitiesTab =tabs.addTab(businessActivitiesLayout, userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_ActivityInstanceText"));
         businessActivitiesTab.setIcon(FontAwesome.INDENT);
-        MainSectionTitle runningBusinessActivitiesSectionTitle=new MainSectionTitle("Running Business Activities");
+        MainSectionTitle runningBusinessActivitiesSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_ActivityInstanceText"));
         businessActivitiesLayout.addComponent(runningBusinessActivitiesSectionTitle);
-        SectionActionsBar activitiesContainedInRosterSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.INDENT.getHtml() + " "+"Business Activities contained In Roster", ContentMode.HTML));
+        SectionActionsBar activitiesContainedInRosterSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.INDENT.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_RosterActivityInstanceActionButtonsLabel"), ContentMode.HTML));
         businessActivitiesLayout.addComponent(activitiesContainedInRosterSectionActionsBar);
         SectionActionButton fetchActivitiesActionButton = new SectionActionButton();
-        fetchActivitiesActionButton.setCaption("Fetch Business Activities");
+        fetchActivitiesActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RosterManagement_FetchActivityInstanceButtonLabel"));
         fetchActivitiesActionButton.setIcon(FontAwesome.DOWNLOAD);
         activitiesContainedInRosterSectionActionsBar.addActionComponent(fetchActivitiesActionButton);
 
