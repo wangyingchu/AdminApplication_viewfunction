@@ -75,8 +75,8 @@ public class ActivityDefinitionEditor extends VerticalLayout {
 
     public ActivityDefinitionEditor(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.isReadMode=true;
-
         participantsInfoMap=new HashMap<String,ParticipantVO>();
         rolesInfoMap=new HashMap<String,RoleVO>();
         rostersInfoMap=new HashMap<String,RosterVO>();
@@ -90,30 +90,36 @@ public class ActivityDefinitionEditor extends VerticalLayout {
 
         setActivityDefinitionData();
 
-        activityType = new TextField("Activity Type");
+        activityType = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_TypePropertyText"));
         activityType.setWidth("100%");
         activityType.setRequired(true);
         basicPropertyForm.addComponent(activityType);
 
-        activityTypeDescription = new TextArea("Activity Type Description");
+        activityTypeDescription = new TextArea(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_TypeDescPropertyText"));
         activityTypeDescription.setWidth("100%");
         activityTypeDescription.setRows(2);
         basicPropertyForm.addComponent(activityTypeDescription);
 
-        relatedRosterChooseList = new ComboBox("Related To Roster");
+        relatedRosterChooseList = new ComboBox(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_TypeRosterPropertyText"));
         relatedRosterChooseList.setWidth("100%");
         relatedRosterChooseList.setTextInputAllowed(false);
         relatedRosterChooseList.setNullSelectionAllowed(true);
-        relatedRosterChooseList.setInputPrompt("Please Select Related Roster");
+        relatedRosterChooseList.setInputPrompt(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_SelectRosterText"));
         basicPropertyForm.addComponent(relatedRosterChooseList);
 
-        isEnabled = new OptionGroup("Is Enabled");
+        isEnabled = new OptionGroup(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_IsEnablePropertyText"));
         isEnabled.addItem("true");
         isEnabled.addItem("false");
         isEnabled.addStyleName("horizontal");
         basicPropertyForm.addComponent(isEnabled);
 
-        launchUserIdentityAttribute = new TextField("Start User Identity Attribute Name");
+        launchUserIdentityAttribute = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StarterIDAttributePropertyText"));
         launchUserIdentityAttribute.setRequired(false);
         launchUserIdentityAttribute.setWidth("100%");
         basicPropertyForm.addComponent(launchUserIdentityAttribute);

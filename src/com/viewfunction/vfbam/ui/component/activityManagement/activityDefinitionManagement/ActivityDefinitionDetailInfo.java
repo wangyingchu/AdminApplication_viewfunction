@@ -21,6 +21,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil.*;
 
@@ -41,6 +42,7 @@ public class ActivityDefinitionDetailInfo extends VerticalLayout {
 
     public ActivityDefinitionDetailInfo(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         setSpacing(false);
@@ -49,9 +51,11 @@ public class ActivityDefinitionDetailInfo extends VerticalLayout {
         tabs=new TabSheet();
         addComponent(tabs);
         VerticalLayout activityDefinitionInfoLayout=new VerticalLayout();
-        activityDefinitionInfoTab =tabs.addTab(activityDefinitionInfoLayout, "Activity Definition Info");
+        activityDefinitionInfoTab =tabs.addTab(activityDefinitionInfoLayout, userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeInfoText"));
         activityDefinitionInfoTab.setIcon(FontAwesome.INFO);
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Activity Definition Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeInfoText"));
         activityDefinitionInfoLayout.addComponent(mainSectionTitle);
         activityDefinitionEditor=new ActivityDefinitionEditor(this.currentUserClientInfo);
         activityDefinitionInfoLayout.addComponent(activityDefinitionEditor);
@@ -60,26 +64,32 @@ public class ActivityDefinitionDetailInfo extends VerticalLayout {
         String tableHeightString=""+(browserWindowHeight-330)+"px";
 
         VerticalLayout activityDefinitionDataFieldLayout=new VerticalLayout();
-        activityDefinitionDataFieldTab =tabs.addTab(activityDefinitionDataFieldLayout, "Activity Definition Data Fields");
+        activityDefinitionDataFieldTab =tabs.addTab(activityDefinitionDataFieldLayout, userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeDataFieldText"));
         activityDefinitionDataFieldTab.setIcon(FontAwesome.TH_LIST);
-        MainSectionTitle activityDefinitionDataFieldsSectionTitle=new MainSectionTitle("Activity Definition Data Fields");
+        MainSectionTitle activityDefinitionDataFieldsSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeDataFieldText"));
         activityDefinitionDataFieldLayout.addComponent(activityDefinitionDataFieldsSectionTitle);
         activityDataFieldsEditor=new ActivityDataFieldsEditor(this.currentUserClientInfo,
                 ActivityManagementConst.COMPONENT_TYPE_ACTIVITYDEFINITION,currentActivitySpaceComponentInfo.getComponentId(),tableHeightString);
         activityDefinitionDataFieldLayout.addComponent(activityDataFieldsEditor);
 
         VerticalLayout activityDefinitionStepLayout=new VerticalLayout();
-        activityDefinitionStepTab =tabs.addTab(activityDefinitionStepLayout, "Activity Definition Steps");
+        activityDefinitionStepTab =tabs.addTab(activityDefinitionStepLayout, userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeStepText"));
         activityDefinitionStepTab.setIcon(FontAwesome.SLIDERS);
-        MainSectionTitle activityDefinitionStepsSectionTitle=new MainSectionTitle("Activity Definition Steps");
+        MainSectionTitle activityDefinitionStepsSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeStepText"));
         activityDefinitionStepLayout.addComponent(activityDefinitionStepsSectionTitle);
         activityStepsEditor=new ActivityStepsEditor(this.currentUserClientInfo);
         activityDefinitionStepLayout.addComponent(activityStepsEditor);
 
         VerticalLayout activityDefinitionBPMNLayout=new VerticalLayout();
-        activityDefinitionBPMNTab =tabs.addTab(activityDefinitionBPMNLayout, "Activity BPMN2 Definition File");
+        activityDefinitionBPMNTab =tabs.addTab(activityDefinitionBPMNLayout, userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeDefineText"));
         activityDefinitionBPMNTab.setIcon(FontAwesome.STEAM_SQUARE);
-        MainSectionTitle _BPMNSectionTitle=new MainSectionTitle("Activity BPMN2 Definition File");
+        MainSectionTitle _BPMNSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeDefineText"));
         activityDefinitionBPMNLayout.addComponent(_BPMNSectionTitle);
         activityDefinitionBPMNEditor=new ActivityDefinitionBPMNEditor(this.currentUserClientInfo);
         activityDefinitionBPMNEditor.setContainerActivityDefinitionDetailInfo(this);

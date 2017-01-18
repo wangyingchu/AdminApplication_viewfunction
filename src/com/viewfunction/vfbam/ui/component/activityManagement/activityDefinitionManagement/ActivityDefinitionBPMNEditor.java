@@ -9,6 +9,7 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.io.File;
+import java.util.Properties;
 
 public class ActivityDefinitionBPMNEditor extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -21,11 +22,14 @@ public class ActivityDefinitionBPMNEditor extends VerticalLayout {
 
     public ActivityDefinitionBPMNEditor(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         SectionActionsBar activityTypeDesignSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.STEAM_SQUARE.getHtml() + " "+
-                "Activity Definition BPMN 2 File:", ContentMode.HTML));
+                userI18NProperties.
+                        getProperty("ActivityManagement_ActivityTypeManagement_BPMNFileActionButtonsLabel")+":", ContentMode.HTML));
         addComponent(activityTypeDesignSectionActionsBar);
         SectionActionButton updateActivityDefinitionActionButton = new SectionActionButton();
-        updateActivityDefinitionActionButton.setCaption("Update Activity Definition");
+        updateActivityDefinitionActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_UpdateActivityTypeButtonLabel"));
         updateActivityDefinitionActionButton.setIcon(FontAwesome.UPLOAD);
         activityTypeDesignSectionActionsBar.addActionComponent(updateActivityDefinitionActionButton);
 
@@ -39,6 +43,7 @@ public class ActivityDefinitionBPMNEditor extends VerticalLayout {
                 final Window window = new Window();
                 window.setWidth(700.0f, Unit.PIXELS);
                 window.setHeight(300.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(updateActivityTypePanel);
@@ -48,7 +53,8 @@ public class ActivityDefinitionBPMNEditor extends VerticalLayout {
         });
 
         SectionActionButton downloadActivityDefinitionFileActionButton = new SectionActionButton();
-        downloadActivityDefinitionFileActionButton.setCaption("Download Activity Definition File");
+        downloadActivityDefinitionFileActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DownloadActivityTypeButtonLabel"));
         downloadActivityDefinitionFileActionButton.setIcon(FontAwesome.CLOUD_DOWNLOAD);
         activityTypeDesignSectionActionsBar.addActionComponent(downloadActivityDefinitionFileActionButton);
 
@@ -68,9 +74,11 @@ public class ActivityDefinitionBPMNEditor extends VerticalLayout {
         graphViewLayout.setSpacing(true);
         graphViewLayout.setMargin(true);
         graphContainerViewLayout.addComponent(graphViewLayout);
-        TabSheet.Tab graphViewTab = activityTypeProcessDesignDetailTabSheet.addTab(graphContainerViewLayout,"Process Graph View");
+        TabSheet.Tab graphViewTab = activityTypeProcessDesignDetailTabSheet.addTab(graphContainerViewLayout,userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_GraphViewText"));
         xmlSourceLayout=new VerticalLayout();
-        TabSheet.Tab xmlSourceViewTab = activityTypeProcessDesignDetailTabSheet.addTab(xmlSourceLayout,"Process XML Source View");
+        TabSheet.Tab xmlSourceViewTab = activityTypeProcessDesignDetailTabSheet.addTab(xmlSourceLayout,userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_SourceViewText"));
     }
 
     @Override
