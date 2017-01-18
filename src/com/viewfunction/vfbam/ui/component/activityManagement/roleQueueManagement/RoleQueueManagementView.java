@@ -33,7 +33,6 @@ public class RoleQueueManagementView extends VerticalLayout implements View {
             String newActivitySpaceName=currentActivitySpaceComponentInfo.getActivitySpaceName();
             String newRoleQueueName=currentActivitySpaceComponentInfo.getComponentId();
             if(!newActivitySpaceName.equals(activitySpaceName)||!newRoleQueueName.equals(roleQueueName)){
-                System.out.println("Re Render UI!");
                 activitySpaceName=newActivitySpaceName;
                 roleQueueName=newRoleQueueName;
                 RoleQueueDetailInfo roleQueueDetailInfo=new RoleQueueDetailInfo(this.currentUserClientInfo);

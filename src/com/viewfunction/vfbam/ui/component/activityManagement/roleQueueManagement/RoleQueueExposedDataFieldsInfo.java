@@ -10,20 +10,25 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RoleQueueExposedDataFieldsInfo  extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private SectionActionsBar exposedDataFieldsSectionActionsBar;
     private String roleQueueName;
     public RoleQueueExposedDataFieldsInfo(UserClientInfo currentUserClientInfo,String roleQueueName){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.roleQueueName=roleQueueName;
         setSpacing(true);
         setMargin(true);
-        SecondarySectionTitle belongsToRolesSectionTitle=new SecondarySectionTitle("Role Queue Displayed Data Fields Filter");
+        SecondarySectionTitle belongsToRolesSectionTitle=new SecondarySectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_DataFilterText"));
         addComponent(belongsToRolesSectionTitle);
 
         exposedDataFieldsSectionActionsBar=new SectionActionsBar(
-                new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueText")+" : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
         addComponent(exposedDataFieldsSectionActionsBar);
 
         ActivityDataFieldsActionTable activityDataFieldsActionTable =new ActivityDataFieldsActionTable(this.currentUserClientInfo,"300px",false,true);
@@ -35,11 +40,13 @@ public class RoleQueueExposedDataFieldsInfo  extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         if(currentActivitySpaceComponentInfo!=null){
             String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
-            Label sectionActionBarLabel=new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            Label sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueText")+" : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             exposedDataFieldsSectionActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
     }

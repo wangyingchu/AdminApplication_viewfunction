@@ -7,6 +7,8 @@ import com.vaadin.ui.*;
 import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RoleQueuesTableRowActions extends HorizontalLayout {
     private UserClientInfo currentUserClientInfo;
     private String roleQueueName;
@@ -14,11 +16,13 @@ public class RoleQueuesTableRowActions extends HorizontalLayout {
     private RoleQueuesActionTable containerRoleQueuesActionTable;
     public RoleQueuesTableRowActions(UserClientInfo currentUserClientInfo,String roleQueueName,boolean allowRemoveOperation){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.roleQueueName=roleQueueName;
         this.allowRemoveOperation=allowRemoveOperation;
         Button showContainsDataFieldsButton = new Button();
         showContainsDataFieldsButton.setIcon(FontAwesome.USERS);
-        showContainsDataFieldsButton.setDescription("Related Roles");
+        showContainsDataFieldsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RelatedRolesText"));
         showContainsDataFieldsButton.addStyleName("small");
         showContainsDataFieldsButton.addStyleName("borderless");
         addComponent(showContainsDataFieldsButton);
@@ -45,7 +49,8 @@ public class RoleQueuesTableRowActions extends HorizontalLayout {
 
         Button showContainsActivityStepsButton = new Button();
         showContainsActivityStepsButton.setIcon(FontAwesome.TH_LIST);
-        showContainsActivityStepsButton.setDescription("Displayed Data Fields Filter");
+        showContainsActivityStepsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_DataFilterText"));
         showContainsActivityStepsButton.addStyleName("small");
         showContainsActivityStepsButton.addStyleName("borderless");
         addComponent(showContainsActivityStepsButton);
@@ -72,7 +77,8 @@ public class RoleQueuesTableRowActions extends HorizontalLayout {
 
         Button roleQueueContainsActivityStepsInfoButton = new Button();
         roleQueueContainsActivityStepsInfoButton.setIcon(FontAwesome.SLIDERS);
-        roleQueueContainsActivityStepsInfoButton.setDescription("Contains Activity Steps");
+        roleQueueContainsActivityStepsInfoButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_ContainsActivityStepsText"));
         roleQueueContainsActivityStepsInfoButton.addStyleName("small");
         roleQueueContainsActivityStepsInfoButton.addStyleName("borderless");
         addComponent(roleQueueContainsActivityStepsInfoButton);
@@ -103,7 +109,8 @@ public class RoleQueuesTableRowActions extends HorizontalLayout {
 
         Button removeCurrentRoleQueueButton = new Button();
         removeCurrentRoleQueueButton.setIcon(FontAwesome.TRASH_O);
-        removeCurrentRoleQueueButton.setDescription("Remove This Role Queue");
+        removeCurrentRoleQueueButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RemoveRoleQueueText"));
         removeCurrentRoleQueueButton.addStyleName("small");
         removeCurrentRoleQueueButton.addStyleName("borderless");
         addComponent(removeCurrentRoleQueueButton);
@@ -112,8 +119,9 @@ public class RoleQueuesTableRowActions extends HorizontalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
 
-                Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +
-                        " Please confirm to remove role queue  <b>" + roleQueueNameToRemove + "</b>.", ContentMode.HTML);
+                Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +" "+userI18NProperties.
+                        getProperty("ActivityManagement_RoleQueuesManagement_ConfirmDeleteRoleQueueText")+
+                        " <b>" + roleQueueNameToRemove + "</b>.", ContentMode.HTML);
                 final ConfirmDialog removeRosterConfirmDialog = new ConfirmDialog();
                 removeRosterConfirmDialog.setConfirmMessage(confirmMessage);
                 Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {

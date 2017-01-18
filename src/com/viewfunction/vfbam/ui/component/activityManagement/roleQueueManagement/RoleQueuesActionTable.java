@@ -16,6 +16,8 @@ import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceCompo
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentSelectedEvent;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RoleQueuesActionTable extends Table {
     private UserClientInfo currentUserClientInfo;
     private String columnName_RoleQueueName ="columnName_RoleQueueName";
@@ -35,6 +37,7 @@ public class RoleQueuesActionTable extends Table {
     private boolean allowRemoveOperation;
     public RoleQueuesActionTable(UserClientInfo currentUserClientInfo,String tableHeight,boolean isActionMode,boolean allowRemoveOperation){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.isActionMode=isActionMode;
         this.allowRemoveOperation=allowRemoveOperation;
         setWidth("100%");
@@ -66,9 +69,21 @@ public class RoleQueuesActionTable extends Table {
         }
         setContainerDataSource(this.containerDataSource);
         if(isActionMode){
-            setColumnHeaders(new String[]{"Role Queue Name", "Display Name", "Description", "Actions"});
+            setColumnHeaders(new String[]{userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_NamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RoleQueuesManagement_DisplayNamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RoleQueuesManagement_DescriptionPropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_Table_ListActionPropertyText")});
         }else{
-            setColumnHeaders(new String[]{"Role Queue Name", "Display Name", "Description"});
+            setColumnHeaders(new String[]{userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_NamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RoleQueuesManagement_DisplayNamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RoleQueuesManagement_DescriptionPropertyText")});
         }
         setColumnAlignment(columnName_RoleQueueName, Table.Align.LEFT);
         setColumnAlignment(columnName_RoleQueueDisplayName, Table.Align.LEFT);
@@ -140,6 +155,7 @@ public class RoleQueuesActionTable extends Table {
     }
 
     public void addRoleQueue(final String roleQueueName,String roleQueueDisplayName,String roleQueueDescription){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         boolean addRoleQueueResult=ActivitySpaceOperationUtil.addNewRoleQueue(activitySpaceName,roleQueueName,roleQueueDisplayName,roleQueueDescription);
         if(addRoleQueueResult){
@@ -167,8 +183,10 @@ public class RoleQueuesActionTable extends Table {
             // board added role queue  success message
             broadcastAddedRoleQueueEvent(id);
         }else{
-            Notification errorNotification = new Notification("Add Role Queue Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_AddRoleQueueErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -184,11 +202,14 @@ public class RoleQueuesActionTable extends Table {
     }
 
     public void removeRoleQueue(final String roleQueueName){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         boolean removeRoleQueueResult=ActivitySpaceOperationUtil.removeRoleQueue(activitySpaceName,roleQueueName);
         if(removeRoleQueueResult){
-            Notification resultNotification = new Notification("Delete Data Operation Success",
-                    "Delete role queue success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DeleteDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_RoleQueuesManagement_RemoveRoleQueueSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
@@ -199,8 +220,10 @@ public class RoleQueuesActionTable extends Table {
                 this.containerDataSource.removeItem(roleQueueName);
             }
         }else{
-            Notification errorNotification = new Notification("Remove Role Queue Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_RemoveRoleQueueErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);

@@ -8,11 +8,11 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.viewfunction.activityEngine.activityView.RoleQueue;
 import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
-import com.viewfunction.vfbam.ui.component.activityManagement.ActivityManagementConst;
-import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentModifyEvent;
 import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
+
+import java.util.Properties;
 
 public class RoleQueueEditor  extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -38,6 +38,7 @@ public class RoleQueueEditor  extends VerticalLayout {
 
     public RoleQueueEditor(UserClientInfo currentUserClientInfo,String editorType){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.currentUserClientInfo=currentUserClientInfo;
         this.currentEditMode = editorType;
         form = new FormLayout();
@@ -46,16 +47,19 @@ public class RoleQueueEditor  extends VerticalLayout {
         form.addStyleName("light");
         addComponent(form);
 
-        roleQueueName = new TextField("Role Queue Name");
+        roleQueueName = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_NamePropertyText"));
         roleQueueName.setRequired(true);
         form.addComponent(roleQueueName);
 
-        roleQueueDisplayName = new TextField("Role Queue Display Name");
+        roleQueueDisplayName = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_DisplayNamePropertyText"));
         roleQueueDisplayName.setRequired(true);
         roleQueueDisplayName.setWidth("50%");
         form.addComponent(roleQueueDisplayName);
 
-        roleQueueDescription = new TextArea("Role Queue Description");
+        roleQueueDescription = new TextArea(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_DescriptionPropertyText"));
         roleQueueDescription.setWidth("50%");
         roleQueueDescription.setRows(3);
         form.addComponent(roleQueueDescription);
@@ -68,7 +72,8 @@ public class RoleQueueEditor  extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        updateButton = new Button("Update", new Button.ClickListener() {
+        updateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 boolean readOnly = form.isReadOnly();
@@ -77,7 +82,8 @@ public class RoleQueueEditor  extends VerticalLayout {
                     roleQueueDisplayName.setReadOnly(false);
                     roleQueueDescription.setReadOnly(false);
                     form.removeStyleName("light");
-                    event.getButton().setCaption("Save");
+                    event.getButton().setCaption(userI18NProperties.
+                            getProperty("ActivityManagement_Common_SaveButtonLabel"));
                     event.getButton().setIcon(FontAwesome.SAVE);
                     event.getButton().addStyleName("primary");
                     footer.addComponent(cancelButton);
@@ -89,7 +95,8 @@ public class RoleQueueEditor  extends VerticalLayout {
         });
         updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
 
-        cancelButton = new Button("Cancel", new Button.ClickListener() {
+        cancelButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_CancelButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 roleQueueDisplayName.setValue(currentRoleQueueDisplayName);
@@ -98,7 +105,8 @@ public class RoleQueueEditor  extends VerticalLayout {
                 roleQueueDisplayName.setReadOnly(true);
                 roleQueueDescription.setReadOnly(true);
                 form.addStyleName("light");
-                updateButton.setCaption("Update");
+                updateButton.setCaption(userI18NProperties.
+                        getProperty("ActivityManagement_Common_UpdateButtonLabel"));
                 updateButton.removeStyleName("primary");
                 updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
                 footer.removeComponent(cancelButton);
@@ -106,7 +114,8 @@ public class RoleQueueEditor  extends VerticalLayout {
         });
         cancelButton.setIcon(FontAwesome.TIMES);
 
-        addButton=new Button("Add RoleQueue", new Button.ClickListener() {
+        addButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_AddRoleQueueButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 /* Do add new role queue logic */
@@ -152,12 +161,15 @@ public class RoleQueueEditor  extends VerticalLayout {
     }
 
     private boolean addNewRoleQueue(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String roleQueueNameStr=roleQueueName.getValue();
         final String roleQueueDisplayNameStr=roleQueueDisplayName.getValue();
         final String roleQueueDescriptionStr=roleQueueDescription.getValue();
         if(roleQueueNameStr.equals("")||roleQueueDisplayNameStr.equals("")){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please input all required fields", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_PleaseInputAllFieldText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -165,24 +177,29 @@ public class RoleQueueEditor  extends VerticalLayout {
         }else{
             boolean alreadyExist=containerAddNewRoleQueuePanel.getRelatedRoleQueuesTable().checkRoleQueueExistence(roleQueueNameStr);
             if(alreadyExist){
-                Notification errorNotification = new Notification("Data Validation Error",
-                        "RoleQueue already exist", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueExistErrorText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);
                 return false;
             }
             //do add new logic
-            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                    " Please confirm to add new role queue  <b>"+roleQueueNameStr +"</b>.", ContentMode.HTML);
+            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_ConfirmAddRoleQueueText")+
+                    " <b>"+roleQueueNameStr +"</b>.", ContentMode.HTML);
             final ConfirmDialog addRoleQueueConfirmDialog = new ConfirmDialog();
             addRoleQueueConfirmDialog.setConfirmMessage(confirmMessage);
             final RoleQueueEditor self=this;
             Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(final Button.ClickEvent event) {
-                    Notification resultNotification = new Notification("Add Data Operation Success",
-                            "Add new role queue success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_AddDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_RoleQueuesManagement_AddRoleQueueSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
@@ -203,21 +220,26 @@ public class RoleQueueEditor  extends VerticalLayout {
     }
 
     private boolean updateCurrentRoleQueue(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         final String roleQueueNameStr=roleQueueName.getValue();
         final String roleQueueDisplayNameStr=roleQueueDisplayName.getValue();
         final String roleQueueDescriptionStr=roleQueueDescription.getValue();
         if(roleQueueDisplayNameStr.equals("")){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please input all required fields", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_PleaseInputAllFieldText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
             return false;
         }else{
             //do update logic
-            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                    " Please confirm to update role queue <b>"+roleQueueNameStr +"</b>'s Information.", ContentMode.HTML);
+            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_ConfirmUpdateRoleQueuePart1Text")+
+                    " <b>"+roleQueueNameStr +"</b>"+userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_ConfirmUpdateRoleQueuePart2Text"), ContentMode.HTML);
             final ConfirmDialog updateRoleQueueConfirmDialog = new ConfirmDialog();
             updateRoleQueueConfirmDialog.setConfirmMessage(confirmMessage);
             final RoleQueueEditor self=this;
@@ -229,8 +251,10 @@ public class RoleQueueEditor  extends VerticalLayout {
                     boolean updateRoleQueueResult=
                             ActivitySpaceOperationUtil.updateRoleQueue(activitySpaceName,roleQueueNameStr,roleQueueDisplayNameStr,roleQueueDescriptionStr);
                     if(updateRoleQueueResult){
-                        Notification resultNotification = new Notification("Update Data Operation Success",
-                                "Update role queue information success", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification resultNotification = new Notification(userI18NProperties.
+                                getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                                userI18NProperties.
+                                        getProperty("ActivityManagement_RoleQueuesManagement_UpdateRoleQueueSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                         resultNotification.setPosition(Position.MIDDLE_CENTER);
                         resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                         resultNotification.show(Page.getCurrent());
@@ -244,13 +268,16 @@ public class RoleQueueEditor  extends VerticalLayout {
                         roleQueueDisplayName.setReadOnly(true);
                         roleQueueDescription.setReadOnly(true);
                         form.addStyleName("light");
-                        updateButton.setCaption("Update");
+                        updateButton.setCaption(userI18NProperties.
+                                getProperty("ActivityManagement_Common_UpdateButtonLabel"));
                         updateButton.removeStyleName("primary");
                         updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
                         footer.removeComponent(cancelButton);
                     }else{
-                        Notification errorNotification = new Notification("Update Role Queue Information Error",
-                                "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                        Notification errorNotification = new Notification(userI18NProperties.
+                                getProperty("ActivityManagement_RoleQueuesManagement_UpdateRoleQueueErrorText"),
+                                userI18NProperties.
+                                        getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                         errorNotification.setPosition(Position.MIDDLE_CENTER);
                         errorNotification.show(Page.getCurrent());
                         errorNotification.setIcon(FontAwesome.WARNING);

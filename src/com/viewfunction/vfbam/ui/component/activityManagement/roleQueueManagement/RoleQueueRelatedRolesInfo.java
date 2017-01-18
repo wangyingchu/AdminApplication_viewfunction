@@ -9,6 +9,8 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class RoleQueueRelatedRolesInfo  extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private SectionActionsBar relatedRolesSectionActionsBar;
@@ -18,12 +20,15 @@ public class RoleQueueRelatedRolesInfo  extends VerticalLayout {
         this.roleQueueName=roleQueueName;
         setSpacing(true);
         setMargin(true);
-
-        SecondarySectionTitle relatedToRolesSectionTitle=new SecondarySectionTitle("Roles Role Queue Related To");
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        this.roleQueueName=roleQueueName;
+        SecondarySectionTitle relatedToRolesSectionTitle=new SecondarySectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueRolesActionButtonsLabel"));
         addComponent(relatedToRolesSectionTitle);
 
         relatedRolesSectionActionsBar=new SectionActionsBar(
-                new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueText")+" : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" ]" , ContentMode.HTML));
         addComponent(relatedRolesSectionActionsBar);
 
         RolesActionTable rolesSummaryTable=new RolesActionTable(this.currentUserClientInfo,"300px",false);
@@ -35,11 +40,13 @@ public class RoleQueueRelatedRolesInfo  extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         if(currentActivitySpaceComponentInfo!=null){
             String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
-            Label sectionActionBarLabel=new Label("Role Queue : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            Label sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueText")+" : <b>"+this.roleQueueName+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             relatedRolesSectionActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
     }

@@ -67,7 +67,7 @@ public class RoleQueueDetailInfo extends VerticalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(700.0f, Unit.PIXELS);
+                window.setWidth(900.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
                 window.center();
                 window.setContent(roleQueueRelatedRolesSelector);

@@ -26,13 +26,16 @@ public class RoleQueuesListManagementView extends VerticalLayout implements View
         viewContentContainer.addStyleName("ui_appSubViewContainer");
         this.addComponent(viewContentContainer);
         // View Title
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Role Queues Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_InfoText"));
         viewContentContainer.addComponent(mainSectionTitle);
         // Rosters List Section
-        SectionActionsBar roleQueuesListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.ALIGN_JUSTIFY.getHtml() + " "+"Role Queues List", ContentMode.HTML));
+        SectionActionsBar roleQueuesListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.ALIGN_JUSTIFY.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_ListText"), ContentMode.HTML));
         viewContentContainer.addComponent(roleQueuesListSectionActionsBar);
         SectionActionButton addNewRoleQueueActionButton = new SectionActionButton();
-        addNewRoleQueueActionButton.setCaption("Add New Role Queue");
+        addNewRoleQueueActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_RoleQueuesManagement_AddNewButtonText"));
         addNewRoleQueueActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         roleQueuesListSectionActionsBar.addActionComponent(addNewRoleQueueActionButton);
 
