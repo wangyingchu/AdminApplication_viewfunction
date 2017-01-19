@@ -16,7 +16,6 @@ import com.viewfunction.vfbam.ui.component.activityManagement.util.ParticipantVO
 import com.viewfunction.vfbam.ui.component.activityManagement.util.RoleVO;
 import com.viewfunction.vfbam.ui.component.activityManagement.util.RosterVO;
 import com.viewfunction.vfbam.ui.component.common.*;
-import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.*;
@@ -124,9 +123,12 @@ public class ActivityDefinitionEditor extends VerticalLayout {
         launchUserIdentityAttribute.setWidth("100%");
         basicPropertyForm.addComponent(launchUserIdentityAttribute);
 
-        allowedStartActivityRolesSelect = new TwinColSelect("Allowed Start Activity Roles");
-        allowedStartActivityRolesSelect.setLeftColumnCaption(" Available Roles");
-        allowedStartActivityRolesSelect.setRightColumnCaption(" Allowed Roles");
+        allowedStartActivityRolesSelect = new TwinColSelect(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AllowedStartActivityRolesText"));
+        allowedStartActivityRolesSelect.setLeftColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AvailableStartActivityRolesLabel"));
+        allowedStartActivityRolesSelect.setRightColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AllowedStartActivityRolesLabel"));
         allowedStartActivityRolesSelect.setNewItemsAllowed(false);
         allowedStartActivityRolesSelect.setWidth("80%");
         allowedStartActivityRolesSelect.setHeight("150px");
@@ -134,9 +136,12 @@ public class ActivityDefinitionEditor extends VerticalLayout {
         allowedStartActivityRolesSelect.addStyleName("ui_appElementMiddleMargin");
         basicPropertyForm.addComponent(allowedStartActivityRolesSelect);
 
-        allowedStartActivityParticipantsSelect = new TwinColSelect("Allowed Start Activity Participants");
-        allowedStartActivityParticipantsSelect.setLeftColumnCaption(" Available Participants");
-        allowedStartActivityParticipantsSelect.setRightColumnCaption(" Allowed Participants");
+        allowedStartActivityParticipantsSelect = new TwinColSelect(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AllowedStartActivityParticipantsText"));
+        allowedStartActivityParticipantsSelect.setLeftColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AvailableStartActivityParticipantsLabel"));
+        allowedStartActivityParticipantsSelect.setRightColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AllowedStartActivityParticipantsLabel"));
         allowedStartActivityParticipantsSelect.setNewItemsAllowed(false);
         allowedStartActivityParticipantsSelect.setWidth("80%");
         allowedStartActivityParticipantsSelect.setHeight("150px");
@@ -144,9 +149,12 @@ public class ActivityDefinitionEditor extends VerticalLayout {
         allowedStartActivityParticipantsSelect.addStyleName("ui_appElementMiddleMargin");
         basicPropertyForm.addComponent(allowedStartActivityParticipantsSelect);
 
-        startActivityVariablesSelect = new TwinColSelect("Start Activity Variable List");
-        startActivityVariablesSelect.setLeftColumnCaption(" Available Variables");
-        startActivityVariablesSelect.setRightColumnCaption(" Activity Start Variables");
+        startActivityVariablesSelect = new TwinColSelect(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StartActivityVariablesText"));
+        startActivityVariablesSelect.setLeftColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AvailableStartActivityVariablesLabel"));
+        startActivityVariablesSelect.setRightColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AllowedStartActivityVariablesLabel"));
         startActivityVariablesSelect.setNewItemsAllowed(false);
         startActivityVariablesSelect.setWidth("80%");
         startActivityVariablesSelect.setHeight("150px");
@@ -154,9 +162,12 @@ public class ActivityDefinitionEditor extends VerticalLayout {
         startActivityVariablesSelect.addStyleName("ui_appElementMiddleMargin");
         basicPropertyForm.addComponent(startActivityVariablesSelect);
 
-        businessCategoriesSelect = new TwinColSelect("Activity Business Categories");
-        businessCategoriesSelect.setLeftColumnCaption(" Available Categories");
-        businessCategoriesSelect.setRightColumnCaption(" Current Categories");
+        businessCategoriesSelect = new TwinColSelect(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityCategoriesText"));
+        businessCategoriesSelect.setLeftColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AvailableCategoriesLabel"));
+        businessCategoriesSelect.setRightColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_CurrentCategoriesLabel"));
         businessCategoriesSelect.setNewItemsAllowed(false);
         businessCategoriesSelect.setWidth("80%");
         businessCategoriesSelect.setHeight("150px");
@@ -164,7 +175,8 @@ public class ActivityDefinitionEditor extends VerticalLayout {
         businessCategoriesSelect.addStyleName("ui_appElementMiddleMargin");
         basicPropertyForm.addComponent(businessCategoriesSelect);
 
-        SecondarySectionTitle secondarySectionTitle=new SecondarySectionTitle("Launch Decision Point Attribute");
+        SecondarySectionTitle secondarySectionTitle=new SecondarySectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_LaunchDecisionPointAttributeText"));
         addComponent(secondarySectionTitle);
 
         decisionPointForm = new FormLayout();
@@ -174,18 +186,23 @@ public class ActivityDefinitionEditor extends VerticalLayout {
         decisionPointForm.addStyleName("light");
         addComponent(decisionPointForm);
 
-        launchDecisionPointAttribute = new TextField("Launch Decision Point Attribute Name");
+        launchDecisionPointAttribute = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_LaunchDecisionPointAttributeNameLabel"));
         launchDecisionPointAttribute.setRequired(false);
         launchDecisionPointAttribute.setWidth("100%");
         decisionPointForm.addComponent(launchDecisionPointAttribute);
 
-        SectionActionsBar launchDecisionPointSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.LIST.getHtml() + " "+"Launch Decision Point Choose Options", ContentMode.HTML));
+        SectionActionsBar launchDecisionPointSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.LIST.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_LaunchDecisionPointChooseOptionsLabel"), ContentMode.HTML));
         addComponent(launchDecisionPointSectionActionsBar);
         addDecisionOptionActionButton = new SectionActionButton();
-        addDecisionOptionActionButton.setCaption("Add New Option");
+        addDecisionOptionActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_LaunchDecisionPointAddOptionButtonLabel"));
         addDecisionOptionActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         launchDecisionPointSectionActionsBar.addActionComponent(addDecisionOptionActionButton);
-        propertyValuesActionTable=new PropertyValuesActionTable(this.currentUserClientInfo,"150","Decision Point Choose List Option","Launch Decision Point Choose Options",false,false);
+        propertyValuesActionTable=new PropertyValuesActionTable(this.currentUserClientInfo,"150",userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_LaunchDecisionPointOptionsText"),userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_LaunchDecisionPointChooseOptionsLabel"),false,false);
         addComponent(propertyValuesActionTable);
 
         addDecisionOptionActionButton.addClickListener(new Button.ClickListener() {
@@ -195,7 +212,8 @@ public class ActivityDefinitionEditor extends VerticalLayout {
             }
         });
 
-        SecondarySectionTitle launchPointExposedDataFieldsSectionTitle2=new SecondarySectionTitle("Launch Point Exposed Data Field");
+        SecondarySectionTitle launchPointExposedDataFieldsSectionTitle2=new SecondarySectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_LaunchDecisionPointDataFieldsText"));
         addComponent(launchPointExposedDataFieldsSectionTitle2);
 
         activityExposedDataFieldsEditor=new ActivityExposedDataFieldsEditor(this.currentUserClientInfo,ActivityExposedDataFieldsEditor.DATAFIELDS_TYPE_STARTPOINT,null,null);
@@ -213,13 +231,16 @@ public class ActivityDefinitionEditor extends VerticalLayout {
         operationButtonsLayout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         editorActionOperationButtonsForm.addComponent(operationButtonsLayout);
 
-        updateButton = new Button("Update");
+        updateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"));
         updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
 
-        cancelButton = new Button("Cancel");
+        cancelButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_CancelButtonLabel"));
         cancelButton.setIcon(FontAwesome.TIMES);
 
-        saveButton = new Button("Save");
+        saveButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_SaveButtonLabel"));
         saveButton.setIcon(FontAwesome.SAVE);
         saveButton.addStyleName("primary");
 
@@ -254,6 +275,10 @@ public class ActivityDefinitionEditor extends VerticalLayout {
 
         operationButtonsLayout.addComponent(updateButton);
         addComponent(editorActionOperationButtonsForm);
+
+        VerticalLayout spacingDivLayout=new VerticalLayout();
+        spacingDivLayout.setHeight(40,Unit.PIXELS);
+        addComponent(spacingDivLayout);
     }
 
     @Override
@@ -538,10 +563,13 @@ public class ActivityDefinitionEditor extends VerticalLayout {
     }
 
     private void saveActivityDefinitionData(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         final String activityDefinitionType=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
-        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                " Please confirm to update activity definition  <b>"+activityDefinitionType +"</b>'s information.", ContentMode.HTML);
+        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ConfirmUpdateActivityTypePart1Text")+
+                " <b>"+activityDefinitionType +"</b>"+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ConfirmUpdateActivityTypePart2Text"), ContentMode.HTML);
         final ConfirmDialog updatePropertyValueConfirmDialog = new ConfirmDialog();
         updatePropertyValueConfirmDialog.setConfirmMessage(confirmMessage);
         Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
@@ -606,8 +634,10 @@ public class ActivityDefinitionEditor extends VerticalLayout {
                         currentLaunchDecisionPointChooseOption,currentStartPointExposedDataFieldList);
 
                 if(updateActivityTypePropertiesResult){
-                    Notification resultNotification = new Notification("Update Data Operation Success",
-                            "Update activity definition information success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_ActivityTypeManagement_UpdateActivityTypeSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
@@ -616,8 +646,10 @@ public class ActivityDefinitionEditor extends VerticalLayout {
                     operationButtonsLayout.removeAllComponents();
                     operationButtonsLayout.addComponent(updateButton);
                 }else{
-                    Notification errorNotification = new Notification("Update Activity Definition Information Error",
-                            "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_UpdateActivityTypeErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);

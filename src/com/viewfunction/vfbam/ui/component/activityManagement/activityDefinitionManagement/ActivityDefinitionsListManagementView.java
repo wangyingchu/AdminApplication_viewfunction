@@ -27,13 +27,16 @@ public class ActivityDefinitionsListManagementView extends VerticalLayout implem
         viewContentContainer.addStyleName("ui_appSubViewContainer");
         this.addComponent(viewContentContainer);
         // View Title
-        MainSectionTitle mainSectionTitle=new MainSectionTitle("Activity Definitions Info");
+        MainSectionTitle mainSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_InfoText"));
         viewContentContainer.addComponent(mainSectionTitle);
         // Activity Definitions List Section
-        SectionActionsBar definitionsListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.SHARE_ALT_SQUARE.getHtml() + " "+"Activity Definitions List", ContentMode.HTML));
+        SectionActionsBar definitionsListSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.SHARE_ALT_SQUARE.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ListText"), ContentMode.HTML));
         viewContentContainer.addComponent(definitionsListSectionActionsBar);
         SectionActionButton addNewDefinitionActionButton = new SectionActionButton();
-        addNewDefinitionActionButton.setCaption("Add New Activity Definition");
+        addNewDefinitionActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AddNewActivityTypeButtonLabel"));
         addNewDefinitionActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         definitionsListSectionActionsBar.addActionComponent(addNewDefinitionActionButton);
         final AddNewActivityTypePanel addNewActivityTypePanel=new AddNewActivityTypePanel(this.currentUserClientInfo);

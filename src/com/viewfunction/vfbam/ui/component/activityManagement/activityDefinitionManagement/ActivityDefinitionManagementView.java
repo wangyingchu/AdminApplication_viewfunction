@@ -33,7 +33,6 @@ public class ActivityDefinitionManagementView extends VerticalLayout implements 
             String newActivitySpaceName=currentActivitySpaceComponentInfo.getActivitySpaceName();
             String newParticipantName=currentActivitySpaceComponentInfo.getComponentId();
             if(!newActivitySpaceName.equals(activitySpaceName)||!newParticipantName.equals(activityType)){
-                System.out.println("Re Render UI!");
                 activitySpaceName=newActivitySpaceName;
                 activityType=newParticipantName;
                 ActivityDefinitionDetailInfo activityDefinitionDetailInfo=new ActivityDefinitionDetailInfo(this.currentUserClientInfo);

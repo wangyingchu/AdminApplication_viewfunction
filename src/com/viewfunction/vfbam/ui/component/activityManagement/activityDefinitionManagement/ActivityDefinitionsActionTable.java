@@ -12,6 +12,8 @@ import com.viewfunction.vfbam.ui.component.activityManagement.ActivityManagement
 import com.viewfunction.vfbam.ui.component.activityManagement.ActivitySpaceComponentSelectedEvent;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ActivityDefinitionsActionTable extends Table{
     private UserClientInfo currentUserClientInfo;
     private String columnName_ActivityType ="columnName_ActivityType";
@@ -30,6 +32,7 @@ public class ActivityDefinitionsActionTable extends Table{
 
     public ActivityDefinitionsActionTable(UserClientInfo currentUserClientInfo,String tableHeight,boolean isActionMode){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.isActionMode = isActionMode;
         setWidth("100%");
         if(tableHeight!=null){
@@ -60,9 +63,21 @@ public class ActivityDefinitionsActionTable extends Table{
         }
         setContainerDataSource(this.containerDataSource);
         if(this.isActionMode){
-            setColumnHeaders(new String[]{"Activity Type", "Roster Name", "Status", "Actions"});
+            setColumnHeaders(new String[]{userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_TypePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_RosterNamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_IsEnablePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_Table_ListActionPropertyText")});
         }else{
-            setColumnHeaders(new String[]{"Activity Type", "Roster Name", "Status"});
+            setColumnHeaders(new String[]{userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_TypePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_RosterNamePropertyText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_IsEnablePropertyText")});
         }
 
         setColumnAlignment(columnName_ActivityType, Table.Align.LEFT);
