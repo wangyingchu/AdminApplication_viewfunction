@@ -188,6 +188,8 @@ public class ActivityDefinitionEditor extends VerticalLayout {
 
         launchDecisionPointAttribute = new TextField(userI18NProperties.
                 getProperty("ActivityManagement_ActivityTypeManagement_LaunchDecisionPointAttributeNameLabel"));
+        launchDecisionPointAttribute.setInputPrompt(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_InputDecisionAttributeNamePromptText"));
         launchDecisionPointAttribute.setRequired(false);
         launchDecisionPointAttribute.setWidth("100%");
         decisionPointForm.addComponent(launchDecisionPointAttribute);

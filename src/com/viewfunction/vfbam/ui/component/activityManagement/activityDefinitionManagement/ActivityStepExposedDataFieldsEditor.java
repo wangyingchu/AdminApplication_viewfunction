@@ -17,6 +17,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityStepExposedDataFieldsEditor  extends VerticalLayout {
 
@@ -30,14 +31,17 @@ public class ActivityStepExposedDataFieldsEditor  extends VerticalLayout {
 
     public ActivityStepExposedDataFieldsEditor(UserClientInfo currentUserClientInfo,ActivityStepVO currentActivityStep,List<ActivityDataFieldVO> activityDataFieldsList) {
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.activityDataFieldsList = activityDataFieldsList;
         setSpacing(true);
         setMargin(true);
         this.currentActivityStep=currentActivityStep;
 
-        MainSectionTitle updateStepExposedDataFieldsSectionTitle = new MainSectionTitle("Update Activity Step Exposed Data Fields");
+        MainSectionTitle updateStepExposedDataFieldsSectionTitle = new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepDataFieldsText"));
         addComponent(updateStepExposedDataFieldsSectionTitle);
-        editDataFieldActionsBar=new SectionActionsBar(new Label("Activity Definition : <b>"+""+"</b>" , ContentMode.HTML));
+        editDataFieldActionsBar=new SectionActionsBar(new Label(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DefinitionText")+" : <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(editDataFieldActionsBar);
 
         activityExposedDataFieldsEditor=new ActivityExposedDataFieldsEditor(this.currentUserClientInfo,
@@ -49,7 +53,8 @@ public class ActivityStepExposedDataFieldsEditor  extends VerticalLayout {
         addComponent(buttonsBarLayout);
         this.setComponentAlignment(buttonsBarLayout, Alignment.MIDDLE_CENTER);
 
-        Button confirmButton=new Button("Confirm Change", new Button.ClickListener() {
+        Button confirmButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_ConfirmChangeButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 updateExposedActivityDataFields();
@@ -63,7 +68,8 @@ public class ActivityStepExposedDataFieldsEditor  extends VerticalLayout {
         divLayout.setWidth("15px");
         buttonsBarLayout.addComponent(divLayout);
 
-        Button cancelButton=new Button("Reset", new Button.ClickListener() {
+        Button cancelButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_ResetButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 resetExposedActivityDataFields();
@@ -76,6 +82,7 @@ public class ActivityStepExposedDataFieldsEditor  extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         String componentType=currentActivitySpaceComponentInfo.getComponentType();
@@ -89,7 +96,9 @@ public class ActivityStepExposedDataFieldsEditor  extends VerticalLayout {
                 activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
             }
             String activityStepCombinationStr=currentActivityStep.getActivityStepName()+" ("+currentActivityStep.getActivityStepDisplayName() + ")";
-            sectionActionBarLabel=new Label("Activity Step : <b>"+activityStepCombinationStr+"</b> &nbsp;&nbsp;Activity Type : "+componentId+" &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_StepText")+" : <b>"+activityStepCombinationStr+"</b> &nbsp;&nbsp;<br/>"+userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText")+" : "+componentId+" &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             editDataFieldActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
         activityExposedDataFieldsEditor.setExposedDataFields(this.currentActivityStep.getExposedActivityDataFields());
@@ -100,13 +109,15 @@ public class ActivityStepExposedDataFieldsEditor  extends VerticalLayout {
     }
 
     private void updateExposedActivityDataFields(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String currentActivitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         final String activityType=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
         final String activityStep=this.currentActivityStep.getActivityStepName();
 
         final ActivityStepExposedDataFieldsEditor self=this;
-        Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +
-                " Please confirm to update the exposed data fields of <b>" + activityType + "</b>.", ContentMode.HTML);
+        Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ConfirmUpdateStepDataFieldsText")+
+                " <b>" + activityType + "</b>.", ContentMode.HTML);
         final ConfirmDialog updateDataFieldConfirmDialog = new ConfirmDialog();
         updateDataFieldConfirmDialog.setConfirmMessage(confirmMessage);
 
@@ -121,16 +132,20 @@ public class ActivityStepExposedDataFieldsEditor  extends VerticalLayout {
                 boolean setStepDataFieldDefinitionsResult=ActivitySpaceOperationUtil.
                         setActivityTypeExposedStepDataFieldDefinitions(currentActivitySpaceName, activityType, activityStep, exposedActivityDataFieldsList);
                 if(setStepDataFieldDefinitionsResult){
-                    Notification resultNotification = new Notification("Update Data Operation Success",
-                            "Update activity step exposed data fields success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepDataFieldsSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
                     self.currentActivityStep.setExposedActivityDataFields(exposedActivityDataFieldsList);
                     self.relatedActivityStepItem.loadExposedActivityDataFields();
                 }else{
-                    Notification errorNotification = new Notification("Update Activity Step Exposed Data Fields Error",
-                            "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepDataFieldsErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);

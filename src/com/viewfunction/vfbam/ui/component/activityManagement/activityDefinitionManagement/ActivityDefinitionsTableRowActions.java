@@ -9,15 +9,19 @@ import com.vaadin.ui.Window;
 import com.viewfunction.vfbam.ui.component.activityManagement.participantManagement.ParticipantWorkingTasksInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ActivityDefinitionsTableRowActions extends HorizontalLayout {
     private UserClientInfo currentUserClientInfo;
     private String activityType;
     public ActivityDefinitionsTableRowActions(UserClientInfo currentUserClientInfo,String activityType){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.activityType=activityType;
         Button showContainsDataFieldsButton = new Button();
         showContainsDataFieldsButton.setIcon(FontAwesome.TH_LIST);
-        showContainsDataFieldsButton.setDescription("Contains Data Fields");
+        showContainsDataFieldsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ContainsDataFieldsText"));
         showContainsDataFieldsButton.addStyleName("small");
         showContainsDataFieldsButton.addStyleName("borderless");
         addComponent(showContainsDataFieldsButton);
@@ -44,7 +48,8 @@ public class ActivityDefinitionsTableRowActions extends HorizontalLayout {
 
         Button showContainsActivityStepsButton = new Button();
         showContainsActivityStepsButton.setIcon(FontAwesome.SLIDERS);
-        showContainsActivityStepsButton.setDescription("Contains Activity Steps");
+        showContainsActivityStepsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ContainsActivityStepsText"));
         showContainsActivityStepsButton.addStyleName("small");
         showContainsActivityStepsButton.addStyleName("borderless");
         addComponent(showContainsActivityStepsButton);
@@ -71,7 +76,8 @@ public class ActivityDefinitionsTableRowActions extends HorizontalLayout {
 
         Button startActivityButton = new Button();
         startActivityButton.setIcon(FontAwesome.ARROW_CIRCLE_O_RIGHT);
-        startActivityButton.setDescription("Start New Business Activity");
+        startActivityButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StartNewActivityText"));
         startActivityButton.addStyleName("small");
         startActivityButton.addStyleName("borderless");
         addComponent(startActivityButton);

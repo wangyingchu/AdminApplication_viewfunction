@@ -13,6 +13,8 @@ import com.viewfunction.vfbam.ui.component.common.*;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ActivityStepDecisionPointEditor  extends VerticalLayout {
     private SectionActionsBar updateStepDecisionPointActionsBar;
 
@@ -26,13 +28,16 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
     private PropertyValuesActionTable propertyValuesActionTable;
     public ActivityStepDecisionPointEditor(UserClientInfo currentUserClientInfo,ActivityStepVO currentActivityStep) {
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
         this.currentActivityStep=currentActivityStep;
 
-        MainSectionTitle updateStepDecisionPointSectionTitle = new MainSectionTitle("Update Activity Step Decision Point Properties");
+        MainSectionTitle updateStepDecisionPointSectionTitle = new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepDecisionPointsPropertiesText"));
         addComponent(updateStepDecisionPointSectionTitle);
-        updateStepDecisionPointActionsBar=new SectionActionsBar(new Label("Activity Definition : <b>"+""+"</b>" , ContentMode.HTML));
+        updateStepDecisionPointActionsBar=new SectionActionsBar(new Label(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DefinitionText")+" : <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(updateStepDecisionPointActionsBar);
 
         form = new FormLayout();
@@ -41,19 +46,25 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
         form.setWidth("100%");
         form.addStyleName("light");
         addComponent(form);
-        decisionPointAttribute = new TextField("Activity Step Decision Point Attribute Name");
+        decisionPointAttribute = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepDecisionAttributeNameText"));
         decisionPointAttribute.setRequired(false);
         decisionPointAttribute.setWidth("100%");
-        decisionPointAttribute.setInputPrompt("Please input decision point attribute name");
+        decisionPointAttribute.setInputPrompt(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_InputDecisionAttributeNamePromptText"));
         form.addComponent(decisionPointAttribute);
 
-        SectionActionsBar launchDecisionPointSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.LIST.getHtml() + " "+"Activity Step Decision Point Choose Options", ContentMode.HTML));
+        SectionActionsBar launchDecisionPointSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.LIST.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepDecisionOptionsText"), ContentMode.HTML));
         addComponent(launchDecisionPointSectionActionsBar);
         addDecisionOptionActionButton = new SectionActionButton();
-        addDecisionOptionActionButton.setCaption("Add New Option");
+        addDecisionOptionActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepDecisionPointAddOptionButtonLabel"));
         addDecisionOptionActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         launchDecisionPointSectionActionsBar.addActionComponent(addDecisionOptionActionButton);
-        propertyValuesActionTable=new PropertyValuesActionTable(this.currentUserClientInfo,"180","Decision Point Choose List Option","Activity Step Decision Point Choose Options",true,true);
+        propertyValuesActionTable=new PropertyValuesActionTable(this.currentUserClientInfo,"180",userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepDecisionPointOptionsText"),userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepDecisionPointChooseOptionsText"),true,true);
         addComponent(propertyValuesActionTable);
 
         addDecisionOptionActionButton.addClickListener(new Button.ClickListener() {
@@ -69,7 +80,8 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         addComponent(footer);
 
-        Button confirmButton=new Button("Confirm Change", new Button.ClickListener() {
+        Button confirmButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_ConfirmChangeButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 updateDecisionPointProperties();
@@ -79,7 +91,8 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
         confirmButton.addStyleName("primary");
         footer.addComponent(confirmButton);
 
-        Button cancelButton=new Button("Reset", new Button.ClickListener() {
+        Button cancelButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_ResetButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 setDecisionPointValue();
@@ -93,6 +106,7 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         String componentType=currentActivitySpaceComponentInfo.getComponentType();
@@ -106,7 +120,9 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
                 activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
             }
             String activityStepCombinationStr=currentActivityStep.getActivityStepName()+" ("+currentActivityStep.getActivityStepDisplayName() + ")";
-            sectionActionBarLabel=new Label("Activity Step : <b>"+activityStepCombinationStr+"</b> &nbsp;&nbsp;Activity Type : "+componentId+" &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_StepText")+" : <b>"+activityStepCombinationStr+"</b> &nbsp;&nbsp;<br/>"+userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText")+" : "+componentId+" &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             updateStepDecisionPointActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
         setDecisionPointValue();
@@ -126,6 +142,7 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
     }
 
     private void updateDecisionPointProperties(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         final String activityType=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
         final String activityStepName=currentActivityStep.getActivityStepName();
@@ -133,8 +150,10 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
         final String[] newChooseOptions=propertyValuesActionTable.getPropertyValues();
         if(newDecisionPointAttribute==null||newDecisionPointAttribute.equals("")) {
             if(newChooseOptions==null||newChooseOptions.length==0){}else{
-                Notification errorNotification = new Notification("Data Validation Error",
-                        "Please input decision point attribute name", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_ActivityTypeManagement_PleaseInputStepDecisionAttributeText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);
@@ -143,8 +162,10 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
         }
         if(newChooseOptions==null||newChooseOptions.length==0) {
             if(newDecisionPointAttribute==null||newDecisionPointAttribute.equals("")) {}else{
-                Notification errorNotification = new Notification("Data Validation Error",
-                        "Please input at lease one choose option", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_ActivityTypeManagement_PleaseInputStepDecisionOptionAttributeText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);
@@ -153,8 +174,9 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
         }
 
         final ActivityStepDecisionPointEditor self=this;
-        Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +
-                " Please confirm to update the decision point properties of <b>" + currentActivityStep.getActivityStepName() + "</b>.", ContentMode.HTML);
+        Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ConfirmUpdateStepDecisionPropertiesText")+
+                " <b>" + currentActivityStep.getActivityStepName() + "</b>.", ContentMode.HTML);
         final ConfirmDialog updateDecisionPointPropertiesConfirmDialog = new ConfirmDialog();
         updateDecisionPointPropertiesConfirmDialog.setConfirmMessage(confirmMessage);
         Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
@@ -168,14 +190,18 @@ public class ActivityStepDecisionPointEditor  extends VerticalLayout {
                 if(setDecisionPointPropResult){
                     self.currentActivityStep.setDecisionPointAttribute(newDecisionPointAttribute);
                     self.currentActivityStep.setDecisionPointChooseOption(newChooseOptions);
-                    Notification resultNotification = new Notification("Update Data Operation Success",
-                            "Update exposed activity type step decision point properties success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepDecisionPropertiesSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
                 }else{
-                    Notification errorNotification = new Notification("Update Exposed Activity Type Step Decision Point Properties Error",
-                            "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepDecisionPropertiesErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);

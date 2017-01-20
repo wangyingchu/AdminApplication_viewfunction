@@ -4,7 +4,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Sizeable;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
-import com.viewfunction.vfbam.ui.component.activityManagement.participantManagement.ParticipantWorkingTasksInfo;
 import com.viewfunction.vfbam.ui.component.activityManagement.util.ActivityDataFieldVO;
 import com.viewfunction.vfbam.ui.component.activityManagement.util.ActivityStepVO;
 import com.viewfunction.vfbam.ui.component.activityManagement.util.RoleVO;
@@ -12,6 +11,7 @@ import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityStepConfigurationRowActions extends HorizontalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -21,11 +21,13 @@ public class ActivityStepConfigurationRowActions extends HorizontalLayout {
     private ActivityStepItem relatedActivityStepItem;
     public ActivityStepConfigurationRowActions(UserClientInfo currentUserClientInfo,ActivityStepVO currentActivityStep,List<ActivityDataFieldVO> activityDataFieldsList,List<RoleVO> rolesList){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.currentActivityStep= currentActivityStep;
         this.activityDataFieldsList = activityDataFieldsList;
         Button showContainsDataFieldsButton = new Button();
         showContainsDataFieldsButton.setIcon(FontAwesome.TH_LIST);
-        showContainsDataFieldsButton.setDescription("Activity Step Exposed Data Fields");
+        showContainsDataFieldsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepDataFieldsText"));
         showContainsDataFieldsButton.addStyleName("small");
         showContainsDataFieldsButton.addStyleName("borderless");
         addComponent(showContainsDataFieldsButton);
@@ -35,8 +37,9 @@ public class ActivityStepConfigurationRowActions extends HorizontalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(900.0f, Sizeable.Unit.PIXELS);
-                window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.setWidth(1000.0f, Sizeable.Unit.PIXELS);
+                window.setHeight(520.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(activityStepExposedDataFieldsEditor);
@@ -50,7 +53,8 @@ public class ActivityStepConfigurationRowActions extends HorizontalLayout {
 
         Button showActivityStepPropertiesButton = new Button();
         showActivityStepPropertiesButton.setIcon(FontAwesome.BARS);
-        showActivityStepPropertiesButton.setDescription("Activity Step Process Properties");
+        showActivityStepPropertiesButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepProcessPropertiesText"));
         showActivityStepPropertiesButton.addStyleName("small");
         showActivityStepPropertiesButton.addStyleName("borderless");
         addComponent(showActivityStepPropertiesButton);
@@ -60,8 +64,9 @@ public class ActivityStepConfigurationRowActions extends HorizontalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(900.0f, Sizeable.Unit.PIXELS);
-                window.setHeight(490.0f, Sizeable.Unit.PIXELS);
+                window.setWidth(1000.0f, Sizeable.Unit.PIXELS);
+                window.setHeight(520.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(activityStepProcessVariablesEditor);
@@ -72,7 +77,8 @@ public class ActivityStepConfigurationRowActions extends HorizontalLayout {
 
         Button showStepDecisionPointsPropertiesButton = new Button();
         showStepDecisionPointsPropertiesButton.setIcon(FontAwesome.COG);
-        showStepDecisionPointsPropertiesButton.setDescription("Activity Step Decision Points Properties");
+        showStepDecisionPointsPropertiesButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepDecisionPointsPropertiesText"));
         showStepDecisionPointsPropertiesButton.addStyleName("small");
         showStepDecisionPointsPropertiesButton.addStyleName("borderless");
         addComponent(showStepDecisionPointsPropertiesButton);
@@ -81,8 +87,9 @@ public class ActivityStepConfigurationRowActions extends HorizontalLayout {
             @Override
             public void buttonClick(final Button.ClickEvent event) {
                 final Window window = new Window();
-                window.setWidth(900.0f, Sizeable.Unit.PIXELS);
-                window.setHeight(510.0f, Sizeable.Unit.PIXELS);
+                window.setWidth(700.0f, Sizeable.Unit.PIXELS);
+                window.setHeight(540.0f, Sizeable.Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(activityStepDecisionPointEditor);
@@ -93,7 +100,8 @@ public class ActivityStepConfigurationRowActions extends HorizontalLayout {
 
         Button removeCurrentStepButton = new Button();
         removeCurrentStepButton.setIcon(FontAwesome.TRASH_O);
-        removeCurrentStepButton.setDescription("Don't Expose This Activity Step Anymore");
+        removeCurrentStepButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DontExposeStepText"));
         removeCurrentStepButton.addStyleName("small");
         removeCurrentStepButton.addStyleName("borderless");
         addComponent(removeCurrentStepButton);
@@ -110,9 +118,11 @@ public class ActivityStepConfigurationRowActions extends HorizontalLayout {
     }
 
     public void removeCurrentStepFromExposedStepList(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final ActivityStepItem activityStepItem=this.relatedActivityStepItem;
-        Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +
-                " Please confirm don't exposed activity step <b>" + currentActivityStep.getActivityStepName() + "</b>.", ContentMode.HTML);
+        Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ConfirmDontExposeStepText")+
+                " <b>" + currentActivityStep.getActivityStepName() + "</b>.", ContentMode.HTML);
         final ConfirmDialog deleteStepExposeConfirmDialog = new ConfirmDialog();
         deleteStepExposeConfirmDialog.setConfirmMessage(confirmMessage);
 

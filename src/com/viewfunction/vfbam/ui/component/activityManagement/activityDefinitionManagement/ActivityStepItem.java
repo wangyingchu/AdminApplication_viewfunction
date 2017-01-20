@@ -14,6 +14,7 @@ import com.viewfunction.vfbam.ui.component.activityManagement.util.RoleVO;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityStepItem extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -30,6 +31,7 @@ public class ActivityStepItem extends VerticalLayout {
 
     public ActivityStepItem(UserClientInfo currentUserClientInfo,ActivityStepVO currentActivityStep,List<ActivityDataFieldVO> activityDataFieldsList,List<RoleVO> rolesList,boolean isEditable){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.currentActivityStep=currentActivityStep;
         this.activityDataFieldsList=activityDataFieldsList;
         this.rolesList=rolesList;
@@ -52,7 +54,8 @@ public class ActivityStepItem extends VerticalLayout {
         addComponent(stepActionSectionLayout);
 
         Panel dataFieldContainerPanel=new Panel();
-        dataFieldContainerPanel.setCaption("Data Fields:");
+        dataFieldContainerPanel.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldsLabel"));
         dataFieldContainerPanel.setIcon(FontAwesome.TH_LIST);
         dataFieldContainerPanel.addStyleName("borderless");
         //dataFieldContainerPanel.addStyleName("scroll-divider");

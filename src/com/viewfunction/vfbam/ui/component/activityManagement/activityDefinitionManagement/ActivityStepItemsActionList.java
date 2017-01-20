@@ -12,6 +12,7 @@ import com.viewfunction.vfbam.ui.component.activityManagement.util.RoleVO;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityStepItemsActionList extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -68,19 +69,24 @@ public class ActivityStepItemsActionList extends VerticalLayout {
     }
 
     public void deleteStepItem(ActivityStepVO targetActivityStepVO,ActivityStepItem targetActivityStepItem){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String stepName=targetActivityStepVO.getActivityStepName();
         boolean removeExposedStepResult=this.containerActivityStepsEditor.removeExposedActivityStep(stepName);
         if(removeExposedStepResult) {
-            Notification resultNotification = new Notification("Delete Data Operation Success",
-                    "Remove exposed activity type step success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DeleteDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_RemoveStepSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
             this.currentExposedActivityStepList.remove(targetActivityStepVO);
             listContainerLayout.removeComponent(targetActivityStepItem);
         }else{
-            Notification errorNotification = new Notification("Remove Exposed Activity Type Step Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_RemoveStepErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);

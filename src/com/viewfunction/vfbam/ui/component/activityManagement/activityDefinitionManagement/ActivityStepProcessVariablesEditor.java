@@ -16,10 +16,7 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ActivityStepProcessVariablesEditor extends VerticalLayout {
     private SectionActionsBar updateStepVariablesActionsBar;
@@ -42,6 +39,7 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
     public ActivityStepProcessVariablesEditor(UserClientInfo currentUserClientInfo,ActivityStepVO currentActivityStep,
                                               List<RoleVO> rolesList) {
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
         this.currentActivityStep=currentActivityStep;
@@ -50,9 +48,11 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
         rolesInfoMap=new HashMap<String, RoleVO>();
         activityDataFieldsInfoMap=new HashMap<String,ActivityDataFieldVO>();
 
-        MainSectionTitle updateStepProcessVariablesSectionTitle = new MainSectionTitle("Update Activity Step Process Properties");
+        MainSectionTitle updateStepProcessVariablesSectionTitle = new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepProcessPropertiesText"));
         addComponent(updateStepProcessVariablesSectionTitle);
-        updateStepVariablesActionsBar=new SectionActionsBar(new Label("Activity Definition : <b>"+""+"</b>" , ContentMode.HTML));
+        updateStepVariablesActionsBar=new SectionActionsBar(new Label(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DefinitionText")+" : <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(updateStepVariablesActionsBar);
 
         form = new FormLayout();
@@ -61,24 +61,30 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
         form.addStyleName("light");
         addComponent(form);
 
-        relatedRoles = new ComboBox("Activity Step Related Role");
+        relatedRoles = new ComboBox(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepRoleText"));
         relatedRoles.setRequired(false);
         relatedRoles.setWidth("100%");
         relatedRoles.setTextInputAllowed(false);
         relatedRoles.setNullSelectionAllowed(true);
-        relatedRoles.setInputPrompt("Please Select Related Role");
+        relatedRoles.setInputPrompt(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_PleaseSelectStepRoleText"));
         form.addComponent(relatedRoles);
 
-        stepUserIdentityAttribute = new TextField("User Identity Attribute Name");
+        stepUserIdentityAttribute = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepUserIDAttributeNameText"));
         stepUserIdentityAttribute.setRequired(false);
         stepUserIdentityAttribute.setWidth("100%");
         form.addComponent(stepUserIdentityAttribute);
 
-        stepActivityVariablesSelect = new TwinColSelect("Activity Step Process Variable List");
-        stepActivityVariablesSelect.setLeftColumnCaption(" Available Process Variables");
-        stepActivityVariablesSelect.setRightColumnCaption(" Selected Step Process Variables");
+        stepActivityVariablesSelect = new TwinColSelect(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepProcessVariableListText"));
+        stepActivityVariablesSelect.setLeftColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AvailableStepProcessVariablesText"));
+        stepActivityVariablesSelect.setRightColumnCaption(" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_SelectedStepProcessVariablesText"));
         stepActivityVariablesSelect.setNewItemsAllowed(false);
-        stepActivityVariablesSelect.setWidth("600px");
+        stepActivityVariablesSelect.setWidth("700px");
         stepActivityVariablesSelect.setHeight("170px");
         addComponent(stepActivityVariablesSelect);
         stepActivityVariablesSelect.addStyleName("ui_appElementMiddleMargin");
@@ -90,7 +96,8 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        Button confirmButton=new Button("Confirm Change", new Button.ClickListener() {
+        Button confirmButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_ConfirmChangeButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 updateActivityStepProcessVariables();
@@ -100,7 +107,8 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
         confirmButton.addStyleName("primary");
         footer.addComponent(confirmButton);
 
-        Button cancelButton=new Button("Reset", new Button.ClickListener() {
+        Button cancelButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_ResetButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 setProcessVariablesValue();
@@ -113,6 +121,7 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         String componentType=currentActivitySpaceComponentInfo.getComponentType();
@@ -126,7 +135,9 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
                 activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
             }
             String activityStepCombinationStr=currentActivityStep.getActivityStepName()+" ("+currentActivityStep.getActivityStepDisplayName() + ")";
-            sectionActionBarLabel=new Label("Activity Step : <b>"+activityStepCombinationStr+"</b> &nbsp;&nbsp;Activity Type : "+componentId+" &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_StepText")+" : <b>"+activityStepCombinationStr+"</b> &nbsp;&nbsp;<br/>"+userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText")+" : "+componentId+" &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             updateStepVariablesActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
         relatedRoles.clear();
@@ -204,6 +215,7 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
     }
 
     public void updateActivityStepProcessVariables(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         final String activityDefinitionType=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
         final String activityStep=currentActivityStep.getActivityStepName();
@@ -228,8 +240,9 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
         }
 
         final ActivityStepProcessVariablesEditor self=this;
-        Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +
-                " Please confirm to update the process variables of <b>" + currentActivityStep.getActivityStepName() + "</b>.", ContentMode.HTML);
+        Label confirmMessage = new Label(FontAwesome.INFO.getHtml() +" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ConfirmUpdateStepProcessPropertiesText")+
+                " <b>" + currentActivityStep.getActivityStepName() + "</b>.", ContentMode.HTML);
         final ConfirmDialog updateProcessVariablesConfirmDialog = new ConfirmDialog();
         updateProcessVariablesConfirmDialog.setConfirmMessage(confirmMessage);
         Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
@@ -243,8 +256,10 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
                         setActivityTypeExposedStepInfo(activitySpaceName, activityDefinitionType, activityStep,
                                 currentStepRole, currentStepUserIdentityAttribute, currentStepProcessVariablesList);
                 if(setStepInfoResult){
-                    Notification resultNotification = new Notification("Update Data Operation Success",
-                            "Update exposed activity type step process properties success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepProcessPropertiesSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
@@ -252,8 +267,10 @@ public class ActivityStepProcessVariablesEditor extends VerticalLayout {
                     self.currentActivityStep.setUserIdentityAttribute(currentStepUserIdentityAttribute);
                     self.currentActivityStep.setStepProcessVariables(currentStepProcessVariablesList);
                 }else{
-                    Notification errorNotification = new Notification("Update Exposed ActivityType Step Process Properties Error",
-                            "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_UpdateStepProcessPropertiesErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);
