@@ -16,6 +16,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class AddNewExposedActivityStepPanel  extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -36,15 +37,18 @@ public class AddNewExposedActivityStepPanel  extends VerticalLayout {
 
     public AddNewExposedActivityStepPanel(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
-        MainSectionTitle addNewStepSectionTitle=new MainSectionTitle("Add New Exposed Activity Step");
+        MainSectionTitle addNewStepSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ExposeActivityStepButtonLabel"));
         addComponent(addNewStepSectionTitle);
 
         activityStepsInfoMap=new HashMap<String, ActivityStepVO>();
         rolesInfoMap=new HashMap<String, RoleVO>();
 
-        addExposedActivityStepActionsBar=new SectionActionsBar(new Label("Activity Definition : <b>"+""+"</b>" , ContentMode.HTML));
+        addExposedActivityStepActionsBar=new SectionActionsBar(new Label(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DefinitionText")+" : <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(addExposedActivityStepActionsBar);
 
         form = new FormLayout();
@@ -53,20 +57,24 @@ public class AddNewExposedActivityStepPanel  extends VerticalLayout {
         form.addStyleName("light");
         addComponent(form);
 
-        activitySteps = new ComboBox("Exposed Activity Step");
+        activitySteps = new ComboBox(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ExposedStepsText"));
         activitySteps.setRequired(true);
         activitySteps.setWidth("100%");
         activitySteps.setTextInputAllowed(false);
         activitySteps.setNullSelectionAllowed(false);
-        activitySteps.setInputPrompt("Please Select Activity Step Needs Expose");
+        activitySteps.setInputPrompt(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_PleaseSelectStepText"));
         form.addComponent(activitySteps);
 
-        relatedRoles = new ComboBox("Related Role");
+        relatedRoles = new ComboBox(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_StepRelatedRoleText"));
         relatedRoles.setRequired(false);
         relatedRoles.setWidth("100%");
         relatedRoles.setTextInputAllowed(false);
         relatedRoles.setNullSelectionAllowed(true);
-        relatedRoles.setInputPrompt("Please Select Related Role");
+        relatedRoles.setInputPrompt(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_PleaseSelectRoleText"));
         form.addComponent(relatedRoles);
 
         footer = new HorizontalLayout();
@@ -75,7 +83,8 @@ public class AddNewExposedActivityStepPanel  extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        addButton=new Button("Add Exposed Activity Step", new Button.ClickListener() {
+        addButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ExposeStepButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 /* Do add new data field logic */
@@ -89,11 +98,13 @@ public class AddNewExposedActivityStepPanel  extends VerticalLayout {
 
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         String componentId=currentActivitySpaceComponentInfo.getComponentId();
-        Label sectionActionBarLabel=new Label("Activity Type : <b>"+componentId+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+        Label sectionActionBarLabel=new Label(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DefinitionText")+" : <b>"+componentId+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
         addExposedActivityStepActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         if(activityStepsList!=null){
             for(ActivityStepVO currentActivityStepVO:activityStepsList){
@@ -117,9 +128,12 @@ public class AddNewExposedActivityStepPanel  extends VerticalLayout {
     }
 
     public void addNewExposedActivityStep(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         if(activitySteps.getValue()==null){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please select activity step", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_PleaseSelectStepToExposeText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -128,8 +142,10 @@ public class AddNewExposedActivityStepPanel  extends VerticalLayout {
             String activityStepCombinationStr=activitySteps.getValue().toString();
             ActivityStepVO targetActivityStepVO= activityStepsInfoMap.get(activityStepCombinationStr);
             if(this.relatedActivityStepsEditor.getExistActivityStepByName(targetActivityStepVO.getActivityStepName())!=null){
-                Notification errorNotification = new Notification("Data Validation Error",
-                        "Selected Activity Step already exposed", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_ActivityTypeManagement_StepAlreadyExposedText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);

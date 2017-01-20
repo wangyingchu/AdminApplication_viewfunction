@@ -16,10 +16,7 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionButton;
 import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil.getActivityTypeDefinedSteps;
 
@@ -35,11 +32,14 @@ public class ActivityStepsEditor extends VerticalLayout {
 
     public ActivityStepsEditor(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         SectionActionsBar activityStepsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.SLIDERS.getHtml() + " "+
-                "Activity Step Properties:", ContentMode.HTML));
+                userI18NProperties.
+                        getProperty("ActivityManagement_ActivityTypeManagement_ActivityStepPropertiesText")+":", ContentMode.HTML));
         addComponent(activityStepsSectionActionsBar);
         SectionActionButton addNewActivityStepActionButton = new SectionActionButton();
-        addNewActivityStepActionButton.setCaption("Add New Exposed Activity Step");
+        addNewActivityStepActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ExposeActivityStepButtonLabel"));
         addNewActivityStepActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         activityStepsSectionActionsBar.addActionComponent(addNewActivityStepActionButton);
 
@@ -51,6 +51,7 @@ public class ActivityStepsEditor extends VerticalLayout {
                 final Window window = new Window();
                 window.setWidth(670.0f, Unit.PIXELS);
                 window.setHeight(290.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(addNewExposedActivityStepPanel);
@@ -139,13 +140,16 @@ public class ActivityStepsEditor extends VerticalLayout {
     }
 
     public void addNewExposedActivityStep(String activityStepName,String relatedRoleName){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         String activityDefinitionType=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
         boolean addNewExposedStepResult=
                 ActivitySpaceOperationUtil.addActivityTypeExposedStep(activitySpaceName,activityDefinitionType,activityStepName,relatedRoleName);
         if(addNewExposedStepResult){
-            Notification resultNotification = new Notification("Add Data Operation Success",
-                    "Add new exposed activity type step success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_AddDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_ExposeActivityStepSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
@@ -158,8 +162,10 @@ public class ActivityStepsEditor extends VerticalLayout {
                 getActivityStepItemsActionList().addActivityStep(newStepVO);
             }
         }else{
-            Notification errorNotification = new Notification("Add New Exposed ActivityType Step Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_ExposeActivityStepErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);

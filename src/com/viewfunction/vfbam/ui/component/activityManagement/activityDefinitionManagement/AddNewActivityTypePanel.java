@@ -20,6 +20,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Properties;
 
 public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Receiver {
     private UserClientInfo currentUserClientInfo;
@@ -44,13 +45,16 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
 
     public AddNewActivityTypePanel(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
         // Add New Activity Definition Section
-        MainSectionTitle addNewActivityTypeSectionTitle=new MainSectionTitle("Add New Activity Definition");
+        MainSectionTitle addNewActivityTypeSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AddNewActivityTypeButtonLabel"));
         addComponent(addNewActivityTypeSectionTitle);
         addNewActivityTypeActionsBar=new SectionActionsBar(
-                new Label("Activity Space : <b>"+""+"</b>" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_Common_ActivitySpaceText")+" <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(addNewActivityTypeActionsBar);
 
         FormLayout form = new FormLayout();
@@ -59,11 +63,13 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
         form.addStyleName("light");
         addComponent(form);
 
-        activityTypeName = new TextField("Activity Type");
+        activityTypeName = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText"));
         activityTypeName.setRequired(true);
         form.addComponent(activityTypeName);
 
-        activityTypeBPMNFile = new TextField("BPMN2 Definition File");
+        activityTypeBPMNFile = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_BPMNFileText"));
         activityTypeBPMNFile.setRequired(true);
         form.addComponent(activityTypeBPMNFile);
 
@@ -78,7 +84,8 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        addButton=new Button("Add New Activity Definition", new Button.ClickListener() {
+        addButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AddNewActivityTypeButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 addNewActivityType();
@@ -87,7 +94,8 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
         addButton.setIcon(FontAwesome.UPLOAD);
         addButton.addStyleName("primary");
 
-        cancelButton = new Button("Cancel", new Button.ClickListener() {
+        cancelButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_CancelButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 activityTypeName.setEnabled(false);
@@ -107,7 +115,8 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
         upload = new Upload(null, this);
         // make analyzing start immediatedly when file is selected
         upload.setImmediate(true);
-        upload.setButtonCaption("Upload Activity Definition BPMN2 File");
+        upload.setButtonCaption(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_UploadBPMNFileButtonLabel"));
         /*
         upload.addStartedListener(new Upload.StartedListener() {
             @Override
@@ -131,8 +140,10 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
         upload.addFailedListener(new Upload.FailedListener() {
             @Override
             public void uploadFailed(Upload.FailedEvent failedEvent) {
-                Notification errorNotification = new Notification("Upload Activity Definition File Error",
-                        "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("ActivityManagement_ActivityTypeManagement_UploadBPMNFileErrorText"),
+                        userI18NProperties.
+                                getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);
@@ -143,8 +154,10 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
             @Override
             public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
                 if(!succeededEvent.getMIMEType().equals(definitionFileMIMEType)){
-                    Notification errorNotification = new Notification("Activity Definition File Format Error",
-                            "Activity definition file should be a BPMN2 XML file", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_BPMNFileFormatErrorText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_ActivityTypeManagement_ShouldBeBPMNFormatErrorText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);
@@ -161,6 +174,7 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
     }
 
     private void renderAddNewActivityTypeUI(String fileName){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         int idx=fileName.indexOf(".");
         String activityType=fileName.substring(0,idx);
         String[] existingSpacesArray=ActivitySpaceOperationUtil.listActivitySpaces();
@@ -168,8 +182,10 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
             String activitySpaceNamePrefix=currentSpaceName+"_";
             if(activityType.startsWith(activitySpaceNamePrefix)){
                 if(!currentSpaceName.equals(activitySpaceName)){
-                    Notification errorNotification = new Notification("Activity Definition File Error",
-                            "Activity definition file's activity space prefix doesn't match current activity space", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_DefinitionFileContentErrorText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_ActivityTypeManagement_DefinitionFileContentErrorDescText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);
@@ -193,22 +209,27 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
     }
 
     private void addNewActivityType(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         //do add new logic
         ActivitySpaceMetaInfoDAO metaInfoData=ActivitySpaceOperationUtil.
                 getActivitySpaceMetaInfo(activitySpaceName, new String[]{ActivitySpaceOperationUtil.ACTIVITYSPACE_METAINFOTYPE_ACTIVITYTYPE});
         BusinessActivityDefinition[] existingActivityTypes=metaInfoData.getBusinessActivityDefinitions();
         for(BusinessActivityDefinition currentBusinessActivityDefinition:existingActivityTypes){
             if(currentBusinessActivityDefinition.getActivityType().equals(this.activityType)){
-                Notification errorNotification = new Notification("Data Validation Error",
-                        "Activity Definition "+this.activityType+" already exists", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_ActivityTypeManagement_DefinitionText")+" "+this.activityType+" "+userI18NProperties.
+                                getProperty("ActivityManagement_ActivityTypeManagement_AlreadyExistText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);
                 return;
             }
         }
-        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                " Please confirm to add new Activity Definition  <b>"+this.activityType +"</b>", ContentMode.HTML);
+        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_ConfirmAddActivityTypeText")+
+                " <b>"+this.activityType +"</b>", ContentMode.HTML);
         final ConfirmDialog addActivityTypeConfirmDialog = new ConfirmDialog();
         addActivityTypeConfirmDialog.setConfirmMessage(confirmMessage);
         final AddNewActivityTypePanel self=this;
@@ -221,8 +242,10 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
                 boolean addNewActivityTypeResult=
                         ActivitySpaceOperationUtil.addNewActivityType(self.activitySpaceName,self.activityType,self.templateDefinitionFileName);
                 if(addNewActivityTypeResult){
-                    Notification resultNotification = new Notification("Add New Activity Definition Success",
-                            "Add new activity definition success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_AddDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_ActivityTypeManagement_AddActivityTypeSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
@@ -230,8 +253,10 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
                     self.relatedActivityDefinitionsActionTable.loadDefinitionsData();
                     broadcastAddedActivityDefinitionEvent(self.activityType);
                 }else{
-                    Notification errorNotification = new Notification("Add New Activity Definition Error",
-                            "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivityManagement_ActivityTypeManagement_AddActivityTypeErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);
@@ -245,9 +270,11 @@ public class AddNewActivityTypePanel extends VerticalLayout implements Upload.Re
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         if(this.currentUserClientInfo.getActivitySpaceManagementMeteInfo()!=null){
             activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
-            Label activitySpaceNameLabel=new Label("Activity Space : <b>"+activitySpaceName+"</b>" , ContentMode.HTML);
+            Label activitySpaceNameLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_Common_ActivitySpaceText")+" <b>"+activitySpaceName+"</b>" , ContentMode.HTML);
             addNewActivityTypeActionsBar.resetSectionActionsBarContent(activitySpaceNameLabel);
         }
         activityTypeName.setEnabled(false);
