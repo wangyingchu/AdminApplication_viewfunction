@@ -12,6 +12,8 @@ import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.component.common.MainSectionTitle;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class AddNewActivitySpacePanel extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private Window containerDialog;
@@ -19,10 +21,12 @@ public class AddNewActivitySpacePanel extends VerticalLayout {
 
     public AddNewActivitySpacePanel(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
         // Add New Activity Space Section
-        MainSectionTitle addNewActivitySpaceSectionTitle=new MainSectionTitle("Add New Activity Space");
+        MainSectionTitle addNewActivitySpaceSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivitySpaceManagement_CreateSpace_AddSpaceText"));
         addComponent(addNewActivitySpaceSectionTitle);
 
         FormLayout form = new FormLayout();
@@ -31,7 +35,8 @@ public class AddNewActivitySpacePanel extends VerticalLayout {
         form.addStyleName("light");
         addComponent(form);
 
-        activitySpaceName = new TextField("Activity Space Name");
+        activitySpaceName = new TextField(userI18NProperties.
+                getProperty("ActivitySpaceManagement_CreateSpace_SpaceNameText"));
         activitySpaceName.setRequired(true);
         form.addComponent(activitySpaceName);
 
@@ -43,7 +48,8 @@ public class AddNewActivitySpacePanel extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        Button addButton=new Button("Add New Activity Space", new Button.ClickListener() {
+        Button addButton=new Button(userI18NProperties.
+                getProperty("ActivitySpaceManagement_CreateSpace_AddSpaceText"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 /* Do add new activity space logic */
@@ -56,10 +62,13 @@ public class AddNewActivitySpacePanel extends VerticalLayout {
     }
 
     private void addNewActivitySpace(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String activitySpaceNameStr=activitySpaceName.getValue();
         if(activitySpaceNameStr==null||activitySpaceNameStr.trim().equals("")){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please input activity space name", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("ActivitySpaceManagement_CreateSpace_PleaseInputNameText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -67,16 +76,20 @@ public class AddNewActivitySpacePanel extends VerticalLayout {
         }
         boolean isExistActivitySpaceName= ActivitySpaceOperationUtil.checkActivitySpaceExistance(activitySpaceNameStr);
         if(isExistActivitySpaceName){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Activity space "+activitySpaceNameStr+" already exist", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("ActivitySpaceManagement_CreateSpace_NameCheckErrorPart1Text")+" "+activitySpaceNameStr+" "+userI18NProperties.
+                            getProperty("ActivitySpaceManagement_CreateSpace_NameCheckErrorPart2Text"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
             return;
         }
         //do add new logic
-        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                " Please confirm to add new activity space  <b>"+activitySpaceNameStr +"</b>.", ContentMode.HTML);
+        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                getProperty("ActivitySpaceManagement_CreateSpace_ConfirmAddSpaceText")+
+                " <b>"+activitySpaceNameStr +"</b>.", ContentMode.HTML);
         final ConfirmDialog addActivitySpaceConfirmDialog = new ConfirmDialog();
         addActivitySpaceConfirmDialog.setConfirmMessage(confirmMessage);
 
@@ -91,14 +104,18 @@ public class AddNewActivitySpacePanel extends VerticalLayout {
                     self.containerDialog.close();
                     NewActivitySpaceCreatedEvent newActivitySpaceCreatedEvent=new NewActivitySpaceCreatedEvent(activitySpaceNameStr);
                     self.currentUserClientInfo.getEventBlackBoard().fire(newActivitySpaceCreatedEvent);
-                    Notification resultNotification = new Notification("Add Data Operation Success",
-                            "Add new activity space success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_AddDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivitySpaceManagement_CreateSpace_AddSpaceSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
                 }else{
-                    Notification errorNotification = new Notification("Add New Activity Space Error",
-                            "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivitySpaceManagement_CreateSpace_AddSpaceErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);

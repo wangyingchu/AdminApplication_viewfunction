@@ -7,18 +7,22 @@ import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
 import com.viewfunction.vfbam.ui.component.common.MainSectionTitle;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ActivitySpacesConfigurationPanel extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private Window containerDialog;
 
     public ActivitySpacesConfigurationPanel(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
         setWidth("100%");
         setHeight("100%");
         setSizeFull();
-        MainSectionTitle addNewActivitySpaceSectionTitle=new MainSectionTitle("Activity Spaces Configuration");
+        MainSectionTitle addNewActivitySpaceSectionTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivitySpaceManagement_SpaceConfiguration_SpaceConfigText"));
         addComponent(addNewActivitySpaceSectionTitle);
 
         TabSheet activitySpacesConfigurationTabSheet = new TabSheet();

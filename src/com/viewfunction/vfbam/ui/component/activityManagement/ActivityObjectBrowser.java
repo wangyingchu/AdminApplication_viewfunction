@@ -60,7 +60,8 @@ public class ActivityObjectBrowser extends VerticalLayout  implements ActivitySp
             AddNewActivitySpacePanel addNewActivitySpacePanel=new AddNewActivitySpacePanel(this.currentUserClientInfo);
             final Window window = new Window();
             window.setWidth(600.0f, Unit.PIXELS);
-            window.setHeight(200.0f, Unit.PIXELS);
+            window.setHeight(210.0f, Unit.PIXELS);
+            window.setResizable(false);
             window.center();
             window.setModal(true);
             window.setContent(addNewActivitySpacePanel);
@@ -72,6 +73,7 @@ public class ActivityObjectBrowser extends VerticalLayout  implements ActivitySp
             final Window window = new Window();
             window.setWidth(900.0f, Unit.PIXELS);
             window.setHeight(600.0f, Unit.PIXELS);
+            window.setResizable(false);
             window.center();
             window.setModal(true);
             window.setContent(activitySpacesConfigurationPanel);

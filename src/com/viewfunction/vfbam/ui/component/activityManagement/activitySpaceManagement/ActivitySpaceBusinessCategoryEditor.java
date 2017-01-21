@@ -15,6 +15,8 @@ import com.viewfunction.vfbam.ui.component.common.SectionActionButton;
 import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ActivitySpaceBusinessCategoryEditor  extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private String activitySpaceName;
@@ -27,15 +29,19 @@ public class ActivitySpaceBusinessCategoryEditor  extends VerticalLayout {
     public ActivitySpaceBusinessCategoryEditor(UserClientInfo currentUserClientInfo,String activitySpaceName){
         this.currentUserClientInfo=currentUserClientInfo;
         this.activitySpaceName=activitySpaceName;
-
-        SectionActionsBar businessCategoriesSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.LIST.getHtml() + " "+"Activity Business Categories Options", ContentMode.HTML));
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        SectionActionsBar businessCategoriesSectionActionsBar=new SectionActionsBar(new Label(FontAwesome.LIST.getHtml() + " "+userI18NProperties.
+                getProperty("ActivitySpaceManagement_SpaceConfiguration_BusinessCatgOptionsText"), ContentMode.HTML));
         addComponent(businessCategoriesSectionActionsBar);
         addCategoryActionButton = new SectionActionButton();
-        addCategoryActionButton.setCaption("Add New Category");
+        addCategoryActionButton.setCaption(userI18NProperties.
+                getProperty("ActivitySpaceManagement_SpaceConfiguration_AddCategoryButtonLabel"));
         addCategoryActionButton.setIcon(FontAwesome.PLUS_SQUARE);
         addCategoryActionButton.setEnabled(false);
         businessCategoriesSectionActionsBar.addActionComponent(addCategoryActionButton);
-        propertyValuesActionTable=new PropertyValuesActionTable(this.currentUserClientInfo,"270","Categories Option","Activity Business Categories Option",false,false);
+        propertyValuesActionTable=new PropertyValuesActionTable(this.currentUserClientInfo,"270",userI18NProperties.
+                getProperty("ActivitySpaceManagement_SpaceConfiguration_CategoryOptionsText"),userI18NProperties.
+                getProperty("ActivitySpaceManagement_SpaceConfiguration_BusinessCatgOptionText"),false,false);
         addComponent(propertyValuesActionTable);
         addCategoryActionButton.addClickListener(new Button.ClickListener() {
             @Override
@@ -49,11 +55,14 @@ public class ActivitySpaceBusinessCategoryEditor  extends VerticalLayout {
         operationButtonsLayout.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         addComponent(operationButtonsLayout);
 
-        updateButton = new Button("Update", new Button.ClickListener() {
+        updateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                if(updateButton.getCaption().equals("Update")){
-                    updateButton.setCaption("Save");
+                if(updateButton.getCaption().equals(userI18NProperties.
+                        getProperty("ActivityManagement_Common_UpdateButtonLabel"))){
+                    updateButton.setCaption(userI18NProperties.
+                            getProperty("ActivityManagement_Common_SaveButtonLabel"));
                     updateButton.setIcon(FontAwesome.SAVE);
                     updateButton.addStyleName("primary");
                     operationButtonsLayout.addComponent(cancelButton);
@@ -67,7 +76,8 @@ public class ActivitySpaceBusinessCategoryEditor  extends VerticalLayout {
         updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
         operationButtonsLayout.addComponent(updateButton);
 
-        cancelButton = new Button("Cancel", new Button.ClickListener() {
+        cancelButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_CancelButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 disableEdit();
@@ -89,7 +99,9 @@ public class ActivitySpaceBusinessCategoryEditor  extends VerticalLayout {
     }
 
     private void disableEdit(){
-        updateButton.setCaption("Update");
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        updateButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"));
         updateButton.removeStyleName("primary");
         updateButton.setIcon(FontAwesome.HAND_O_RIGHT);
         operationButtonsLayout.removeComponent(cancelButton);
@@ -99,8 +111,10 @@ public class ActivitySpaceBusinessCategoryEditor  extends VerticalLayout {
     }
 
     private void saveCategoriesData(){
-        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                " Please confirm to update business categories for activity space  <b>"+this.activitySpaceName +"</b>", ContentMode.HTML);
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                getProperty("ActivitySpaceManagement_SpaceConfiguration_ConfirmUpdateBusinessCatgText")+
+                " <b>"+this.activitySpaceName +"</b>", ContentMode.HTML);
         final ActivitySpaceBusinessCategoryEditor self=this;
         final String[] newCategories=propertyValuesActionTable.getPropertyValues();
         final ConfirmDialog updatePropertyValueConfirmDialog = new ConfirmDialog();
@@ -116,14 +130,18 @@ public class ActivitySpaceBusinessCategoryEditor  extends VerticalLayout {
                 if(updateCategoryResult){
                     self.currentBusinessCategories=newCategories;
                     disableEdit();
-                    Notification resultNotification = new Notification("Update Data Operation Success",
-                            "Update activity space business categories success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivitySpaceManagement_SpaceConfiguration_UpdateBusinessCatgSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
                 }else{
-                    Notification errorNotification = new Notification("Update Activity Space Business Categories Error",
-                            "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("ActivitySpaceManagement_SpaceConfiguration_UpdateBusinessCatgErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);
