@@ -14,6 +14,7 @@ import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityDataFieldsActionTable extends Table {
 
@@ -44,6 +45,7 @@ public class ActivityDataFieldsActionTable extends Table {
 
     public ActivityDataFieldsActionTable(UserClientInfo currentUserClientInfo, String tableHeight, boolean isActionMode,boolean isFilterMode){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.isActionMode=isActionMode;
         this.isFilterMode=isFilterMode;
         setWidth("100%");
@@ -81,21 +83,69 @@ public class ActivityDataFieldsActionTable extends Table {
         if(this.isActionMode){
             if(!this.isFilterMode) {
                 setColumnHeaders(new String[]{
-                        "Data Field Name", "Display Name", "Data Type", "Description", "Is Array", "Is Mandatory", "Is System", "Actions"
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldNameText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_DisplayNameText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_TypeText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_DescText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_IsArrayText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_IsMandatoryText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_IsSystemText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Table_ListActionPropertyText")
                 });
             }else{
                 setColumnHeaders(new String[]{
-                        "Data Field Name", "Display Name", "Data Type", "Description", "Is Array", "Actions"
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldNameText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_DisplayNameText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_TypeText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_DescText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_IsArrayText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Table_ListActionPropertyText")
                 });
             }
         }else{
             if(!this.isFilterMode) {
                 setColumnHeaders(new String[]{
-                        "Data Field Name", "Display Name", "Data Type", "Description","Is Array", "Is Mandatory", "Is System"
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldNameText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_DisplayNameText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_TypeText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_DescText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_IsArrayText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_IsMandatoryText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_IsSystemText")
                 });
             }else{
                 setColumnHeaders(new String[]{
-                        "Data Field Name", "Display Name", "Data Type", "Description","Is Array"
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldNameText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_DisplayNameText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_TypeText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_DescText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldShortProp_IsArrayText")
                 });
             }
         }
@@ -198,12 +248,15 @@ public class ActivityDataFieldsActionTable extends Table {
 
     public void addNewDataField(String dataFieldName,String dataFieldDisplayName,String dataFieldType,
                                 String dataFieldDesc,boolean isArray,boolean isMandatory,boolean isSystem){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         boolean addDataFieldDefinitionResult=ActivitySpaceOperationUtil.addDataFieldDefinition(activitySpaceName, getDataFieldsQueryId(), getDataFieldQueryType(), dataFieldName, dataFieldDisplayName, dataFieldType,
                 dataFieldDesc, isArray, isMandatory, isSystem);
         if(addDataFieldDefinitionResult){
-            Notification resultNotification = new Notification("Add Data Operation Success",
-                    "Add data field definition success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_AddDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_Common_AddDataFieldDefineSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
@@ -235,8 +288,10 @@ public class ActivityDataFieldsActionTable extends Table {
                 activityDataFieldsList.add(newActivityDataFieldVO);
             }
         }else{
-            Notification errorNotification = new Notification("Add Data Field Definition Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_Common_AddDataFieldDefineErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -245,12 +300,15 @@ public class ActivityDataFieldsActionTable extends Table {
 
     public void updateExistDataField(String dataFieldName,String dataFieldDisplayName,String dataFieldType,
                                      String dataFieldDesc,boolean isArray,boolean isMandatory,boolean isSystem){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         boolean updateDataFieldDefinitionResult=ActivitySpaceOperationUtil.updateDataFieldDefinition(activitySpaceName, getDataFieldsQueryId(), getDataFieldQueryType(), dataFieldName, dataFieldDisplayName, dataFieldType,
                 dataFieldDesc, isArray, isMandatory, isSystem);
         if(updateDataFieldDefinitionResult){
-            Notification resultNotification = new Notification("Update Data Operation Success",
-                    "Update data field definition success", Notification.Type.HUMANIZED_MESSAGE);
+            Notification resultNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_Common_UpdateDataFieldDefineSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
             resultNotification.setPosition(Position.MIDDLE_CENTER);
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
@@ -282,8 +340,10 @@ public class ActivityDataFieldsActionTable extends Table {
                 }
             }
         }else{
-            Notification errorNotification = new Notification("Add Data Field Definition Error",
-                    "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("ActivityManagement_Common_UpdateDataFieldDefineErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -292,15 +352,17 @@ public class ActivityDataFieldsActionTable extends Table {
 
     public void deleteExistDataField(final String dataFieldName){
         Item itemToDelete=this.containerDataSource.getItem(dataFieldName);
-
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
         //need check whether data field is activityType field and is used in activity
         if(DATAFIELDS_TYPE_ACTIVITYTYPE.equals(getDataFieldQueryType())){
             boolean isCurrentDataFieldUsed=
             ActivitySpaceOperationUtil.isDataFieldDefinitionUsedInActivity(activitySpaceName,getDataFieldsQueryId(),dataFieldName);
             if(isCurrentDataFieldUsed){
-                Notification errorNotification = new Notification("Data Field Definition is used in Activity Type",
-                        "Please remove this data field definition from all used place before delete it", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("ActivityManagement_Common_DataFieldIsUsedText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_PleaseRemoveUseBeforeDeleteDataFieldText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);
@@ -309,8 +371,9 @@ public class ActivityDataFieldsActionTable extends Table {
         }
         if(itemToDelete!=null){
             //do delete exist logic
-            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                    " Please confirm to delete data field <b>"+dataFieldName +"</b>.", ContentMode.HTML);
+            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                    getProperty("ActivityManagement_Common_ConfirmDeleteDataFieldText")+
+                    " <b>"+dataFieldName +"</b>.", ContentMode.HTML);
             final ConfirmDialog deleteDataFieldConfirmDialog = new ConfirmDialog();
             deleteDataFieldConfirmDialog.setConfirmMessage(confirmMessage);
             final ActivityDataFieldsActionTable self=this;
@@ -323,8 +386,10 @@ public class ActivityDataFieldsActionTable extends Table {
                     boolean deleteDataFieldDefinitionResult=ActivitySpaceOperationUtil
                             .deleteDataFieldDefinition(activitySpaceName, getDataFieldsQueryId(), getDataFieldQueryType(), dataFieldName);
                     if(deleteDataFieldDefinitionResult){
-                        Notification resultNotification = new Notification("Delete Data Operation Success",
-                                "Delete data field success", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification resultNotification = new Notification(userI18NProperties.
+                                getProperty("Global_Application_DataOperation_DeleteDataSuccessText"),
+                                userI18NProperties.
+                                        getProperty("ActivityManagement_Common_DeleteDataFieldDefineSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                         resultNotification.setPosition(Position.MIDDLE_CENTER);
                         resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                         resultNotification.show(Page.getCurrent());
@@ -351,8 +416,10 @@ public class ActivityDataFieldsActionTable extends Table {
                             }
                         }
                     }else{
-                        Notification errorNotification = new Notification("Delete Data Operation Error",
-                                "Server side error occurred", Notification.Type.ERROR_MESSAGE);
+                        Notification errorNotification = new Notification(userI18NProperties.
+                                getProperty("Global_Application_DataOperation_DeleteDataErrorText"),
+                                userI18NProperties.
+                                        getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
                         errorNotification.setPosition(Position.MIDDLE_CENTER);
                         errorNotification.show(Page.getCurrent());
                         errorNotification.setIcon(FontAwesome.WARNING);
@@ -406,6 +473,7 @@ public class ActivityDataFieldsActionTable extends Table {
                 Window window = new Window();
                 window.setWidth(670.0f, Unit.PIXELS);
                 window.setHeight(450.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(activityDataFieldEditor);

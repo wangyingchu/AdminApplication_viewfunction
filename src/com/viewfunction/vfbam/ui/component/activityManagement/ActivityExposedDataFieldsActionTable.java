@@ -6,15 +6,14 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.viewfunction.vfbam.ui.component.activityManagement.util.ActivityDataFieldVO;
 import com.viewfunction.vfbam.ui.component.activityManagement.util.ActivityStepVO;
-import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityExposedDataFieldsActionTable extends Table {
 
@@ -36,7 +35,7 @@ public class ActivityExposedDataFieldsActionTable extends Table {
 
     public ActivityExposedDataFieldsActionTable(UserClientInfo currentUserClientInfo, String tableHeight){
         this.currentUserClientInfo=currentUserClientInfo;
-
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setWidth("100%");
         if(tableHeight!=null){
             setHeight(tableHeight);
@@ -63,7 +62,20 @@ public class ActivityExposedDataFieldsActionTable extends Table {
         setContainerDataSource(this.containerDataSource);
         setRowHeaderMode(RowHeaderMode.INDEX);
         setColumnHeaders(new String[]{
-                "Data Field Name", "Display Name", "Data Type", "Is Mandatory", "Is Readable", "Is Writable", "Actions"
+                userI18NProperties.
+                        getProperty("ActivityManagement_Common_DataFieldNameText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Common_DataFieldShortProp_DisplayNameText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Common_DataFieldShortProp_TypeText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Common_DataFieldShortProp_IsMandatoryText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Common_DataFieldShortProp_IsReadableText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Common_DataFieldShortProp_IsWritableText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Table_ListActionPropertyText")
         });
 
         setColumnAlignment(columnName_DataFieldName, Align.LEFT);
@@ -184,13 +196,16 @@ public class ActivityExposedDataFieldsActionTable extends Table {
     }
 
     public void deleteExistDataField(final String dataFieldName) {
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         if(this.activityStep!=null){
             String[] stepProcessVariables=this.activityStep.getStepProcessVariables();
             if(stepProcessVariables!=null) {
                 for (String currentProcessVariable : stepProcessVariables) {
                     if(currentProcessVariable.equals(dataFieldName)){
-                        Notification errorNotification = new Notification("Data Validation Error",
-                                "This data field is used in step process variables", Notification.Type.ERROR_MESSAGE);
+                        Notification errorNotification = new Notification(userI18NProperties.
+                                getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                                userI18NProperties.
+                                        getProperty("ActivityManagement_Common_FieldUsedInProcessVariablesText"), Notification.Type.ERROR_MESSAGE);
                         errorNotification.setPosition(Position.MIDDLE_CENTER);
                         errorNotification.show(Page.getCurrent());
                         errorNotification.setIcon(FontAwesome.WARNING);

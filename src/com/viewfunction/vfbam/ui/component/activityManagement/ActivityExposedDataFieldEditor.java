@@ -16,6 +16,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class ActivityExposedDataFieldEditor extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -54,16 +55,19 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
         setSpacing(true);
         setMargin(true);
         this.currentEditMode=editMode;
-
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         if(EDITMODE_NEW.equals(this.currentEditMode)){
-            MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle("Add New Exposed Data Field");
+            MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle(userI18NProperties.
+                    getProperty("ActivityManagement_Common_AddNewExposedFieldText"));
             addComponent(addNewParticipantSectionTitle);
         }else if(EDITMODE_UPDATE.equals(this.currentEditMode)){
-            MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle("Update Exist Exposed Data Field");
+            MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle(userI18NProperties.
+                    getProperty("ActivityManagement_Common_UpdateExposedFieldText"));
             addComponent(addNewParticipantSectionTitle);
         }
 
-        editDataFieldActionsBar=new SectionActionsBar(new Label("Activity Definition : <b>"+""+"</b>" , ContentMode.HTML));
+        editDataFieldActionsBar=new SectionActionsBar(new Label(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DefinitionText")+" : <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(editDataFieldActionsBar);
 
         form = new FormLayout();
@@ -72,12 +76,14 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
         form.addStyleName("light");
         addComponent(form);
 
-        dataFieldDefinitions = new ComboBox("Data Field Definition");
+        dataFieldDefinitions = new ComboBox(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldDefinitionText"));
         dataFieldDefinitions.setRequired(true);
         dataFieldDefinitions.setWidth("100%");
         dataFieldDefinitions.setTextInputAllowed(false);
         dataFieldDefinitions.setNullSelectionAllowed(false);
-        dataFieldDefinitions.setInputPrompt("Please Select Data Field Definition");
+        dataFieldDefinitions.setInputPrompt(userI18NProperties.
+                getProperty("ActivityManagement_Common_SelectDataFieldDefinitionText"));
         dataFieldDefinitions.addValueChangeListener(new Property.ValueChangeListener(){
             @Override
             public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
@@ -89,7 +95,8 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
         });
         form.addComponent(dataFieldDefinitions);
 
-        dataFieldsDisplayForEdit = new TextField("Data Field Definition");
+        dataFieldsDisplayForEdit = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldDefinitionText"));
         dataFieldsDisplayForEdit.setRequired(true);
         dataFieldsDisplayForEdit.setWidth("100%");
         form.addComponent(dataFieldsDisplayForEdit);
@@ -99,13 +106,16 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
         checkboxRow.setSpacing(true);
         form.addComponent(checkboxRow);
 
-        isMandatoryCheck = new CheckBox("Is Mandatory", false);
+        isMandatoryCheck = new CheckBox(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldShortProp_IsMandatoryText"), false);
         checkboxRow.addComponent(isMandatoryCheck);
 
-        isReadableCheck = new CheckBox("Is Readable", false);
+        isReadableCheck = new CheckBox(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldShortProp_IsReadableText"), false);
         checkboxRow.addComponent(isReadableCheck);
 
-        isWritableCheck = new CheckBox("Is Writable", false);
+        isWritableCheck = new CheckBox(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldShortProp_IsWritableText"), false);
         checkboxRow.addComponent(isWritableCheck);
 
         form.setReadOnly(true);
@@ -116,7 +126,8 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        updateButton = new Button("Update", new Button.ClickListener() {
+        updateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 /* Do update current data field logic */
@@ -126,7 +137,8 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
         updateButton.setIcon(FontAwesome.SAVE);
         updateButton.addStyleName("primary");
 
-        resetButton = new Button("Reset Change", new Button.ClickListener() {
+        resetButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_ResetButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 resetFieldData();
@@ -134,7 +146,8 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
         });
         resetButton.setIcon(FontAwesome.TIMES);
 
-        addButton=new Button("Add Data Field", new Button.ClickListener() {
+        addButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_AddDataFieldButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 /* Do add new data field logic */
@@ -159,6 +172,7 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
                 activityDataFieldsInfoMap.put(dataFieldCombinationStr,currentActivityDataFieldVO);
             }
         }
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         String componentType=currentActivitySpaceComponentInfo.getComponentType();
@@ -171,7 +185,8 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
             if(currentActivitySpaceComponentInfo!=null){
                 activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
             }
-            sectionActionBarLabel=new Label("Activity Type : <b>"+componentId+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+            sectionActionBarLabel=new Label(userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText")+" : <b>"+componentId+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             editDataFieldActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
         footer.removeAllComponents();
@@ -220,9 +235,12 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
     }
 
     private boolean addNewDataField(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         if(dataFieldDefinitions.getValue()==null){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please select data field definition", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("ActivityManagement_Common_SelectDataFieldDefinitionText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -231,8 +249,10 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
             final String dataFieldName=activityDataFieldsInfoMap.get(dataFieldDefinitions.getValue().toString()).getDataFieldName();
             this.relatedActivityDataFieldsEditor.getActivityExposedDataFieldByName(dataFieldName);
             if(this.relatedActivityDataFieldsEditor.getActivityExposedDataFieldByName(dataFieldName)!=null){
-                Notification errorNotification = new Notification("Data Validation Error",
-                        "Selected data field already exist", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_SelectedFieldExistText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);

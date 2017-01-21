@@ -5,8 +5,9 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.viewfunction.vfbam.ui.component.common.SectionActionButton;
 import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
-import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
+
+import java.util.Properties;
 
 public class ActivityDataFieldsEditor extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -20,14 +21,13 @@ public class ActivityDataFieldsEditor extends VerticalLayout {
         this.currentUserClientInfo=currentUserClientInfo;
         this.componentType=componentType;
         this.componentId=componentId;
-
-        ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
-                this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
-
-        SectionActionsBar dataFieldsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.TH_LIST.getHtml() + " "+"Data Field Definitions", ContentMode.HTML));
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        SectionActionsBar dataFieldsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.TH_LIST.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_DataFieldsDefineText"), ContentMode.HTML));
         addComponent(dataFieldsSectionActionsBar);
         SectionActionButton addNewDataFieldActionButton = new SectionActionButton();
-        addNewDataFieldActionButton.setCaption("Add New Data Field");
+        addNewDataFieldActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_Common_AddDataFieldText"));
         addNewDataFieldActionButton.setIcon(FontAwesome.PLUS_SQUARE);
 
         if(this.componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ACTIVITYDEFINITION)){
@@ -52,6 +52,7 @@ public class ActivityDataFieldsEditor extends VerticalLayout {
                 final Window window = new Window();
                 window.setWidth(670.0f, Unit.PIXELS);
                 window.setHeight(450.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(activityDataFieldEditor);

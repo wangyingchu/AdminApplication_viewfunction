@@ -15,6 +15,8 @@ import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.ApplicationConstant;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class ActivityDataFieldEditor  extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     public static final String EDITMODE_UPDATE="EDITMODE_UPDATE";
@@ -55,19 +57,23 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
 
     public ActivityDataFieldEditor(UserClientInfo currentUserClientInfo,String editMode,boolean isFilterMode){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setSpacing(true);
         setMargin(true);
         this.currentEditMode=editMode;
         this.isFilterMode=isFilterMode;
         if(EDITMODE_NEW.equals(this.currentEditMode)){
-            MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle("Add New Data Field");
+            MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle(userI18NProperties.
+                    getProperty("ActivityManagement_Common_AddDataFieldText"));
             addComponent(addNewParticipantSectionTitle);
         }else if(EDITMODE_UPDATE.equals(this.currentEditMode)){
-            MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle("Update Exist Data Field");
+            MainSectionTitle addNewParticipantSectionTitle=new MainSectionTitle(userI18NProperties.
+                    getProperty("ActivityManagement_Common_UpdateDataFieldText"));
             addComponent(addNewParticipantSectionTitle);
         }
 
-        editDataFieldActionsBar=new SectionActionsBar(new Label("Activity Space : <b>"+""+"</b>" , ContentMode.HTML));
+        editDataFieldActionsBar=new SectionActionsBar(new Label(userI18NProperties.
+                getProperty("ActivityManagement_Common_ActivitySpaceText")+" <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(editDataFieldActionsBar);
 
         form = new FormLayout();
@@ -76,22 +82,26 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         form.addStyleName("light");
         addComponent(form);
 
-        dataFieldNameName = new TextField("Data Field Name");
+        dataFieldNameName = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldNameText"));
         dataFieldNameName.setRequired(true);
         dataFieldNameName.setWidth("100%");
         form.addComponent(dataFieldNameName);
 
-        dataFieldDisplayName = new TextField("Data Field Display Name");
+        dataFieldDisplayName = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldDisplayNameText"));
         dataFieldDisplayName.setWidth("100%");
         dataFieldDisplayName.setRequired(true);
         form.addComponent(dataFieldDisplayName);
 
-        dataFieldType = new ComboBox("Data Field Type");
+        dataFieldType = new ComboBox(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldTypeNameText"));
         dataFieldType.setRequired(true);
         dataFieldType.setWidth("100%");
         dataFieldType.setTextInputAllowed(false);
         dataFieldType.setNullSelectionAllowed(false);
-        dataFieldType.setInputPrompt("Please Select Data Field Type");
+        dataFieldType.setInputPrompt(userI18NProperties.
+                        getProperty("ActivityManagement_Common_PleaseSelectDataTypeText"));
         dataFieldType.addItem(ApplicationConstant.DataFieldType_STRING);
         dataFieldType.addItem(ApplicationConstant.DataFieldType_BINARY);
         dataFieldType.addItem(ApplicationConstant.DataFieldType_BOOLEAN);
@@ -101,7 +111,8 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         dataFieldType.addItem(ApplicationConstant.DataFieldType_LONG);
         form.addComponent(dataFieldType);
 
-        dataFieldDescription = new TextArea("Data Field Description");
+        dataFieldDescription = new TextArea(userI18NProperties.
+                getProperty("ActivityManagement_Common_DataFieldDescText"));
         dataFieldDescription.setRequired(true);
         dataFieldDescription.setWidth("100%");
         dataFieldDescription.setRows(2);
@@ -112,13 +123,16 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         checkboxRow.setSpacing(true);
         form.addComponent(checkboxRow);
 
-        arrayFieldCheck = new CheckBox("Array Field", false);
+        arrayFieldCheck = new CheckBox(userI18NProperties.
+                getProperty("ActivityManagement_Common_ArrayDataFieldText"), false);
         checkboxRow.addComponent(arrayFieldCheck);
 
-        mandatoryFieldCheck = new CheckBox("Mandatory Field", false);
+        mandatoryFieldCheck = new CheckBox(userI18NProperties.
+                getProperty("ActivityManagement_Common_MandatoryDataFieldText"), false);
         checkboxRow.addComponent(mandatoryFieldCheck);
 
-        systemFieldCheck = new CheckBox("System Field", false);
+        systemFieldCheck = new CheckBox(userI18NProperties.
+                getProperty("ActivityManagement_Common_SystemDataFieldText"), false);
         checkboxRow.addComponent(systemFieldCheck);
         form.setReadOnly(true);
 
@@ -128,7 +142,8 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        updateButton = new Button("Update", new Button.ClickListener() {
+        updateButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_UpdateButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 /* Do update current data field logic */
@@ -138,7 +153,8 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         updateButton.setIcon(FontAwesome.SAVE);
         updateButton.addStyleName("primary");
 
-        resetButton = new Button("Reset Change", new Button.ClickListener() {
+        resetButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_ResetButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 resetFieldData();
@@ -146,7 +162,8 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         });
         resetButton.setIcon(FontAwesome.TIMES);
 
-        addButton=new Button("Add Data Field", new Button.ClickListener() {
+        addButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_AddDataFieldButtonLabel"), new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 /* Do add new data field logic */
@@ -165,6 +182,7 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
                 this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
         if(getComponentType()==null){
@@ -176,13 +194,16 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
                 activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
             }
             if(componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ROLEQUEUE)){
-                sectionActionBarLabel=new Label("Role Queue : <b>"+getComponentID()+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+                sectionActionBarLabel=new Label(userI18NProperties.
+                        getProperty("ActivityManagement_RoleQueuesManagement_RoleQueueText")+" : <b>"+getComponentID()+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             }
             if(componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ROSTER)){
-                sectionActionBarLabel=new Label("Roster : <b>"+getComponentID()+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+                sectionActionBarLabel=new Label(userI18NProperties.
+                        getProperty("ActivityManagement_RosterManagement_RosterText")+" : <b>"+getComponentID()+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             }
             if(componentType.equals(ActivityManagementConst.COMPONENT_TYPE_ACTIVITYDEFINITION)){
-                sectionActionBarLabel=new Label("Activity Type : <b>"+getComponentID()+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
+                sectionActionBarLabel=new Label(userI18NProperties.
+                        getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText")+" : <b>"+getComponentID()+"</b> &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]" , ContentMode.HTML);
             }
             editDataFieldActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         }
@@ -212,6 +233,7 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
     }
 
     private boolean updateCurrentDataField(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String dataFieldNameStr=dataFieldNameName.getValue();
         final String dataFieldDisplayNameStr=dataFieldDisplayName.getValue();
         final Object dataFieldTypeObj=dataFieldType.getValue();
@@ -221,23 +243,29 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         final boolean isSystem=systemFieldCheck.getValue();
         if(dataFieldNameStr.equals("")||dataFieldDisplayNameStr.equals("")||
                 dataFieldTypeObj==null||dataFieldDescStr.equals("")){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please input all required fields", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_PleaseInputAllFieldText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
             return false;
         }else{
-            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                    " Please confirm to update data field <b>"+dataFieldNameStr +"</b>'s information.", ContentMode.HTML);
+            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                    getProperty("ActivityManagement_Common_ConfirmUpdateDataFieldPart1Text")+
+                    " <b>"+dataFieldNameStr +"</b>"+userI18NProperties.
+                    getProperty("ActivityManagement_Common_ConfirmUpdateDataFieldPart2Text"), ContentMode.HTML);
             final ConfirmDialog updateDataFieldConfirmDialog = new ConfirmDialog();
             updateDataFieldConfirmDialog.setConfirmMessage(confirmMessage);
             final ActivityDataFieldEditor self=this;
             Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(final Button.ClickEvent event) {
-                    Notification resultNotification = new Notification("Update Data Operation Success",
-                            "Update data field success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_UpdateDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_Common_UpdateDataFieldSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());
@@ -297,6 +325,7 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
     }
 
     private boolean addNewDataField(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         final String dataFieldNameStr=dataFieldNameName.getValue();
         final String dataFieldDisplayNameStr=dataFieldDisplayName.getValue();
         final Object dataFieldTypeObj=dataFieldType.getValue();
@@ -306,8 +335,10 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         final boolean isSystem=systemFieldCheck.getValue();
         if(dataFieldNameStr.equals("")||dataFieldDisplayNameStr.equals("")||
                 dataFieldTypeObj==null||dataFieldDescStr.equals("")){
-            Notification errorNotification = new Notification("Data Validation Error",
-                    "Please input all required fields", Notification.Type.ERROR_MESSAGE);
+            Notification errorNotification = new Notification(userI18NProperties.
+                    getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                    userI18NProperties.
+                            getProperty("Global_Application_DataOperation_PleaseInputAllFieldText"), Notification.Type.ERROR_MESSAGE);
             errorNotification.setPosition(Position.MIDDLE_CENTER);
             errorNotification.show(Page.getCurrent());
             errorNotification.setIcon(FontAwesome.WARNING);
@@ -315,8 +346,10 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
         }else{
             boolean dataFieldNotExistCheck=this.relatedActivityDataFieldsEditor.dataFieldNotExistCheck(dataFieldNameStr);
             if(!dataFieldNotExistCheck){
-                Notification errorNotification = new Notification("Data Validation Error",
-                        "Data field already exist", Notification.Type.ERROR_MESSAGE);
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DataFieldExistText"), Notification.Type.ERROR_MESSAGE);
                 errorNotification.setPosition(Position.MIDDLE_CENTER);
                 errorNotification.show(Page.getCurrent());
                 errorNotification.setIcon(FontAwesome.WARNING);
@@ -324,16 +357,19 @@ public class ActivityDataFieldEditor  extends VerticalLayout {
 
             }
             //do add new logic
-            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                    " Please confirm to add new data field <b>"+dataFieldNameStr +"</b>.", ContentMode.HTML);
+            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                    getProperty("ActivityManagement_Common_ConfirmAddDataFieldText")+
+                    " <b>"+dataFieldNameStr +"</b>.", ContentMode.HTML);
             final ConfirmDialog addDataFieldConfirmDialog = new ConfirmDialog();
             addDataFieldConfirmDialog.setConfirmMessage(confirmMessage);
             final ActivityDataFieldEditor self=this;
             Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
                 @Override
                 public void buttonClick(final Button.ClickEvent event) {
-                    Notification resultNotification = new Notification("Add Data Operation Success",
-                            "Add new data field success", Notification.Type.HUMANIZED_MESSAGE);
+                    Notification resultNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_AddDataSuccessText"),
+                            userI18NProperties.
+                                    getProperty("ActivityManagement_Common_AddDataFieldSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
                     resultNotification.setPosition(Position.MIDDLE_CENTER);
                     resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
                     resultNotification.show(Page.getCurrent());

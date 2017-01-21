@@ -7,11 +7,11 @@ import com.viewfunction.vfbam.ui.component.activityManagement.util.ActivityDataF
 import com.viewfunction.vfbam.ui.component.activityManagement.util.ActivityStepVO;
 import com.viewfunction.vfbam.ui.component.common.SectionActionButton;
 import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
-import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityExposedDataFieldsEditor extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
@@ -27,16 +27,17 @@ public class ActivityExposedDataFieldsEditor extends VerticalLayout {
     public ActivityExposedDataFieldsEditor(UserClientInfo currentUserClientInfo,
                                            String dataFieldQueryType,String dataFieldsQueryId,ActivityStepVO activityStep){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.dataFieldQueryType=dataFieldQueryType;
         this.dataFieldsQueryId=dataFieldsQueryId;
         this.activityStep=activityStep;
-        ActivitySpaceManagementMeteInfo currentActivitySpaceComponentInfo=
-                this.currentUserClientInfo.getActivitySpaceManagementMeteInfo();
 
-        SectionActionsBar dataFieldsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.TH_LIST.getHtml() + " "+"Exposed Data Fields", ContentMode.HTML));
+        SectionActionsBar dataFieldsSectionActionsBar=new SectionActionsBar(new Label( FontAwesome.TH_LIST.getHtml() + " "+userI18NProperties.
+                getProperty("ActivityManagement_Common_ExposedFieldText"), ContentMode.HTML));
         addComponent(dataFieldsSectionActionsBar);
         addNewExposedDataFieldActionButton = new SectionActionButton();
-        addNewExposedDataFieldActionButton.setCaption("Add Exposed Data Fields");
+        addNewExposedDataFieldActionButton.setCaption(userI18NProperties.
+                getProperty("ActivityManagement_Common_AddExposedFieldText"));
         addNewExposedDataFieldActionButton.setIcon(FontAwesome.PLUS_SQUARE);
 
         activityExposedDataFieldEditor=new ActivityExposedDataFieldEditor(this.currentUserClientInfo,ActivityExposedDataFieldEditor.EDITMODE_NEW);
@@ -48,6 +49,7 @@ public class ActivityExposedDataFieldsEditor extends VerticalLayout {
                 final Window window = new Window();
                 window.setWidth(670.0f, Unit.PIXELS);
                 window.setHeight(300.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(activityExposedDataFieldEditor);

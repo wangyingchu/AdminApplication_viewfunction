@@ -8,10 +8,9 @@ import com.viewfunction.activityEngine.activityView.Roster;
 import com.viewfunction.activityEngine.exception.ActivityEngineException;
 import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
-import org.activiti.engine.impl.pvm.process.ActivityImpl;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityInstancesActionTable extends Table {
     private UserClientInfo currentUserClientInfo;
@@ -27,6 +26,7 @@ public class ActivityInstancesActionTable extends Table {
 
     public ActivityInstancesActionTable(UserClientInfo currentUserClientInfo, String tableHeight,boolean isActionMode){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.isActionMode=isActionMode;
         setWidth("100%");
         if(tableHeight!=null){
@@ -50,7 +50,10 @@ public class ActivityInstancesActionTable extends Table {
         if(this.isActionMode){
             setRowHeaderMode(RowHeaderMode.INDEX);
         }
-        setColumnHeaders(new String[]{ "Activity Id", "Activity Type" });
+        setColumnHeaders(new String[]{ userI18NProperties.
+                getProperty("ActivityManagement_Common_ActivityIdText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText") });
         setColumnAlignment(columnName_ActivityId, Align.LEFT);
         setColumnAlignment(columnName_ActivityType, Align.LEFT);
     }
