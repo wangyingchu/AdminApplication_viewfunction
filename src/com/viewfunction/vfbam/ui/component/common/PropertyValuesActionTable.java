@@ -9,6 +9,7 @@ import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class PropertyValuesActionTable extends Table {
     private UserClientInfo currentUserClientInfo;
@@ -24,6 +25,7 @@ public class PropertyValuesActionTable extends Table {
     private IndexedContainer containerDataSource;
     public PropertyValuesActionTable(UserClientInfo currentUserClientInfo,String tableHeight,String propertyValueDisplayName,String propertyEditorDisplayName,boolean allowEditOperation,boolean allowRemoveOperation){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.propertyEditorDisplayName=propertyEditorDisplayName;
         this.allowEditOperation=allowEditOperation;
         this.allowRemoveOperation=allowRemoveOperation;
@@ -49,7 +51,8 @@ public class PropertyValuesActionTable extends Table {
         this.containerDataSource.addContainerProperty(columnName_propertyValue, String.class, null);
         this.containerDataSource.addContainerProperty(columnName_propertyOperations, PropertyValueTableRowActions.class, null);
         setContainerDataSource(this.containerDataSource);
-        setColumnHeaders(new String[]{propertyValueDisplayName, "Actions"});
+        setColumnHeaders(new String[]{propertyValueDisplayName, userI18NProperties.
+                getProperty("ActivityManagement_Table_ListActionPropertyText")});
         setRowHeaderMode(RowHeaderMode.INDEX);
         setColumnAlignment(columnName_propertyValue, Align.LEFT);
         setColumnAlignment(columnName_propertyOperations, Align.CENTER);
@@ -130,9 +133,11 @@ public class PropertyValuesActionTable extends Table {
     }
 
     public void deletePropertyValue(final Object itemId){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         if(this.displayDeleteValueConfirmMessage){
-            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+
-                    " Please confirm to delete property value  <b>"+itemId.toString() +"</b>.", ContentMode.HTML);
+            Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                    getProperty("ActivityManagement_Common_ConfirmDeletePropertyValueText")+
+                    " <b>"+itemId.toString() +"</b>.", ContentMode.HTML);
             final ConfirmDialog deletePropertyValueConfirmDialog = new ConfirmDialog();
             deletePropertyValueConfirmDialog.setConfirmMessage(confirmMessage);
             Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {

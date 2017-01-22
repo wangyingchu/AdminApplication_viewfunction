@@ -5,6 +5,8 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class DataFieldsTableRowActions  extends HorizontalLayout {
     private UserClientInfo currentUserClientInfo;
     private ActivityDataFieldsActionTable containerActivityDataFieldsActionTable;
@@ -14,10 +16,12 @@ public class DataFieldsTableRowActions  extends HorizontalLayout {
     private Button deleteDataFieldButton;
     public DataFieldsTableRowActions(UserClientInfo currentUserClientInfo,String componentId){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.componentId=componentId;
         editDataFieldsButton = new Button();
         editDataFieldsButton.setIcon(FontAwesome.EDIT);
-        editDataFieldsButton.setDescription("Edit Data Field");
+        editDataFieldsButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_Common_EditDataFieldText"));
         editDataFieldsButton.addStyleName("small");
         editDataFieldsButton.addStyleName("borderless");
         addComponent(editDataFieldsButton);
@@ -35,7 +39,8 @@ public class DataFieldsTableRowActions  extends HorizontalLayout {
         });
         deleteDataFieldButton = new Button();
         deleteDataFieldButton.setIcon(FontAwesome.TRASH_O);
-        deleteDataFieldButton.setDescription("Delete Data Field");
+        deleteDataFieldButton.setDescription(userI18NProperties.
+                getProperty("ActivityManagement_Common_DeleteDataFieldText"));
         deleteDataFieldButton.addStyleName("small");
         deleteDataFieldButton.addStyleName("borderless");
         addComponent(deleteDataFieldButton);

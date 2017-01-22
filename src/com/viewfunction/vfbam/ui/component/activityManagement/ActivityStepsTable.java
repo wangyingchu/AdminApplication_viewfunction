@@ -2,8 +2,6 @@ package com.viewfunction.vfbam.ui.component.activityManagement;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Table;
 import com.viewfunction.activityEngine.activityView.common.ActivityStep;
 import com.viewfunction.activityEngine.activityView.common.ParticipantTask;
@@ -12,8 +10,8 @@ import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 public class ActivityStepsTable extends Table {
     private UserClientInfo currentUserClientInfo;
@@ -34,6 +32,7 @@ public class ActivityStepsTable extends Table {
 
     public ActivityStepsTable(UserClientInfo currentUserClientInfo, String tableHeight){
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         setWidth("100%");
         if(tableHeight!=null){
             setHeight(tableHeight);
@@ -65,7 +64,16 @@ public class ActivityStepsTable extends Table {
 
         //setRowHeaderMode(RowHeaderMode.INDEX);
         setColumnHeaders(new String[]{
-                "Activity Step", "Activity Type", "Role Name","Create Time","Due Date"
+                userI18NProperties.
+                    getProperty("ActivityManagement_ActivityTypeManagement_StepText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_RolesManagement_NamePropertyText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Common_Activity_CreateTimeText"),
+                userI18NProperties.
+                        getProperty("ActivityManagement_Common_Activity_DueDateText")
 
         });
         setColumnAlignment(columnName_StepName, Align.LEFT);

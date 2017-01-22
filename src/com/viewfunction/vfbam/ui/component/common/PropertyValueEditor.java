@@ -8,6 +8,8 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
+import java.util.Properties;
+
 public class PropertyValueEditor extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private SectionActionsBar editPropertyValueActionsBar;
@@ -26,20 +28,24 @@ public class PropertyValueEditor extends VerticalLayout {
     public PropertyValueEditor(UserClientInfo currentUserClientInfo,String editorType,String propertyName){
         this.currentEditMode=editorType;
         this.currentUserClientInfo=currentUserClientInfo;
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
         this.propertyName=propertyName;
         setSpacing(true);
         setMargin(true);
         MainSectionTitle propertyValueEditSectionTitle=null;
 
         if(EDITMODE_UPDATE.equals(this.currentEditMode)){
-            propertyValueEditSectionTitle=new MainSectionTitle("Edit Property Value");
+            propertyValueEditSectionTitle=new MainSectionTitle(userI18NProperties.
+                    getProperty("ActivityManagement_Common_EditPropertyValueText"));
         }
         if(EDITMODE_NEW.equals(this.currentEditMode)){
-            propertyValueEditSectionTitle=new MainSectionTitle("Add New Property Value");
+            propertyValueEditSectionTitle=new MainSectionTitle(userI18NProperties.
+                    getProperty("ActivityManagement_Common_AddPropertyValueText"));
         }
         addComponent(propertyValueEditSectionTitle);
         editPropertyValueActionsBar=new SectionActionsBar(
-                new Label("Activity Space : <b>"+""+"</b>" , ContentMode.HTML));
+                new Label(userI18NProperties.
+                        getProperty("ActivityManagement_Common_ActivitySpaceText")+" <b>"+""+"</b>" , ContentMode.HTML));
         addComponent(editPropertyValueActionsBar);
 
         FormLayout form = new FormLayout();
@@ -48,7 +54,8 @@ public class PropertyValueEditor extends VerticalLayout {
         form.addStyleName("light");
         addComponent(form);
 
-        propertyValue = new TextField("Property Value");
+        propertyValue = new TextField(userI18NProperties.
+                getProperty("ActivityManagement_Common_PropertyValueText"));
         propertyValue.setRequired(true);
         propertyValue.setWidth("100%");
         form.addComponent(propertyValue);
@@ -60,14 +67,17 @@ public class PropertyValueEditor extends VerticalLayout {
         footer.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
         form.addComponent(footer);
 
-        saveButton = new Button("OK");
+        saveButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_OKButtonLabel"));
         saveButton.setIcon(FontAwesome.CHECK);
         saveButton.addStyleName("primary");
 
-        cancelButton = new Button("Cancel");
+        cancelButton = new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_CancelButtonLabel"));
         cancelButton.setIcon(FontAwesome.TIMES);
 
-        addButton=new Button("Add New Property Value");
+        addButton=new Button(userI18NProperties.
+                getProperty("ActivityManagement_Common_AddPropertyValueText"));
         addButton.setIcon(FontAwesome.PLUS_SQUARE);
         addButton.addStyleName("primary");
 
@@ -83,8 +93,10 @@ public class PropertyValueEditor extends VerticalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 if(!propertyValue.getValue().equals("")){
                     if(relatedPropertyValuesActionTable.checkValueExistance(propertyValue.getValue())){
-                        Notification errorNotification = new Notification("Data Validation Error",
-                                "Input data value already exist", Notification.Type.ERROR_MESSAGE);
+                        Notification errorNotification = new Notification(userI18NProperties.
+                                getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                                userI18NProperties.
+                                        getProperty("ActivityManagement_Common_PropertyValueAlreadyExistText"), Notification.Type.ERROR_MESSAGE);
                         errorNotification.setPosition(Position.MIDDLE_CENTER);
                         errorNotification.show(Page.getCurrent());
                         errorNotification.setIcon(FontAwesome.WARNING);
@@ -94,8 +106,10 @@ public class PropertyValueEditor extends VerticalLayout {
                     }
 
                 }else{
-                    Notification errorNotification = new Notification("Data Validation Error",
-                            "Please input all required fields", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_PleaseInputAllFieldText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);
@@ -108,8 +122,10 @@ public class PropertyValueEditor extends VerticalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 if(!propertyValue.getValue().equals("")){
                     if(relatedPropertyValuesActionTable.checkValueExistance(propertyValue.getValue())){
-                        Notification errorNotification = new Notification("Data Validation Error",
-                                "Input data value already exist", Notification.Type.ERROR_MESSAGE);
+                        Notification errorNotification = new Notification(userI18NProperties.
+                                getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                                userI18NProperties.
+                                        getProperty("ActivityManagement_Common_PropertyValueAlreadyExistText"), Notification.Type.ERROR_MESSAGE);
                         errorNotification.setPosition(Position.MIDDLE_CENTER);
                         errorNotification.show(Page.getCurrent());
                         errorNotification.setIcon(FontAwesome.WARNING);
@@ -119,8 +135,10 @@ public class PropertyValueEditor extends VerticalLayout {
                     }
 
                 }else{
-                    Notification errorNotification = new Notification("Data Validation Error",
-                            "Please input all required fields", Notification.Type.ERROR_MESSAGE);
+                    Notification errorNotification = new Notification(userI18NProperties.
+                            getProperty("Global_Application_DataOperation_DataValidateErrorText"),
+                            userI18NProperties.
+                                    getProperty("Global_Application_DataOperation_PleaseInputAllFieldText"), Notification.Type.ERROR_MESSAGE);
                     errorNotification.setPosition(Position.MIDDLE_CENTER);
                     errorNotification.show(Page.getCurrent());
                     errorNotification.setIcon(FontAwesome.WARNING);
@@ -136,7 +154,9 @@ public class PropertyValueEditor extends VerticalLayout {
     @Override
     public void attach() {
         super.attach();
-        Label sectionActionBarLabel=new Label("Property Name : <b>"+this.propertyName+"</b> " , ContentMode.HTML);
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        Label sectionActionBarLabel=new Label(userI18NProperties.
+                getProperty("ActivityManagement_Common_PropertyNameText")+" : <b>"+this.propertyName+"</b> " , ContentMode.HTML);
         editPropertyValueActionsBar.resetSectionActionsBarContent(sectionActionBarLabel);
         footer.removeAllComponents();
         if(EDITMODE_NEW.equals(this.currentEditMode)){
