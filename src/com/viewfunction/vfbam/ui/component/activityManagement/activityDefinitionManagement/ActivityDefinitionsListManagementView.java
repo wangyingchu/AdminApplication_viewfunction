@@ -46,6 +46,7 @@ public class ActivityDefinitionsListManagementView extends VerticalLayout implem
                 final Window window = new Window();
                 window.setWidth(700.0f, Unit.PIXELS);
                 window.setHeight(300.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(addNewActivityTypePanel);

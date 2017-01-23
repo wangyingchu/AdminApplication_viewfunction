@@ -75,6 +75,7 @@ public class RosterDetailInfo  extends VerticalLayout {
                 final Window window = new Window();
                 window.setWidth(700.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(rosterRelatedActivityDefinitionsSelector);
                 rosterRelatedActivityDefinitionsSelector.setContainerDialog(window);

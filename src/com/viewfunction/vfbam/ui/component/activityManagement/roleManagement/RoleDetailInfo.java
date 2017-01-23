@@ -70,6 +70,7 @@ public class RoleDetailInfo extends VerticalLayout {
                 final Window window = new Window();
                 window.setWidth(1000.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(roleRelatedRoleQueuesSelector);
@@ -108,6 +109,7 @@ public class RoleDetailInfo extends VerticalLayout {
                 final Window window = new Window();
                 window.setWidth(900.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(roleContainsParticipantsSelector);

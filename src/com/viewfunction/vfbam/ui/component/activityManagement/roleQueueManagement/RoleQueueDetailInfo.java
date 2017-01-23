@@ -69,6 +69,7 @@ public class RoleQueueDetailInfo extends VerticalLayout {
                 final Window window = new Window();
                 window.setWidth(900.0f, Unit.PIXELS);
                 window.setHeight(490.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setContent(roleQueueRelatedRolesSelector);
                 roleQueueRelatedRolesSelector.setContainerDialog(window);

@@ -51,6 +51,7 @@ public class RostersListManagementView extends VerticalLayout implements View {
                 final Window window = new Window();
                 window.setWidth(700.0f, Unit.PIXELS);
                 window.setHeight(390.0f, Unit.PIXELS);
+                window.setResizable(false);
                 window.center();
                 window.setModal(true);
                 window.setContent(addNewRosterPanel);
