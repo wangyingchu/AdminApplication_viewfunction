@@ -1144,4 +1144,24 @@ public class ActivitySpaceOperationUtil {
             return true;
         }
     }
+
+    public static Map<String,String> getActivityTypeStepProcessEditors(String activitySpaceName, String activityType){
+        try {
+            ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
+            return targetActivitySpace.getBusinessActivityDefinitionStepProcessEditorsInfo(activityType);
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean updateActivityTypeStepProcessEditors(String activitySpaceName, String activityType,Map<String,String> stepEditorMap){
+        try {
+            ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
+            return targetActivitySpace.setBusinessActivityDefinitionStepProcessEditorInfo(activityType,stepEditorMap);
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

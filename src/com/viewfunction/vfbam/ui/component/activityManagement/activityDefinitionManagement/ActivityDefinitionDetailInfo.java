@@ -18,6 +18,7 @@ import com.viewfunction.vfbam.ui.component.activityManagement.util.*;
 import com.viewfunction.vfbam.ui.component.common.MainSectionTitle;
 import com.viewfunction.vfbam.ui.util.ActivitySpaceManagementMeteInfo;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
+import com.vaadin.icons.VaadinIcons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +95,16 @@ public class ActivityDefinitionDetailInfo extends VerticalLayout {
         activityDefinitionBPMNEditor=new ActivityDefinitionBPMNEditor(this.currentUserClientInfo);
         activityDefinitionBPMNEditor.setContainerActivityDefinitionDetailInfo(this);
         activityDefinitionBPMNLayout.addComponent(activityDefinitionBPMNEditor);
+
+        VerticalLayout activityDefinitionAdditionalMetaDataConfigLayout=new VerticalLayout();
+        Tab additionalConfigurationTab=tabs.addTab(activityDefinitionAdditionalMetaDataConfigLayout, userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AdditionalConfigurationText"));
+        additionalConfigurationTab.setIcon(VaadinIcons.FORM);
+        MainSectionTitle _AdditionalConfigTitle=new MainSectionTitle(userI18NProperties.
+                getProperty("ActivityManagement_ActivityTypeManagement_AdditionalConfigurationText"));
+        activityDefinitionAdditionalMetaDataConfigLayout.addComponent(_AdditionalConfigTitle);
+        ActivityAdditionalConfigurationEditor activityAdditionalConfigurationEditor=new ActivityAdditionalConfigurationEditor(this.currentUserClientInfo);
+        activityDefinitionAdditionalMetaDataConfigLayout.addComponent(activityAdditionalConfigurationEditor);
 
         loadActivityDefinitionData();
     }
