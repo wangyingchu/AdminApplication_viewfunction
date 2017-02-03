@@ -5,10 +5,7 @@ import com.viewfunction.activityEngine.activityBureau.BusinessActivityDefinition
 import com.viewfunction.activityEngine.activityBureauImpl.CCRBusinessActivityDefinitionImpl;
 import com.viewfunction.activityEngine.activityView.RoleQueue;
 import com.viewfunction.activityEngine.activityView.Roster;
-import com.viewfunction.activityEngine.activityView.common.ActivityStep;
-import com.viewfunction.activityEngine.activityView.common.ActivityStepDefinition;
-import com.viewfunction.activityEngine.activityView.common.DataFieldDefinition;
-import com.viewfunction.activityEngine.activityView.common.ParticipantTask;
+import com.viewfunction.activityEngine.activityView.common.*;
 import com.viewfunction.activityEngine.exception.ActivityEngineActivityException;
 import com.viewfunction.activityEngine.exception.ActivityEngineDataException;
 import com.viewfunction.activityEngine.exception.ActivityEngineException;
@@ -1159,6 +1156,61 @@ public class ActivitySpaceOperationUtil {
         try {
             ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
             return targetActivitySpace.setBusinessActivityDefinitionStepProcessEditorInfo(activityType,stepEditorMap);
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static CustomStructure getActivityStepRootCustomConfigItem(String activitySpaceName, String activityType,String activityStep){
+        try {
+            ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
+            CustomStructure stepCustomConfigItemRootStructure=targetActivitySpace.getBusinessActivityDefinitionStepCustomStructure(activityType,activityStep);
+            return stepCustomConfigItemRootStructure;
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<CustomStructure> getActivityStepCustomConfigItemsList(String activitySpaceName, String activityType,String activityStep){
+        try {
+            ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
+            CustomStructure stepCustomConfigItemRootStructure=targetActivitySpace.getBusinessActivityDefinitionStepCustomStructure(activityType,activityStep);
+            List<CustomStructure> subStructureList=stepCustomConfigItemRootStructure.getSubCustomStructures();
+            return subStructureList;
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<CustomStructure> getSubCustomConfigItemsList(CustomStructure targetStructure){
+        try {
+            List<CustomStructure> subStructureList=targetStructure.getSubCustomStructures();
+            return subStructureList;
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static CustomStructure addSubCustomStructure(CustomStructure parentCustomStructure, String subStructureName){
+        CustomStructure resultStructure=null;
+        try {
+            boolean addStructureResult=parentCustomStructure.addSubCustomStructure(subStructureName);
+            if(addStructureResult){
+                resultStructure =parentCustomStructure.getSubCustomStructure(subStructureName);
+            }
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return resultStructure;
+    }
+
+    public static boolean deleteSubCustomStructure(CustomStructure parentCustomStructure, String subStructureName){
+        try {
+            return parentCustomStructure.deleteSubCustomStructure(subStructureName);
         } catch (ActivityEngineException e) {
             e.printStackTrace();
         }

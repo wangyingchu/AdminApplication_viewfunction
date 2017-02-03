@@ -32,8 +32,8 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
     private Map<String,TextField> stepProcessEditorTextFieldMap;
     private Map<String,String> stepProcessEditorsMap;
     private final String _launchPointStepProcessEditorId="Launch_Point_Step_Process_Editor";
-    public final String ConfigurationItemType_StepConfig="ConfigurationItemType_StepConfig";
-    public final String ConfigurationItemType_GlobalConfig="ConfigurationItemType_GlobalConfig";
+    public static final String ConfigurationItemType_StepConfig="ConfigurationItemType_StepConfig";
+    public static final String ConfigurationItemType_GlobalConfig="ConfigurationItemType_GlobalConfig";
     private ActivityDefinitionCustomConfigurationItemTable stepsConfigurationItemTable;
     private ActivityDefinitionCustomConfigurationItemTable globalConfigurationItemTable;
 

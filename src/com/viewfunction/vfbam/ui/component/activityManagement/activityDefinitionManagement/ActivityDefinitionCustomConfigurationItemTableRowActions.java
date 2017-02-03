@@ -60,33 +60,17 @@ public class ActivityDefinitionCustomConfigurationItemTableRowActions extends Ho
     }
 
     private void doEditConfigurationItem(){
-        String activitySpaceName=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getActivitySpaceName();
-        String activityDefinitionType=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
-        System.out.println(activitySpaceName);
-        System.out.println(activityDefinitionType);
-        System.out.println(getConfigurationItemName());
-        System.out.println(getConfigurationItemType());
-
-
         final Window window = new Window();
         window.setResizable(false);
-
-        window.setWidth(80, Unit.PERCENTAGE);
-        window.setHeight(80, Unit.PERCENTAGE);
+        int screenHeight=this.currentUserClientInfo.getUserWebBrowserInfo().getScreenHeight();
+        int windowsHeight=screenHeight-300;
+        window.setWidth(60, Unit.PERCENTAGE);
+        window.setHeight(windowsHeight, Unit.PIXELS);
         window.setModal(true);
         window.center();
-
-
-        ActivityDefinitionCustomConfigurationItemEditor configurationItemEditor=new ActivityDefinitionCustomConfigurationItemEditor(this.currentUserClientInfo);
+        ActivityDefinitionCustomConfigurationItemEditor configurationItemEditor=
+                new ActivityDefinitionCustomConfigurationItemEditor(this.currentUserClientInfo,getConfigurationItemType(),getConfigurationItemName(),screenHeight-310);
         window.setContent(configurationItemEditor);
-
-        window.addCloseListener(new Window.CloseListener() {
-            @Override
-            public void windowClose(Window.CloseEvent closeEvent) {
-                //currentUserClientInfo.getRuntimeWindowsRepository().removeExistingWindow(discoverSpaceName,targetWindowUID);
-            }
-        });
-
         UI.getCurrent().addWindow(window);
     }
 
