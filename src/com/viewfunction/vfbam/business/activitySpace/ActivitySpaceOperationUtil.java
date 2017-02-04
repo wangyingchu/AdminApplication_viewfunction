@@ -1216,4 +1216,42 @@ public class ActivitySpaceOperationUtil {
         }
         return false;
     }
+
+    public static boolean checkCustomStructureAttributeExistence(CustomStructure customStructure,String attributeName){
+        try {
+            CustomAttribute targetCustomAttribute=customStructure.getCustomAttribute(attributeName);
+            if(targetCustomAttribute!=null){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (ActivityEngineRuntimeException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean addCustomStructureAttribute(CustomStructure customStructure,String attributeName,Object attributeValue){
+        try {
+            CustomAttribute customAttribute=ActivityComponentFactory.createCustomAttribute();
+            customAttribute.setAttributeName(attributeName);
+            customAttribute.setAttributeValue(attributeValue);
+            return customStructure.addCustomAttribute(customAttribute);
+        } catch (ActivityEngineRuntimeException e) {
+            e.printStackTrace();
+        } catch (ActivityEngineDataException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static List<CustomAttribute> getCustomStructureAttributes(CustomStructure customStructure){
+        try {
+            List<CustomAttribute> customAttributeList=customStructure.getCustomAttributes();
+            return customAttributeList;
+        } catch (ActivityEngineRuntimeException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
