@@ -1173,6 +1173,17 @@ public class ActivitySpaceOperationUtil {
         return null;
     }
 
+    public static CustomStructure getActivityDefinitionRootCustomConfigItem(String activitySpaceName, String activityType){
+        try {
+            ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
+            CustomStructure activityTypeCustomConfigItemRootStructure=targetActivitySpace.getBusinessActivityDefinitionGlobalCustomStructure(activityType);
+            return activityTypeCustomConfigItemRootStructure;
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static List<CustomStructure> getActivityStepCustomConfigItemsList(String activitySpaceName, String activityType,String activityStep){
         try {
             ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
@@ -1253,5 +1264,27 @@ public class ActivitySpaceOperationUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean deleteCustomStructureAttribute(CustomStructure customStructure,String attributeName){
+        try {
+            return customStructure.deleteCustomAttribute(attributeName);
+        } catch (ActivityEngineRuntimeException e) {
+            e.printStackTrace();
+        } catch (ActivityEngineDataException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean updateCustomStructureAttribute(CustomStructure customStructure,CustomAttribute updatedCustomAttribute){
+        try {
+            return customStructure.updateCustomAttribute(updatedCustomAttribute);
+        } catch (ActivityEngineRuntimeException e) {
+            e.printStackTrace();
+        } catch (ActivityEngineDataException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

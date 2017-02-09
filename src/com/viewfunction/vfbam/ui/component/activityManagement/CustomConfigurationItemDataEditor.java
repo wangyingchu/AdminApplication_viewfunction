@@ -24,6 +24,7 @@ public class CustomConfigurationItemDataEditor extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private VerticalLayout dataEditorContainerLayout;
     private CustomStructure configurationItemCustomStructure;
+    private CustomAttributeItemsActionList customAttributeItemsList;
 
     public CustomConfigurationItemDataEditor(UserClientInfo currentUserClientInfo){
         this.currentUserClientInfo=currentUserClientInfo;
@@ -49,10 +50,12 @@ public class CustomConfigurationItemDataEditor extends VerticalLayout {
                 getProperty("ActivityManagement_Common_AddConfigurationItemPropertyButtonLabel"));
         addNewPropertiesButton.setIcon(FontAwesome.PLUS_SQUARE);
 
+        CustomConfigurationItemDataEditor customConfigurationItemDataEditor=this;
         addNewPropertiesButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 AddNewConfigurationItemPropertyPanel addNewConfigurationItemPropertyPanel=new AddNewConfigurationItemPropertyPanel(currentUserClientInfo);
+                addNewConfigurationItemPropertyPanel.setContainerCustomConfigurationItemDataEditor(customConfigurationItemDataEditor);
                 addNewConfigurationItemPropertyPanel.setConfigurationItemCustomStructure(configurationItemCustomStructure);
                 final Window window = new Window();
                 window.setWidth(600.0f, Unit.PIXELS);
@@ -67,7 +70,7 @@ public class CustomConfigurationItemDataEditor extends VerticalLayout {
         });
         itemDataPropertiesSectionActionsBar.addActionComponent(addNewPropertiesButton);
 
-        CustomAttributeItemsList customAttributeItemsList=new CustomAttributeItemsList(this.currentUserClientInfo);
+        customAttributeItemsList=new CustomAttributeItemsActionList(this.currentUserClientInfo);
         dataEditorContainerLayout.addComponent(customAttributeItemsList);
     }
 
@@ -75,17 +78,16 @@ public class CustomConfigurationItemDataEditor extends VerticalLayout {
         this.configurationItemCustomStructure=targetCustomStructure;
         this.addComponent(dataEditorContainerLayout);
         List<CustomAttribute> customAttributeList=ActivitySpaceOperationUtil.getCustomStructureAttributes(targetCustomStructure);
-        if(customAttributeList!=null){
-         for(CustomAttribute currentCustomAttribute:customAttributeList){
-             System.out.println(currentCustomAttribute.getAttributeName());
-             System.out.println(currentCustomAttribute.getAttributeValue());
-             System.out.println("==============================================");
-         }
-        }
+        customAttributeItemsList.setCustomStructure(targetCustomStructure);
+        customAttributeItemsList.renderCustomAttributeItems(customAttributeList);
     }
 
     public void clearConfigurationItemData(){
         this.configurationItemCustomStructure=null;
         this.removeComponent(dataEditorContainerLayout);
+    }
+
+    public void addNewCustomAttributeItem(String propertyName,Object propertyValue){
+        customAttributeItemsList.addNewCustomAttributeItem(propertyName,propertyValue);
     }
 }

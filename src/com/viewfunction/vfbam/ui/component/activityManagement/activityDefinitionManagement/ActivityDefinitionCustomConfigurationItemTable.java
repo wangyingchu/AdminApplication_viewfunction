@@ -2,7 +2,13 @@ package com.viewfunction.vfbam.ui.component.activityManagement.activityDefinitio
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
+import com.viewfunction.activityEngine.activityView.common.CustomStructure;
+import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.List;
@@ -18,6 +24,8 @@ public class ActivityDefinitionCustomConfigurationItemTable extends Table {
     private IndexedContainer containerDataSource;
     private String configurationItemType;
     private boolean canDeleteItem;
+    private CustomStructure parentContainerConfigurationItem;
+
     public ActivityDefinitionCustomConfigurationItemTable(UserClientInfo currentUserClientInfo,String tableHeight,String configurationItemDisplayName,boolean canDeleteItem){
         this.currentUserClientInfo=currentUserClientInfo;
         this.canDeleteItem=canDeleteItem;
@@ -55,7 +63,6 @@ public class ActivityDefinitionCustomConfigurationItemTable extends Table {
                     userI18NProperties.
                             getProperty("ActivityManagement_Table_ListActionPropertyText")});
         }
-
     }
 
     @Override
@@ -73,6 +80,7 @@ public class ActivityDefinitionCustomConfigurationItemTable extends Table {
                     new ActivityDefinitionCustomConfigurationItemTableRowActions(this.currentUserClientInfo,this.canDeleteItem);
             currentRowActions.setConfigurationItemType(getConfigurationItemType());
             currentRowActions.setConfigurationItemName(currentConfigurationItem);
+            currentRowActions.setContainerActivityDefinitionCustomConfigurationItemTable(this);
             item.getItemProperty(columnName_CustomConfigurationOperations).setValue(currentRowActions);
         }
     }
@@ -83,5 +91,58 @@ public class ActivityDefinitionCustomConfigurationItemTable extends Table {
 
     public void setConfigurationItemType(String configurationItemType) {
         this.configurationItemType = configurationItemType;
+    }
+
+    public boolean checkConfigurationItemExistence(String itemName){
+        Item item = this.containerDataSource.getItem(itemName);
+        if(item==null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public void addNewConfigurationItem(String configurationItemName,boolean canDeleteThisItem){
+        Item item = this.containerDataSource.addItem(configurationItemName);
+        item.getItemProperty(columnName_CustomConfigurationName).setValue(configurationItemName);
+        ActivityDefinitionCustomConfigurationItemTableRowActions currentRowActions=
+                new ActivityDefinitionCustomConfigurationItemTableRowActions(this.currentUserClientInfo,canDeleteThisItem);
+        currentRowActions.setConfigurationItemType(getConfigurationItemType());
+        currentRowActions.setConfigurationItemName(configurationItemName);
+        currentRowActions.setContainerActivityDefinitionCustomConfigurationItemTable(this);
+        item.getItemProperty(columnName_CustomConfigurationOperations).setValue(currentRowActions);
+    }
+
+    public void deleteConfigurationItem(String configurationItemName){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        if(getParentContainerConfigurationItem()!=null){
+            boolean deleteConfigurationItemResult=ActivitySpaceOperationUtil.deleteSubCustomStructure(getParentContainerConfigurationItem(),configurationItemName);
+            if(deleteConfigurationItemResult){
+                this.containerDataSource.removeItem(configurationItemName);
+                Notification resultNotification = new Notification(userI18NProperties.
+                        getProperty("Global_Application_DataOperation_DeleteDataSuccessText"),
+                        userI18NProperties.
+                                getProperty("ActivityManagement_Common_DeleteConfigurationItemSuccessText"), Notification.Type.HUMANIZED_MESSAGE);
+                resultNotification.setPosition(Position.MIDDLE_CENTER);
+                resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
+                resultNotification.show(Page.getCurrent());
+            }else{
+                Notification errorNotification = new Notification(userI18NProperties.
+                        getProperty("ActivityManagement_Common_DeleteConfigurationItemErrorText"),
+                        userI18NProperties.
+                                getProperty("Global_Application_DataOperation_ServerSideErrorOccurredText"), Notification.Type.ERROR_MESSAGE);
+                errorNotification.setPosition(Position.MIDDLE_CENTER);
+                errorNotification.show(Page.getCurrent());
+                errorNotification.setIcon(FontAwesome.WARNING);
+            }
+        }
+    }
+
+    public CustomStructure getParentContainerConfigurationItem() {
+        return parentContainerConfigurationItem;
+    }
+
+    public void setParentContainerConfigurationItem(CustomStructure parentContainerConfigurationItem) {
+        this.parentContainerConfigurationItem = parentContainerConfigurationItem;
     }
 }

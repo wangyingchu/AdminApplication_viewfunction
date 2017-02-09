@@ -9,10 +9,8 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.viewfunction.activityEngine.activityView.common.ActivityStepDefinition;
-import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
-import com.viewfunction.vfbam.ui.component.common.SecondarySectionTitle;
-import com.viewfunction.vfbam.ui.component.common.SectionActionButton;
-import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
+import com.viewfunction.activityEngine.activityView.common.CustomStructure;
+import com.viewfunction.vfbam.ui.component.common.*;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
 
@@ -36,6 +34,7 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
     public static final String ConfigurationItemType_GlobalConfig="ConfigurationItemType_GlobalConfig";
     private ActivityDefinitionCustomConfigurationItemTable stepsConfigurationItemTable;
     private ActivityDefinitionCustomConfigurationItemTable globalConfigurationItemTable;
+    private CustomStructure activityTypeCustomConfigItemRootStructure;
 
     public ActivityAdditionalConfigurationEditor(UserClientInfo currentUserClientInfo) {
         this.currentUserClientInfo = currentUserClientInfo;
@@ -126,11 +125,17 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
                 userI18NProperties.
                         getProperty("ActivityManagement_ActivityTypeManagement_GlobalConfigurationInfoText")+":", ContentMode.HTML));
         addComponent(activityGlobalCustomConfigInfoSectionActionsBar);
-        SectionActionButton addNewActivityStepActionButton = new SectionActionButton();
-        addNewActivityStepActionButton.setCaption(userI18NProperties.
+        SectionActionButton addNewActivityTypeConfigurationItemButton = new SectionActionButton();
+        addNewActivityTypeConfigurationItemButton.setCaption(userI18NProperties.
                 getProperty("ActivityManagement_ActivityTypeManagement_AddConfigItemButtonLabel"));
-        addNewActivityStepActionButton.setIcon(FontAwesome.PLUS_SQUARE);
-        activityGlobalCustomConfigInfoSectionActionsBar.addActionComponent(addNewActivityStepActionButton);
+        addNewActivityTypeConfigurationItemButton.setIcon(FontAwesome.PLUS_SQUARE);
+        activityGlobalCustomConfigInfoSectionActionsBar.addActionComponent(addNewActivityTypeConfigurationItemButton);
+        addNewActivityTypeConfigurationItemButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                addNewActivityTypeConfigurationItem();
+            }
+        });
 
         globalConfigurationItemTable=new ActivityDefinitionCustomConfigurationItemTable(this.currentUserClientInfo,"250px",null,true);
         globalConfigurationItemTable.setConfigurationItemType(ConfigurationItemType_GlobalConfig);
@@ -191,6 +196,19 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
         spacingDivLayout.setHeight(5,Unit.PIXELS);
         stepProcessEditorForm.addComponent(spacingDivLayout);
         stepsConfigurationItemTable.loadConfigurationItemsData(stepConfigurationItemsList);
+
+        activityTypeCustomConfigItemRootStructure=ActivitySpaceOperationUtil.getActivityDefinitionRootCustomConfigItem(activitySpaceName,activityDefinitionType);
+        if(activityTypeCustomConfigItemRootStructure!=null){
+            List<CustomStructure> subStructuresList=ActivitySpaceOperationUtil.getSubCustomConfigItemsList(activityTypeCustomConfigItemRootStructure);
+            List<String> activityTypeConfigurationItemNamesList=new ArrayList<>();
+            if(activityTypeConfigurationItemNamesList!=null){
+                for(CustomStructure currentCustomStructure:subStructuresList){
+                    activityTypeConfigurationItemNamesList.add(currentCustomStructure.getStructureName());
+                }
+            }
+            globalConfigurationItemTable.setParentContainerConfigurationItem(activityTypeCustomConfigItemRootStructure);
+            globalConfigurationItemTable.loadConfigurationItemsData(activityTypeConfigurationItemNamesList);
+        }
     }
 
     private void setEditStepProcessEditorsFieldEnableStatus(boolean enableStatus){
@@ -281,6 +299,32 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
             }else{
                 currentStepEditorTextField.setValue("");
             }
+        }
+    }
+
+    private void addNewActivityTypeConfigurationItem(){
+        AddNewActivityDefinitionGlobalConfigurationItemPanel addNewActivityDefinitionGlobalConfigurationItemPanel=
+                new AddNewActivityDefinitionGlobalConfigurationItemPanel(this.currentUserClientInfo);
+        addNewActivityDefinitionGlobalConfigurationItemPanel.setRelatedActivityDefinitionCustomConfigurationItemTable(globalConfigurationItemTable);
+        addNewActivityDefinitionGlobalConfigurationItemPanel.setContainerActivityAdditionalConfigurationEditor(this);
+        final Window window = new Window();
+        window.setWidth(550.0f, Unit.PIXELS);
+        window.setHeight(200.0f, Unit.PIXELS);
+        window.setModal(true);
+        window.setResizable(false);
+        window.center();
+        window.setContent(addNewActivityDefinitionGlobalConfigurationItemPanel);
+        addNewActivityDefinitionGlobalConfigurationItemPanel.setContainerDialog(window);
+        UI.getCurrent().addWindow(window);
+    }
+
+    public boolean addNewActivityTypeGlobalConfigurationItem(String itemName){
+        CustomStructure newAddedStructure=ActivitySpaceOperationUtil.addSubCustomStructure(activityTypeCustomConfigItemRootStructure, itemName);
+        if(newAddedStructure!=null&&newAddedStructure.getStructureName().equals(itemName)){
+            globalConfigurationItemTable.addNewConfigurationItem(itemName,true);
+            return true;
+        }else{
+            return false;
         }
     }
 }

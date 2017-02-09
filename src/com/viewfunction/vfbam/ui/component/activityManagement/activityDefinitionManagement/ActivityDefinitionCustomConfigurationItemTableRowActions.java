@@ -1,11 +1,10 @@
 package com.viewfunction.vfbam.ui.component.activityManagement.activityDefinitionManagement;
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.*;
 
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
+import com.viewfunction.vfbam.ui.component.common.ConfirmDialog;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
 import java.util.Properties;
@@ -20,6 +19,7 @@ public class ActivityDefinitionCustomConfigurationItemTableRowActions extends Ho
     private Button deleteConfigurationItemButton;
     private String configurationItemName;
     private String configurationItemType;
+    private ActivityDefinitionCustomConfigurationItemTable containerActivityDefinitionCustomConfigurationItemTable;
 
     public ActivityDefinitionCustomConfigurationItemTableRowActions(UserClientInfo currentUserClientInfo, boolean canDeleteItem){
         this.currentUserClientInfo=currentUserClientInfo;
@@ -53,7 +53,7 @@ public class ActivityDefinitionCustomConfigurationItemTableRowActions extends Ho
             deleteConfigurationItemButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(final Button.ClickEvent event) {
-
+                    deleteConfigurationItem();
                 }
             });
         }
@@ -88,5 +88,34 @@ public class ActivityDefinitionCustomConfigurationItemTableRowActions extends Ho
 
     public void setConfigurationItemType(String configurationItemType) {
         this.configurationItemType = configurationItemType;
+    }
+
+    public void deleteConfigurationItem(){
+        Properties userI18NProperties=this.currentUserClientInfo.getUserI18NProperties();
+        Label confirmMessage=new Label(FontAwesome.INFO.getHtml()+" "+userI18NProperties.
+                getProperty("ActivityManagement_Common_ConfirmDeleteConfigurationItemText")+
+                " <b>"+getConfigurationItemName() +"</b>", ContentMode.HTML);
+        final ConfirmDialog deleteConfigurationItemConfirmDialog = new ConfirmDialog();
+        deleteConfigurationItemConfirmDialog.setConfirmMessage(confirmMessage);
+
+        Button.ClickListener confirmButtonClickListener = new Button.ClickListener() {
+            @Override
+            public void buttonClick(final Button.ClickEvent event) {
+                //close confirm dialog
+                deleteConfigurationItemConfirmDialog.close();
+                getContainerActivityDefinitionCustomConfigurationItemTable().deleteConfigurationItem(getConfigurationItemName());
+            }
+        };
+        deleteConfigurationItemConfirmDialog.setConfirmButtonClickListener(confirmButtonClickListener);
+        UI.getCurrent().addWindow(deleteConfigurationItemConfirmDialog);
+
+    }
+
+    public ActivityDefinitionCustomConfigurationItemTable getContainerActivityDefinitionCustomConfigurationItemTable() {
+        return containerActivityDefinitionCustomConfigurationItemTable;
+    }
+
+    public void setContainerActivityDefinitionCustomConfigurationItemTable(ActivityDefinitionCustomConfigurationItemTable containerActivityDefinitionCustomConfigurationItemTable) {
+        this.containerActivityDefinitionCustomConfigurationItemTable = containerActivityDefinitionCustomConfigurationItemTable;
     }
 }
