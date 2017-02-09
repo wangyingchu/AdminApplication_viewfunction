@@ -71,11 +71,17 @@ public class ActivityDefinitionCustomConfigurationItemTable extends Table {
     }
 
     public void loadConfigurationItemsData(List<String> configurationItems){
+        Properties userI18NProperties = this.currentUserClientInfo.getUserI18NProperties();
         this.clear();
         this.containerDataSource.removeAllItems();
         for(String currentConfigurationItem:configurationItems){
             Item item = this.containerDataSource.addItem(currentConfigurationItem);
-            item.getItemProperty(columnName_CustomConfigurationName).setValue(currentConfigurationItem);
+            if(currentConfigurationItem.equals(ActivityAdditionalConfigurationEditor._launchPointStepNameId)){
+                item.getItemProperty(columnName_CustomConfigurationName).setValue(userI18NProperties.
+                        getProperty("ActivityManagement_ActivityTypeManagement_LaunchPointText"));
+            }else{
+                item.getItemProperty(columnName_CustomConfigurationName).setValue(currentConfigurationItem);
+            }
             ActivityDefinitionCustomConfigurationItemTableRowActions currentRowActions=
                     new ActivityDefinitionCustomConfigurationItemTableRowActions(this.currentUserClientInfo,this.canDeleteItem);
             currentRowActions.setConfigurationItemType(getConfigurationItemType());

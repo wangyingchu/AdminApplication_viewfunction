@@ -23,18 +23,19 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
     private UserClientInfo currentUserClientInfo;
     private FormLayout stepProcessEditorForm;
     private HorizontalLayout stepProcessEditorOperationButtonsLayout;
-
     private Button updateProcessEditorsButton;
     private Button cancelProcessEditorsButton;
     private Button saveProcessEditorsButton;
     private Map<String,TextField> stepProcessEditorTextFieldMap;
     private Map<String,String> stepProcessEditorsMap;
-    private final String _launchPointStepProcessEditorId="Launch_Point_Step_Process_Editor";
     public static final String ConfigurationItemType_StepConfig="ConfigurationItemType_StepConfig";
     public static final String ConfigurationItemType_GlobalConfig="ConfigurationItemType_GlobalConfig";
     private ActivityDefinitionCustomConfigurationItemTable stepsConfigurationItemTable;
     private ActivityDefinitionCustomConfigurationItemTable globalConfigurationItemTable;
     private CustomStructure activityTypeCustomConfigItemRootStructure;
+
+    private final String _launchPointStepProcessEditorId="Launch_Point_Step_Process_Editor";
+    public static final String _launchPointStepNameId="Launch_Point_Logic_Step";
 
     public ActivityAdditionalConfigurationEditor(UserClientInfo currentUserClientInfo) {
         this.currentUserClientInfo = currentUserClientInfo;
@@ -171,8 +172,8 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
         launchPointStepProcessEditorTextField.setEnabled(false);
         stepProcessEditorForm.addComponent(launchPointStepProcessEditorTextField);
         stepProcessEditorTextFieldMap.put(_launchPointStepProcessEditorId,launchPointStepProcessEditorTextField);
-        stepConfigurationItemsList.add(userI18NProperties.
-                getProperty("ActivityManagement_ActivityTypeManagement_LaunchPointText"));
+
+        stepConfigurationItemsList.add(_launchPointStepNameId);
         ActivityStepDefinition[] definedStepsArray=ActivitySpaceOperationUtil.getActivityTypeDefinedSteps(activitySpaceName, activityDefinitionType);
         for(ActivityStepDefinition currentActivityStepDefinition:definedStepsArray){
             String activityStepCombinationStr=currentActivityStepDefinition.getStepId()+" ("+currentActivityStepDefinition.getStepName()+") "+userI18NProperties.

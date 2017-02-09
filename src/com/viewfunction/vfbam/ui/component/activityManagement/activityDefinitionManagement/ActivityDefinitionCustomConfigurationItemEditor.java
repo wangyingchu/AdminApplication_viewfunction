@@ -59,12 +59,17 @@ public class ActivityDefinitionCustomConfigurationItemEditor extends VerticalLay
         String activityDefinitionType=this.currentUserClientInfo.getActivitySpaceManagementMeteInfo().getComponentId();
         Label sectionActionBarLabel=null;
         if(ActivityAdditionalConfigurationEditor.ConfigurationItemType_StepConfig.equals(getConfigurationItemType())){
+            String configurationItemName=getConfigurationItemName();
+            if(configurationItemName.equals(ActivityAdditionalConfigurationEditor._launchPointStepNameId)){
+                configurationItemName=userI18NProperties.
+                        getProperty("ActivityManagement_ActivityTypeManagement_LaunchPointText");
+            }
             customConfigurationItemEditorSectionTitle.setValue(userI18NProperties.
                     getProperty("ActivityManagement_ActivityTypeManagement_StepsConfigurationItemText"));
             sectionActionBarLabel=new Label(userI18NProperties.
                             getProperty("ActivityManagement_ActivityTypeManagement_ActivityTypeText")+" : "+activityDefinitionType+" &nbsp;&nbsp;["+ FontAwesome.TERMINAL.getHtml()+" "+activitySpaceName+"]<br/>"+
                     userI18NProperties.
-                        getProperty("ActivityManagement_ActivityTypeManagement_StepText")+" : <b>"+getConfigurationItemName()+"</b> " , ContentMode.HTML);
+                        getProperty("ActivityManagement_ActivityTypeManagement_StepText")+" : <b>"+configurationItemName+"</b> " , ContentMode.HTML);
         }
         if(ActivityAdditionalConfigurationEditor.ConfigurationItemType_GlobalConfig.equals(getConfigurationItemType())){
             customConfigurationItemEditorSectionTitle.setValue(userI18NProperties.
