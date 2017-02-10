@@ -8,6 +8,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.viewfunction.activityEngine.activityView.common.CustomStructure;
+import com.viewfunction.activityEngine.util.ActivitySpaceCommonConstant;
 import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 
@@ -76,7 +77,7 @@ public class ActivityDefinitionCustomConfigurationItemTable extends Table {
         this.containerDataSource.removeAllItems();
         for(String currentConfigurationItem:configurationItems){
             Item item = this.containerDataSource.addItem(currentConfigurationItem);
-            if(currentConfigurationItem.equals(ActivityAdditionalConfigurationEditor._launchPointStepNameId)){
+            if(currentConfigurationItem.equals(ActivitySpaceCommonConstant.ActivityDefinition_launchPointLogicStepId)){
                 item.getItemProperty(columnName_CustomConfigurationName).setValue(userI18NProperties.
                         getProperty("ActivityManagement_ActivityTypeManagement_LaunchPointText"));
             }else{

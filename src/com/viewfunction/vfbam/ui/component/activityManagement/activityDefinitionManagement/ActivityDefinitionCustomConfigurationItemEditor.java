@@ -5,6 +5,7 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.viewfunction.activityEngine.util.ActivitySpaceCommonConstant;
 import com.viewfunction.vfbam.ui.component.activityManagement.CustomConfigurationItemDataEditor;
 import com.viewfunction.vfbam.ui.component.common.MainSectionTitle;
 import com.viewfunction.vfbam.ui.component.common.SectionActionsBar;
@@ -60,7 +61,7 @@ public class ActivityDefinitionCustomConfigurationItemEditor extends VerticalLay
         Label sectionActionBarLabel=null;
         if(ActivityAdditionalConfigurationEditor.ConfigurationItemType_StepConfig.equals(getConfigurationItemType())){
             String configurationItemName=getConfigurationItemName();
-            if(configurationItemName.equals(ActivityAdditionalConfigurationEditor._launchPointStepNameId)){
+            if(configurationItemName.equals(ActivitySpaceCommonConstant.ActivityDefinition_launchPointLogicStepId)){
                 configurationItemName=userI18NProperties.
                         getProperty("ActivityManagement_ActivityTypeManagement_LaunchPointText");
             }

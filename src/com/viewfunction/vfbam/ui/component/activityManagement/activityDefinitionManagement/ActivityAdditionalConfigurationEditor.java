@@ -10,6 +10,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.viewfunction.activityEngine.activityView.common.ActivityStepDefinition;
 import com.viewfunction.activityEngine.activityView.common.CustomStructure;
+import com.viewfunction.activityEngine.util.ActivitySpaceCommonConstant;
 import com.viewfunction.vfbam.ui.component.common.*;
 import com.viewfunction.vfbam.ui.util.UserClientInfo;
 import com.viewfunction.vfbam.business.activitySpace.ActivitySpaceOperationUtil;
@@ -33,9 +34,7 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
     private ActivityDefinitionCustomConfigurationItemTable stepsConfigurationItemTable;
     private ActivityDefinitionCustomConfigurationItemTable globalConfigurationItemTable;
     private CustomStructure activityTypeCustomConfigItemRootStructure;
-
-    private final String _launchPointStepProcessEditorId="Launch_Point_Step_Process_Editor";
-    public static final String _launchPointStepNameId="Launch_Point_Logic_Step";
+    //public static final String _launchPointStepNameId="Launch_Point_Logic_Step";
 
     public ActivityAdditionalConfigurationEditor(UserClientInfo currentUserClientInfo) {
         this.currentUserClientInfo = currentUserClientInfo;
@@ -164,16 +163,16 @@ public class ActivityAdditionalConfigurationEditor extends VerticalLayout {
         launchPointStepProcessEditorTextField.setWidth("100%");
         launchPointStepProcessEditorTextField.setRequired(false);
         if(stepProcessEditorsMap!=null){
-            String currentStepEditor=stepProcessEditorsMap.get(_launchPointStepProcessEditorId);
+            String currentStepEditor=stepProcessEditorsMap.get(ActivitySpaceCommonConstant.ActivityDefinition_launchPointStepProcessEditor);
             if(currentStepEditor!=null){
                 launchPointStepProcessEditorTextField.setValue(currentStepEditor);
             }
         }
         launchPointStepProcessEditorTextField.setEnabled(false);
         stepProcessEditorForm.addComponent(launchPointStepProcessEditorTextField);
-        stepProcessEditorTextFieldMap.put(_launchPointStepProcessEditorId,launchPointStepProcessEditorTextField);
+        stepProcessEditorTextFieldMap.put(ActivitySpaceCommonConstant.ActivityDefinition_launchPointStepProcessEditor,launchPointStepProcessEditorTextField);
 
-        stepConfigurationItemsList.add(_launchPointStepNameId);
+        stepConfigurationItemsList.add(ActivitySpaceCommonConstant.ActivityDefinition_launchPointLogicStepId);
         ActivityStepDefinition[] definedStepsArray=ActivitySpaceOperationUtil.getActivityTypeDefinedSteps(activitySpaceName, activityDefinitionType);
         for(ActivityStepDefinition currentActivityStepDefinition:definedStepsArray){
             String activityStepCombinationStr=currentActivityStepDefinition.getStepId()+" ("+currentActivityStepDefinition.getStepName()+") "+userI18NProperties.
