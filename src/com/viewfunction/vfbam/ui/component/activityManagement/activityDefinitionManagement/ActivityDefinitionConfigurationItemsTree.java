@@ -36,27 +36,48 @@ public class ActivityDefinitionConfigurationItemsTree extends ConfigurationItems
         container.addContainerProperty(ICON_PROPERTY, Resource.class, null);
         container.addContainerProperty(CUSTOMSTRUCTURE_PROPERTY, CustomStructure.class, null);
 
-        CustomStructure stepRootConfigurationItem= ActivitySpaceOperationUtil.
-                getActivityStepRootCustomConfigItem(activitySpaceName,activityDefinitionType,this.configurationItemName);
-
-        final Item configurationItemItem = container.addItem(ROOT_CONFIGURATION_ITEM);
-        configurationItemItem.getItemProperty(CAPTION_PROPERTY).setValue(this.configurationItemName);
-        configurationItemItem.getItemProperty(ICON_PROPERTY).setValue(FontAwesome.SQUARE_O);
-        configurationItemItem.getItemProperty(CUSTOMSTRUCTURE_PROPERTY).setValue(stepRootConfigurationItem);
-
         if(ActivityAdditionalConfigurationEditor.ConfigurationItemType_StepConfig.equals(configurationItemType)){
+            CustomStructure stepRootConfigurationItem= ActivitySpaceOperationUtil.
+                    getActivityStepRootCustomConfigItem(activitySpaceName,activityDefinitionType,this.configurationItemName);
+
+            final Item configurationItemItem = container.addItem(ROOT_CONFIGURATION_ITEM);
+            configurationItemItem.getItemProperty(CAPTION_PROPERTY).setValue(this.configurationItemName);
+            configurationItemItem.getItemProperty(ICON_PROPERTY).setValue(FontAwesome.SQUARE_O);
+            configurationItemItem.getItemProperty(CUSTOMSTRUCTURE_PROPERTY).setValue(stepRootConfigurationItem);
+
             List<CustomStructure> stepCustomConfigItems= ActivitySpaceOperationUtil.
                     getActivityStepCustomConfigItemsList(activitySpaceName,activityDefinitionType,this.configurationItemName);
-            for(CustomStructure currentCustomStructure:stepCustomConfigItems){
-                Item subConfigurationItemItem = container.addItem(ROOT_CONFIGURATION_ITEM +"_"+currentCustomStructure.getStructureName());
-                subConfigurationItemItem.getItemProperty(CAPTION_PROPERTY).setValue(currentCustomStructure.getStructureName());
-                subConfigurationItemItem.getItemProperty(ICON_PROPERTY).setValue(FontAwesome.SQUARE_O);
-                subConfigurationItemItem.getItemProperty(CUSTOMSTRUCTURE_PROPERTY).setValue(currentCustomStructure);
-                ((Container.Hierarchical) container).setParent(ROOT_CONFIGURATION_ITEM +"_"+currentCustomStructure.getStructureName(), ROOT_CONFIGURATION_ITEM);
-                ((Container.Hierarchical) container).setChildrenAllowed(ROOT_CONFIGURATION_ITEM +"_"+currentCustomStructure.getStructureName(), true);
+
+            loadSubTreeItemsData(stepCustomConfigItems);
+        }
+        if(ActivityAdditionalConfigurationEditor.ConfigurationItemType_GlobalConfig.equals(configurationItemType)){
+            CustomStructure activityTypeGlobalConfigRootConfigurationItem= ActivitySpaceOperationUtil.
+                    getActivityDefinitionRootCustomConfigItem(activitySpaceName,activityDefinitionType);
+            if(activityTypeGlobalConfigRootConfigurationItem!=null){
+                CustomStructure targetCustomStructure=ActivitySpaceOperationUtil.getSubCustomStructure(activityTypeGlobalConfigRootConfigurationItem,this.configurationItemName);
+                if(targetCustomStructure!=null){
+                    final Item configurationItemItem = container.addItem(ROOT_CONFIGURATION_ITEM);
+                    configurationItemItem.getItemProperty(CAPTION_PROPERTY).setValue(this.configurationItemName);
+                    configurationItemItem.getItemProperty(ICON_PROPERTY).setValue(FontAwesome.SQUARE_O);
+                    configurationItemItem.getItemProperty(CUSTOMSTRUCTURE_PROPERTY).setValue(targetCustomStructure);
+                    List<CustomStructure> activityTypeGlobalConfigurationSubCustomConfigItems= ActivitySpaceOperationUtil.getSubCustomConfigItemsList(targetCustomStructure);
+                    if(activityTypeGlobalConfigurationSubCustomConfigItems!=null){
+                        loadSubTreeItemsData(activityTypeGlobalConfigurationSubCustomConfigItems);
+                    }
+                }
             }
         }
-        if(ActivityAdditionalConfigurationEditor.ConfigurationItemType_GlobalConfig.equals(configurationItemType)){}
         return container;
+    }
+
+    private void loadSubTreeItemsData(List<CustomStructure> customStructureList){
+        for(CustomStructure currentCustomStructure:customStructureList){
+            Item subConfigurationItemItem = container.addItem(ROOT_CONFIGURATION_ITEM +"_"+currentCustomStructure.getStructureName());
+            subConfigurationItemItem.getItemProperty(CAPTION_PROPERTY).setValue(currentCustomStructure.getStructureName());
+            subConfigurationItemItem.getItemProperty(ICON_PROPERTY).setValue(FontAwesome.SQUARE_O);
+            subConfigurationItemItem.getItemProperty(CUSTOMSTRUCTURE_PROPERTY).setValue(currentCustomStructure);
+            ((Container.Hierarchical) container).setParent(ROOT_CONFIGURATION_ITEM +"_"+currentCustomStructure.getStructureName(), ROOT_CONFIGURATION_ITEM);
+            ((Container.Hierarchical) container).setChildrenAllowed(ROOT_CONFIGURATION_ITEM +"_"+currentCustomStructure.getStructureName(), true);
+        }
     }
 }

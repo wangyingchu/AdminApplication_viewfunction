@@ -1228,6 +1228,15 @@ public class ActivitySpaceOperationUtil {
         return false;
     }
 
+    public static CustomStructure getSubCustomStructure(CustomStructure parentCustomStructure, String subStructureName){
+        try {
+            return parentCustomStructure.getSubCustomStructure(subStructureName);
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static boolean checkCustomStructureAttributeExistence(CustomStructure customStructure,String attributeName){
         try {
             CustomAttribute targetCustomAttribute=customStructure.getCustomAttribute(attributeName);
