@@ -42,6 +42,7 @@ public class ActivityDataFieldsActionTable extends Table {
 
     private List<ActivityDataFieldVO> activityDataFieldsList;
     private List<DataFieldDefinition> dataFieldDefinitionsList;
+    private ActivityDataFieldsEditor relatedActivityDataFieldsEditor;
 
     public ActivityDataFieldsActionTable(UserClientInfo currentUserClientInfo, String tableHeight, boolean isActionMode,boolean isFilterMode){
         this.currentUserClientInfo=currentUserClientInfo;
@@ -313,6 +314,10 @@ public class ActivityDataFieldsActionTable extends Table {
             resultNotification.setIcon(FontAwesome.INFO_CIRCLE);
             resultNotification.show(Page.getCurrent());
 
+            if(getRelatedActivityDataFieldsEditor()!=null){
+                getRelatedActivityDataFieldsEditor().updateActivityDataFieldSuccessCallBack();
+            }
+
             Item itemToUpdate=this.containerDataSource.getItem(dataFieldName);
             if(itemToUpdate!=null){
                 itemToUpdate.getItemProperty(columnName_DataFieldName).setValue(dataFieldName);
@@ -415,6 +420,9 @@ public class ActivityDataFieldsActionTable extends Table {
                                 }
                             }
                         }
+                        if(getRelatedActivityDataFieldsEditor()!=null){
+                            getRelatedActivityDataFieldsEditor().deleteActivityDataFieldSuccessCallBack();
+                        }
                     }else{
                         Notification errorNotification = new Notification(userI18NProperties.
                                 getProperty("Global_Application_DataOperation_DeleteDataErrorText"),
@@ -498,5 +506,13 @@ public class ActivityDataFieldsActionTable extends Table {
         }else{
             return false;
         }
+    }
+
+    public ActivityDataFieldsEditor getRelatedActivityDataFieldsEditor() {
+        return relatedActivityDataFieldsEditor;
+    }
+
+    public void setRelatedActivityDataFieldsEditor(ActivityDataFieldsEditor relatedActivityDataFieldsEditor) {
+        this.relatedActivityDataFieldsEditor = relatedActivityDataFieldsEditor;
     }
 }

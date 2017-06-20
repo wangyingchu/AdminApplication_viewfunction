@@ -18,11 +18,13 @@ import com.viewfunction.vfbam.ui.component.activityManagement.ActivityDataFields
 import com.viewfunction.vfbam.ui.component.activityManagement.util.ActivityDataFieldVO;
 import com.viewfunction.vfbam.ui.util.ApplicationConstant;
 import com.viewfunction.vfbam.ui.util.RuntimeEnvironmentUtil;
+import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 
 
 import java.io.*;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.jcr.PropertyType;
 
@@ -35,6 +37,9 @@ public class ActivitySpaceOperationUtil {
     public static final String ACTIVITYSPACE_METAINFOTYPE_ACTIVITYTYPE="ACTIVITYTYPE";
     public static final String ACTIVITYSPACE_METAINFOTYPE_BUSINESSCATEGORY="BUSINESSCATEGORY";
     public static final String ACTIVITYSPACE_METAINFOTYPE_EXTENDFEATURECATEGORY="EXTENDFEATURECATEGORY";
+
+    public static final String ExistedDataHandleMethod_IGNORE="IGNORE";
+    public static final String ExistedDataHandleMethod_REPLACE="REPLACE";
 
     public static String[] listActivitySpaces(){
         try {
@@ -1293,6 +1298,134 @@ public class ActivitySpaceOperationUtil {
             e.printStackTrace();
         } catch (ActivityEngineDataException e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static File generateActivityTypeDataFieldsJsonFile(String activitySpaceName,String activityType){
+        File targetFile=new File(RuntimeEnvironmentUtil.getBinaryTempFileDirLocation()+activitySpaceName+"_"+activityType+"_DataFieldDefinitions.json");
+        List<Map<String,Object>> fieldDefinitionsList=new ArrayList<>();
+        try {
+            ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
+            BusinessActivityDefinition targetDefinition=targetActivitySpace.getBusinessActivityDefinition(activityType);
+            if(targetDefinition!=null){
+                DataFieldDefinition[] targetDefinitions=targetDefinition.getActivityDataFields();
+                if(targetDefinitions!=null){
+                    for(DataFieldDefinition currentDefinition:targetDefinitions){
+                        Map<String,Object> fieldInfoMap=new HashMap<>();
+                        String fieldName=currentDefinition.getFieldName();
+                        fieldInfoMap.put("FieldName",fieldName);
+                        String fieldDescription=currentDefinition.getDescription();
+                        fieldInfoMap.put("Description",fieldDescription);
+                        String fieldDisplayName=currentDefinition.getDisplayName();
+                        fieldInfoMap.put("DisplayName",fieldDisplayName);
+                        int fieldType=currentDefinition.getFieldType();
+                        fieldInfoMap.put("FieldType",fieldType);
+                        boolean arrayField=currentDefinition.isArrayField();
+                        fieldInfoMap.put("ArrayField",arrayField);
+                        boolean mandatoryField=currentDefinition.isMandatoryField();
+                        fieldInfoMap.put("MandatoryField",mandatoryField);
+                        boolean systemField=currentDefinition.isSystemField();
+                        fieldInfoMap.put("SystemField",systemField);
+                        fieldDefinitionsList.add(fieldInfoMap);
+                    }
+                }
+            }
+        } catch (ActivityEngineException e) {
+            e.printStackTrace();
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        String json = null;
+        try {
+            json = mapper.writeValueAsString(fieldDefinitionsList);
+            try(PrintStream ps = new PrintStream(targetFile)) {
+                ps.println(json);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return targetFile;
+    }
+
+    public static boolean importActivityTypeDataFieldDefinitionsFromJsonFile(String activitySpaceName,String activityType,String jsonFileLocation,String existDataFieldHandleMethod){
+        File file = new File(jsonFileLocation);
+        if(file.exists()){
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode dataNode=mapper.readTree(file);
+                if(dataNode.isArray()){
+                    Iterator<JsonNode> dataFieldDefinitionIterator = dataNode.getElements();
+                    try {
+                        ActivitySpace targetActivitySpace=ActivityComponentFactory.getActivitySpace(activitySpaceName);
+                        BusinessActivityDefinition targetDefinition=targetActivitySpace.getBusinessActivityDefinition(activityType);
+                        if(targetDefinition!=null){
+                            DataFieldDefinition[] targetDataFieldDefinitions=targetDefinition.getActivityDataFields();
+                            while(dataFieldDefinitionIterator.hasNext()){
+                                JsonNode currentDataFieldDefinition=dataFieldDefinitionIterator.next();
+                                if(!currentDataFieldDefinition.isArray()){
+                                    JsonNode descriptionProp=currentDataFieldDefinition.get("Description");
+                                    JsonNode displayNameProp=currentDataFieldDefinition.get("DisplayName");
+                                    JsonNode fieldNameProp=currentDataFieldDefinition.get("FieldName");
+                                    JsonNode fieldTypeProp=currentDataFieldDefinition.get("FieldType");
+                                    JsonNode arrayFieldProp=currentDataFieldDefinition.get("ArrayField");
+                                    JsonNode mandatoryFieldProp=currentDataFieldDefinition.get("MandatoryField");
+                                    JsonNode systemFieldProp=currentDataFieldDefinition.get("SystemField");
+                                    if(descriptionProp!=null&&displayNameProp!=null&&fieldNameProp!=null&&fieldTypeProp!=null
+                                            &&arrayFieldProp!=null&&mandatoryFieldProp!=null&&systemFieldProp!=null){
+
+                                        String fieldName=fieldNameProp.getTextValue();
+                                        String displayName=displayNameProp.getTextValue();
+                                        String description=descriptionProp.getTextValue();
+                                        int fieldType=fieldTypeProp.getIntValue();
+                                        boolean isArratField=arrayFieldProp.getBooleanValue();
+                                        boolean isMandatoryField=mandatoryFieldProp.getBooleanValue();
+                                        boolean isSystemField=systemFieldProp.getBooleanValue();
+
+                                        boolean isExistDataFieldCheck=checkDataFieldDefinitionExist(targetDataFieldDefinitions,fieldName);
+
+                                        if(isExistDataFieldCheck){
+                                            if(ExistedDataHandleMethod_REPLACE.equals(existDataFieldHandleMethod)){
+                                                DataFieldDefinition targetDataFieldDefinition=
+                                                        ActivityComponentFactory.cteateDataFieldDefinition(fieldName, fieldType,isArratField);
+                                                targetDataFieldDefinition.setDescription(description);
+                                                targetDataFieldDefinition.setDisplayName(displayName);
+                                                targetDataFieldDefinition.setMandatoryField(isMandatoryField);
+                                                targetDataFieldDefinition.setSystemField(isSystemField);
+                                                targetActivitySpace.updateBusinessActivityDefinitionDataFieldDefinition(activityType,targetDataFieldDefinition);
+                                            }
+                                        }else{
+                                            DataFieldDefinition targetDataFieldDefinition=
+                                                    ActivityComponentFactory.cteateDataFieldDefinition(fieldName, fieldType,isArratField);
+                                            targetDataFieldDefinition.setDescription(description);
+                                            targetDataFieldDefinition.setDisplayName(displayName);
+                                            targetDataFieldDefinition.setMandatoryField(isMandatoryField);
+                                            targetDataFieldDefinition.setSystemField(isSystemField);
+                                            targetActivitySpace.addBusinessActivityDefinitionDataFieldDefinition(activityType,targetDataFieldDefinition);
+                                        }
+                                    }
+                                }
+                            }
+                        }else{
+                            return false;
+                        }
+                    } catch (ActivityEngineException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                }else{
+                    return false;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                try {
+                    FileUtils.forceDelete(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return false;
     }

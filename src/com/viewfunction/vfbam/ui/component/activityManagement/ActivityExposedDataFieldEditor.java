@@ -80,8 +80,9 @@ public class ActivityExposedDataFieldEditor extends VerticalLayout {
                 getProperty("ActivityManagement_Common_DataFieldDefinitionText"));
         dataFieldDefinitions.setRequired(true);
         dataFieldDefinitions.setWidth("100%");
-        dataFieldDefinitions.setTextInputAllowed(false);
+        dataFieldDefinitions.setTextInputAllowed(true);
         dataFieldDefinitions.setNullSelectionAllowed(false);
+        dataFieldDefinitions.setPageLength(200);
         dataFieldDefinitions.setInputPrompt(userI18NProperties.
                 getProperty("ActivityManagement_Common_SelectDataFieldDefinitionText"));
         dataFieldDefinitions.addValueChangeListener(new Property.ValueChangeListener(){
